@@ -16,7 +16,7 @@ public class ApplicationView {
     public ApplicationView(double size, Stage primaryStage){
         Node myGridView = new GridView(10,10);
         Node myConsoleView = new ConsoleView();
-        Node myDashboardView = new DashboardView();
+        Node myDashboardView = new DashboardView(primaryStage);
 
 
         BorderPane root = new BorderPane();
