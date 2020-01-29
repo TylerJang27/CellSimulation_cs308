@@ -8,6 +8,6 @@ public class ConsoleView extends Pane {
     public ConsoleView(){
         super();
         this.setStyle("-fx-background-color: blue");
-        getChildren().add(new Rectangle(300,300));
+        setPrefHeight(200);
     }
 }

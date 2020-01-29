@@ -14,7 +14,7 @@ import java.io.Console;
 public class ApplicationView {
     private Scene myScene;
     public ApplicationView(double size, Stage primaryStage){
-        Node myGridView = new GridView(10);
+        Node myGridView = new GridView(10,10);
         Node myConsoleView = new ConsoleView();
         Node myDashboardView = new DashboardView();
 

@@ -1,31 +1,29 @@
 package cellsociety;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 public class GridView extends GridPane {
 
-    public GridView(int numRows){
+    public GridView(int numRows, int numColumns){
         super();
         setHgap(10);
         setVgap(10);
+        setPadding(new Insets(10,10,10,10));
         setConstraints(numRows);
-        /*
-        for(int i = 0; i < 10; i++){
-            for(int j = 0; j < 10; j++){
-                Rectangle adding = new Rectangle(50,50);
-                //adding.widthProperty().bind(this.widthProperty().divide(10));
-                add(adding,i,j);
+
+        for(int i = 0; i < numRows; i++){
+            for(int j = 0; j < numColumns; j++){
+                Pane root = new Pane();
+                Rectangle adding = new  Rectangle();
+                adding.widthProperty().bind(root.widthProperty());
+                adding.heightProperty().bind(root.heightProperty());
+                root.getChildren().add(adding);
+                add(root,i,j);
             }
         }
-        */
-        Pane root = new Pane();
-        Rectangle adding = new  Rectangle(50,50);
-        adding.widthProperty().bind(root.widthProperty());
-        root.getChildren().add(adding);
-        Rectangle adding2 = new  Rectangle(50,50);
-        add(root,3,3);
-        add(adding2,8,8);
+
         setPrefHeight(800);
         setPrefWidth(800);
         this.setStyle("-fx-background-color: green");
