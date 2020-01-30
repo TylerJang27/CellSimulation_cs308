@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Model;
 
 import cellsociety.Controller.Simulation;
 import cellsociety.Controller.XMLParser;
