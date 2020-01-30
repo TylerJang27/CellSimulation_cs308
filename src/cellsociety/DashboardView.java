@@ -4,12 +4,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -30,12 +28,7 @@ public class DashboardView extends Pane {
         fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked(primaryStage));
 
         mySpeedSlider = new Slider(0,1,.5);
-        mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println(observable.getValue());
-            }
-        });
+        mySpeedSlider.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderChangedValue(observable));
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Option 1",
@@ -74,8 +67,8 @@ public class DashboardView extends Pane {
         getChildren().add(myDashBoard);
         this.setStyle("-fx-background-color: red");
     }
-    private void handleSliderChangedValue(){
-        System.out.println(mySpeedSlider.getValue());
+    private void handleSliderChangedValue(ObservableValue<? extends Number> observedValue){
+        System.out.println(observedValue.getValue());
     }
     private void handleFileButtonClicked(Stage primaryStage) {
         FileChooser myFileChooser = new FileChooser();

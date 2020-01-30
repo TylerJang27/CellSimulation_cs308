@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 
 public class GridView extends GridPane {
 
-    public GridView(int numRows, int numColumns){
+    public GridView(int numRows, int numColumns,double width, double height){
         super();
         setHgap(10);
         setVgap(10);
@@ -24,12 +24,14 @@ public class GridView extends GridPane {
             }
         }
 
-        setPrefHeight(800);
-        setPrefWidth(800);
+        setPrefHeight(width);
+        setPrefWidth(height);
         this.setStyle("-fx-background-color: green");
     }
+    public void updateCell(int row, int column, int state){
+        //implement
+    }
     private void setConstraints(int numRows){
-        double percentageColumn = 100.0 / numRows;
         for(int i = 0; i < numRows; i++){
             ColumnConstraints cc = new ColumnConstraints();
             cc.setHgrow(Priority.ALWAYS);
