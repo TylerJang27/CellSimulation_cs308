@@ -1,9 +1,6 @@
-package cellsociety;
+package cellsociety.View;
 
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**

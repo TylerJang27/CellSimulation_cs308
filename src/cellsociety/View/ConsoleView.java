@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

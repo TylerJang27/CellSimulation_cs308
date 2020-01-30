@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.View;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

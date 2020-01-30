@@ -1,22 +1,16 @@
-package cellsociety;
+package cellsociety.View;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.Console;
 public class ApplicationView {
     private Scene myScene;
     private BorderPane root;
     private GridView myGridView;
     public ApplicationView(double size, Stage primaryStage){
-        Node myGridView = new GridView(10,10,800,800);
+        Node myGridView = new GridView(0,0,800,800);
         Node myConsoleView = new ConsoleView();
         Node myDashboardView = new DashboardView(primaryStage);
 
