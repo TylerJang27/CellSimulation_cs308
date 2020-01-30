@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<data type="Game Of Life">
+<data type="simulation">
+    <mode>Percolation</mode>
     <rate>5</rate>
     <width>20</width>
     <height>20</height>

@@ -42,12 +42,16 @@ public class XMLParser {
     public Simulation getSimulation (File dataFile) {
         //resets file reading to root of XML File
         Element root = getRootElement(dataFile);
+
         if (! isValidFile(root, Simulation.DATA_TYPE)) {
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
         }
         // read data associated with the fields given by the object
         Map<String, String> simulationSettings = new HashMap<>();
         for (String field : Simulation.DATA_FIELDS) {
+            simulationSettings.put(field, getTextValue(root, field));
+        }
+        for (String field: SimType.of(simulationSettings.get(Simulation.DATA_FIELDS.get(0))).getFields()) {
             simulationSettings.put(field, getTextValue(root, field));
         }
         return new Simulation(simulationSettings);
@@ -82,7 +86,8 @@ public class XMLParser {
             return nodeList.item(0).getTextContent();
         }
         else {
-            // FIXME: I believe this should just be a String, but maybe be exception
+            // FIXME: Determine if should be return String or Exception
+            //throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
             return "";
         }
     }

@@ -10,48 +10,35 @@ import java.util.List;
  * Class for storing the data needed to configure a Simulation
  * Class stores accessible data in myType, myColors, myDataValues, and myGrid
  *
- * Structure based on setup of Game.java in spike_simulation by Robert C. Duvall
+ * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
  */
 public class Simulation {
     //name for the type of data file necessary to represent a simulation configuration file
-    public static final String DATA_TYPE = "Simulation";
+    public static final String DATA_TYPE = "simulation";
 
-    //value to use if XML file does not specify grid size
-    private static final int GRID_DEFAULT = 20;
+    private static final String MISSING_MESSAGE = "XML file missing essential configuration setting for SimType %s";
 
     //valid fields in the data file for all Simulation objects
     public static final List<String> DATA_FIELDS = List.of(
-            "type",                 //FIXME: Implement enumerated type for Simulation types
+            "mode",
             "rate",
             "width",
             "height",
-            "tolerance",    //used as a general threshold measurement
-            "numGroupA",            //FIXME: Determine if better format of specifying each type's rules
-            "numGroupB",             //FIXME: Determine if better format of specifying each type's rules
-            "empty",                //FIXME: Determine if better format of specifying each type's rules
-            "TTLGroupA",            //FIXME: Determine if better format of specifying each type's rules
-            "TTLGroupB",            //FIXME: Determine if better format of specifying each type's rules
-            "TTDGroupB",            //FIXME: Determine if better format of specifying each type's rules
-            "color1",
-            "color2",
-            "color3",
             "grid"
     );
 
     private Map<String, Integer> myDataValues;
 
     //specific data values for this instances
-    private String myType;
-    private List<Color> myColors;
+    private SimType myType;
     private Map<Point, Integer> myGrid;
 
     /**
      * Full constructor to initialize a Simulation from given data.
      */
-    public Simulation(String type, Color color1, Color color2, Color color3) {
-        myType = type;
-        myColors =  new ArrayList<>(Arrays.asList(new Color[]{color1, color2, color3}));
+    public Simulation(String type) {
+        myType = SimType.of(type);
         myDataValues = new HashMap<>();
         myGrid = new HashMap<>();
     }
@@ -62,12 +49,9 @@ public class Simulation {
      * @param dataValues map of field names to their values
      */
     public Simulation(Map<String, String> dataValues) {
-        this(dataValues.get(DATA_FIELDS.get(0)),
-                Color.web(dataValues.get(DATA_FIELDS.get(11))), //FIXME: Check for input validation of colors
-                Color.web(dataValues.get(DATA_FIELDS.get(12))),
-                Color.web(dataValues.get(DATA_FIELDS.get(13))));
+        this(dataValues.get(DATA_FIELDS.get(0)));
         this.setFields(dataValues);
-        this.setGrid(dataValues.get(DATA_FIELDS.get(14)));
+        this.setGrid(dataValues.get(DATA_FIELDS.get(4)));
     }
 
     /**
@@ -78,19 +62,18 @@ public class Simulation {
      * @param dataValues map of field names to their values
      */
     private void setFields(Map<String, String> dataValues) {
-        for (int k = 1; k < 11; k ++) {
+        for (int k = 1; k < 4; k ++) {
             String val = dataValues.get(DATA_FIELDS.get(k));
             if (val != null) {
                 myDataValues.put(DATA_FIELDS.get(k), Integer.parseInt(val));
-            } else {
-                myDataValues.put(DATA_FIELDS.get(k), null);
+            } else  {
+                throw new XMLException(MISSING_MESSAGE, myType);
             }
         }
-        if (this.getValue("width") == null) { //FIXME: Remove hard-coded Strings
-            myDataValues.put("width", GRID_DEFAULT);
-        }
-        if (this.getValue("height") == null) {
-            myDataValues.put("height", GRID_DEFAULT);
+        for (String field: myType.getFields()) {
+            if (field.length() > 0) {
+                myDataValues.put(field, Integer.parseInt(dataValues.get(field)));
+            }
         }
     }
 
@@ -98,6 +81,7 @@ public class Simulation {
      * Takes a String specifying initial grid setup and creates the grid
      * Individual Cells should be delimited by ,
      * Point locations and value should be delimited by space
+     * Only adds points within the bounds of the grid
      */
     public void setGrid(String gridString) {
         for (String cell: gridString.split(",")) {
@@ -114,7 +98,7 @@ public class Simulation {
     /**
      * Returns simulation type.
      */
-    public String getType() {
+    public SimType getType() {
         return myType;
     }
 
@@ -126,16 +110,9 @@ public class Simulation {
     }
 
     /**
-     * Returns ColorN value, specified by argument n
-     */
-    public Color getColor(int n) {
-        return myColors.get(n);
-    }
-
-    /**
      * Returns Grid, with initialized values
      */
-    public Map getGrid() {
+    public Map<Point, Integer> getGrid() {
         return myGrid;
     }
 
