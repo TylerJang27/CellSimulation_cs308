@@ -3,11 +3,14 @@ simulation
 
 This project implements a cellular automata simulator.
 
-Names:
+Names: 
+ * Mariusz Derezinski-Choo
+ * Tyler Jang
+ * Thomas Quintanilla
 
 ### Timeline
 
-Start Date: 
+Start Date: 1/26/20
 
 Finish Date: 
 
