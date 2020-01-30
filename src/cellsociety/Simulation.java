@@ -103,6 +103,13 @@ public class Simulation {
     }
 
     /**
+     * Returns Map with all String and Integer values
+     */
+    public Map<String, Integer> getValueSet() {
+        return myDataValues;
+    }
+
+    /**
      * Returns Integer value matched to field key.
      */
     public Integer getValue(String field) {

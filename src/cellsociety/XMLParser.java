@@ -87,8 +87,8 @@ public class XMLParser {
         }
         else {
             // FIXME: Determine if should be return String or Exception
-            //throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
-            return "";
+            throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
+            //return "";
         }
     }
 
