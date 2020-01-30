@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.Console;
 public class ApplicationView {
     private Scene myScene;
+    private Node myGridView;
     public ApplicationView(double size, Stage primaryStage){
         Node myGridView = new GridView(10,10);
         Node myConsoleView = new ConsoleView();
@@ -24,9 +25,10 @@ public class ApplicationView {
         root.setBottom(myConsoleView);
         root.setCenter(myGridView);
         root.setLeft(myDashboardView);
-        myScene = new Scene(root, size, size);
+        myScene = new Scene(root);
 
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
+    public void initializeGrid
 }
