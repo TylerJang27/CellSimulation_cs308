@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Game Of Life">
+    <rate>5</rate>
+    <width>20</width>
+    <height>20</height>
+    <grid>0 0 1, 0 1 1, 0 1 1, 0 1 1, 4 1 1</grid>
+</data>
