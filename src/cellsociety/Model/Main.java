@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Model;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
