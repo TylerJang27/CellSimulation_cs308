@@ -1,6 +1,4 @@
-package cellsociety;
-
-import javafx.scene.paint.Color;
+package cellsociety.Controller;
 
 import java.awt.*;
 import java.util.*;

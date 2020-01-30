@@ -1,4 +1,4 @@
-package cellsociety;
+package cellsociety.Controller;
 
 /**
  * Class for formatting the types of exceptions that may occur when reading in XML files for configuration.

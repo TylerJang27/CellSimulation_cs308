@@ -1,5 +1,8 @@
 package cellsociety;
 
+import cellsociety.Controller.Simulation;
+import cellsociety.Controller.XMLParser;
+
 import java.awt.*;
 import java.io.File;
 
