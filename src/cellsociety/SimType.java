@@ -27,7 +27,7 @@ public enum SimType {
     /**
      * Constructor for SimType, setting its name and fields
      */
-    SimType(String name, String[] fields) {
+    private SimType(String name, String[] fields) {
         myName = name;
         myFields = new ArrayList<>(Arrays.asList(fields));
     }

@@ -17,6 +17,8 @@ import org.xml.sax.SAXException;
  *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
+ *
+ * FIXME: Comment style
  */
 public class XMLParser {
 

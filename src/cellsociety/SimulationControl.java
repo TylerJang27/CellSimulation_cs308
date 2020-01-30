@@ -7,6 +7,10 @@ import java.io.File;
 /**
  * Core class of the Controller part of the MVC Model
  * Reads in data from the XML file and
+ *
+ * //FIXME: Add comments and documentation
+ * //FIXME: All codestyle
+ * //FIXME: Add package organization
  */
 public class SimulationControl {
 
