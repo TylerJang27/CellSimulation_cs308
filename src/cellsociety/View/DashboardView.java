@@ -4,10 +4,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -16,9 +18,9 @@ import java.io.File;
 
 public class DashboardView extends Pane {
     private Slider mySpeedSlider;
-    public DashboardView(Stage primaryStage){
-        super();
 
+    public DashboardView(Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener) {
+        super();
         VBox myDashBoard = new VBox(30);
         myDashBoard.prefHeightProperty().bind(this.heightProperty());
         myDashBoard.setPadding(new Insets(10,10,10,10));
@@ -28,7 +30,7 @@ public class DashboardView extends Pane {
         fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked(primaryStage));
 
         mySpeedSlider = new Slider(0,1,.5);
-        mySpeedSlider.valueProperty().addListener((observable, oldValue, newValue) -> handleSliderChangedValue(observable));
+        mySpeedSlider.valueProperty().addListener(sliderListener);
         ObservableList<String> options =
                 FXCollections.observableArrayList(
                         "Option 1",
@@ -47,15 +49,15 @@ public class DashboardView extends Pane {
         Button playButton = new Button("Play");
         playButton.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(playButton,Priority.ALWAYS);
-        playButton.setOnMouseClicked(event -> handlePlayButtonClicked());
+        playButton.setOnMouseClicked(playButtonClickedHandler);
         Button pauseButton = new Button("Pause");
         pauseButton.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(pauseButton,Priority.ALWAYS);
-        pauseButton.setOnMouseClicked(event -> handlePauseButtonClicked());
+        pauseButton.setOnMouseClicked(pauseButtonClickedHandler);
         Button stepButton = new Button("Step");
         stepButton.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(stepButton,Priority.ALWAYS);
-        stepButton.setOnMouseClicked(event -> handleStepButtonClicked());
+        stepButton.setOnMouseClicked(stepButtonClickedHandler);
 
         playButtons.getChildren().addAll(playButton,pauseButton,stepButton);
 
@@ -67,6 +69,7 @@ public class DashboardView extends Pane {
         getChildren().add(myDashBoard);
         this.setStyle("-fx-background-color: red");
     }
+
     private void handleSliderChangedValue(ObservableValue<? extends Number> observedValue){
         System.out.println(observedValue.getValue());
     }
