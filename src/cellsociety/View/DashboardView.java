@@ -70,9 +70,6 @@ public class DashboardView extends Pane {
         this.setStyle("-fx-background-color: red");
     }
 
-    private void handleSliderChangedValue(ObservableValue<? extends Number> observedValue){
-        System.out.println(observedValue.getValue());
-    }
     private void handleFileButtonClicked(Stage primaryStage) {
         FileChooser myFileChooser = new FileChooser();
         File selectedFile = myFileChooser.showOpenDialog(primaryStage);
@@ -80,15 +77,4 @@ public class DashboardView extends Pane {
 
     }
 
-    private void handleStepButtonClicked(){
-        System.out.println("Step Button Clicked!");
-    }
-
-    private void handlePauseButtonClicked() {
-        System.out.println("Pause Button Clicked!");
-    }
-
-    private void handlePlayButtonClicked() {
-        System.out.println("Play Button Clicked!");
-    }
 }
