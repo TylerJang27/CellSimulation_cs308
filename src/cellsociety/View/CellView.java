@@ -15,6 +15,20 @@ public class CellView extends Pane {
         this.getChildren().add(myDisplay);
     }
     public void changeState(int state){
-        myDisplay.setFill(Color.RED);
+        switch(state){
+            case 0:
+                myDisplay.setFill(Color.BLACK);
+                break;
+            case 1:
+                myDisplay.setFill(Color.RED);
+                break;
+            case 2:
+                myDisplay.setFill(Color.BLUE);
+                break;
+            case 3:
+                myDisplay.setFill(Color.YELLOW);
+                break;
+        }
+
     }
 }

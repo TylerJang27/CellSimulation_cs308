@@ -14,7 +14,7 @@ public class ApplicationView {
     private GridView myGridView;
     private ConsoleView myConsoleView;
     public ApplicationView(double size, Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener) {
-        Node myGridView = new GridView(10,10,800,800);
+        Node myGridView = new GridView(0,0,800,800);
         myConsoleView = new ConsoleView();
         Node myDashboardView = new DashboardView(primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
 
