@@ -3,12 +3,12 @@ package cellsociety.Model;
 import java.util.ArrayList;
 
 public abstract class Cell {
-    private ArrayList<Cell> neighbors;
-    private int state;
+    protected ArrayList<Cell> neighbors;
+    protected int state;
 
     public Cell() {
-
     }
+
     public void setNeighbor(Cell c) {
         neighbors.add(c);
     }
