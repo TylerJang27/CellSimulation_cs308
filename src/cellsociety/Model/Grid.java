@@ -4,42 +4,66 @@ import java.awt.Point;
 import java.util.*;
 
 public abstract class Grid {
-    protected HashMap<Point, Cell> pointCellHashMap;
+    protected LinkedHashMap<Point, Cell> pointCellMap;
     protected int myWidth;
     protected int myHeight;
     protected int myRate;
+
     //Make abstract, and 5 different grids
-    public Grid() { // change to take in map (simType class)
+    public Grid(HashMap<String, Integer> gridMap) { // change to take in map (simType class)
+        myWidth = gridMap.get("width");
+        myHeight = gridMap.get("height");
+        myRate = gridMap.get("rate");
+        pointCellMap = new LinkedHashMap<>();
     }
 
     //adds adjacent cells in each cell's neighbor list by creating adjacent points and seeing if they exist in Grid
-    protected void buildNeighbors() {
-        for (Point p : pointCellHashMap.keySet()) {
-            Point left = new Point((int) p.getX() - 1, (int) p.getY());
-            Point up = new Point((int) p.getX(), (int) p.getY() + 1);
-            Point right = new Point((int) p.getX() + 1, (int) p.getY());
-            Point down = new Point((int) p.getX(), (int) p.getY() - 1);
-
-            List<Point> potentialNeighbors = Arrays.asList(left, up, right, down);
+    protected void buildNSEWNeighbors(HashMap<Point, Cell> pointCellMap) {
+        for (Point p : pointCellMap.keySet()) {
+            List<Point> potentialNeighbors = getNeighborPoints(p);
 
             for (Point neighbor : potentialNeighbors) {
-                if (pointCellHashMap.containsKey(neighbor)) {
-                    pointCellHashMap.get(p).setNeighbor(pointCellHashMap.get(neighbor));
+                if (pointCellMap.containsKey(neighbor)) {
+                    pointCellMap.get(p).setNeighbor(pointCellMap.get(neighbor));
                 }
             }
         }
     }
+
+    protected List<Point> getNeighborPoints(Point p) {
+        Point left = new Point((int) p.getX() - 1, (int) p.getY());
+        Point up = new Point((int) p.getX(), (int) p.getY() + 1);
+        Point right = new Point((int) p.getX() + 1, (int) p.getY());
+        Point down = new Point((int) p.getX(), (int) p.getY() - 1);
+
+        return Arrays.asList(left, up, right, down);
+    }
+
+    static void buildSquareNeighbors(HashMap<Point, Cell> pointCellMap) {
+        for (Point p : pointCellMap.keySet()) {
+            for (int x = -1; x <= 1; x++) {
+                for (int y = -1; y <= 1; y++) {
+                    Point potentialNeighbor = new Point((int) p.getX() + x, (int) p.getY() + y);
+                    if (potentialNeighbor != p && pointCellMap.containsKey(potentialNeighbor)) {
+                        pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+                    }
+                }
+            }
+        }
+    }
+
     //First calculates and stores new state of each cell
     //Then updates each cell's state
     public void nextFrame() {
-        int[] states = new int [pointCellHashMap.values().size()];
+        int[] states = new int [pointCellMap.values().size()];
         int index = 0;
-        for (Cell c: pointCellHashMap.values()) {
+        for (Cell c: pointCellMap.values()) {
             states[index] = c.calculateNextState();
             index++;
         }
+
         index = 0;
-        for (Cell c: pointCellHashMap.values()) {
+        for (Cell c: pointCellMap.values()) {
             c.updateState(states[index]);
             index++;
         }
@@ -48,6 +72,6 @@ public abstract class Grid {
     //returns state of cell at point p
     public int getState(int r, int c) {
         Point p = new Point(r, c);
-        return pointCellHashMap.get(p).getState();
+        return pointCellMap.get(p).getState();
     }
 }
