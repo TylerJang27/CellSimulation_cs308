@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <mode>Percolation</mode>
+    <mode>Fire</mode>
     <rate>5</rate>
     <width>20</width>
     <height>20</height>
+    <catch>40</catch>
     <grid_type>some</grid_type>
     <grid>
         <point>0 0 1</point>

@@ -27,13 +27,14 @@ public class Simulation {
             RESOURCES.getString("Rate"),
             RESOURCES.getString("Width"),
             RESOURCES.getString("Height"),
-            RESOURCES.getString("Grid")
+            RESOURCES.getString("GridType")
     );
 
     private Map<String, Integer> myDataValues;
 
     //specific data values for this instances
     private SimType myType;
+    private String gridType;
     private Map<Point, Integer> myGrid;
 
     /**
@@ -50,10 +51,13 @@ public class Simulation {
      *
      * @param dataValues map of field names to their values
      */
-    public Simulation(Map<String, String> dataValues) {
+    public Simulation(Map<String, String> dataValues, Map<Point, Integer> grid) {
         this(dataValues.get(DATA_FIELDS.get(0)));
+        gridType = dataValues.get(RESOURCES.getString("GridType"));
         this.setFields(dataValues);
-        this.setGrid(dataValues.get(DATA_FIELDS.get(4)));
+        myGrid = grid;
+        //this.setGrid(dataValues.get(DATA_FIELDS.get(5)));
+        //FIXME: New grid setup
     }
 
     /**
@@ -95,6 +99,14 @@ public class Simulation {
                 myGrid.put(new Point(x, y), val);
             }
         }
+    }
+
+    public void setGrid(Map<Point, Integer> map) {
+
+    }
+
+    public String getGridType() {
+        return gridType;
     }
 
     /**

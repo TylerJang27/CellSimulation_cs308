@@ -2,8 +2,15 @@
 <data type="simulation">
     <mode>Fire</mode>
     <rate>5</rate>
-    <width>20</width>
-    <height>20</height>
+    <width>5</width>
+    <height>5</height>
     <catch>40</catch>
-    <grid>0 0 1, 0 1 1, 0 1 1, 0 1 1, 4 1 1</grid>
+    <grid_type>all</grid_type>
+    <grid>
+        <row>1 1 1 2 1</row>
+        <row>0 1 0 1 0</row>
+        <row>1 0 1 0 1</row>
+        <row>0 1 0 1 0</row>
+        <row>1 1 1 1 1</row>
+    </grid>
 </data>

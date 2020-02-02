@@ -8,10 +8,12 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.xml.sax.SAXException;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
@@ -59,18 +61,18 @@ public class Main extends Application {
     /**
      * Start of the program.
      */
-    public static void main (String[] args) {
-        File dataFile = new File("data/GameOfLife1.xml");
+    public static void main (String[] args) throws IOException, SAXException {
+        File dataFile = new File("data/Fire3.xml");
         Simulation mySim = new XMLParser("type").getSimulation(dataFile);
 
         System.out.printf("Simulation type: %s\n", mySim.getType());
-        System.out.printf("rate: \t\t %s\n", mySim.getValue("rate"));
-        System.out.printf("width: \t\t %s\n", mySim.getValue("width"));
-        System.out.printf("height: \t %s\n", mySim.getValue("height"));
-        for (String s: mySim.getType().getFields()) {
-            System.out.printf("%s \t\t %s\n", s, mySim.getValue(s));
+        System.out.printf("grid type: \t %s\n", mySim.getGridType());
+
+        for (String s: mySim.getValueSet().keySet()) {
+            System.out.printf("%s: \t %s \n", s, mySim.getValue(s).toString());
         }
-        System.out.println("grid:");
+
+        System.out.println("\ngrid:");
         for (Point p: mySim.getGrid().keySet()) {
             System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
         }

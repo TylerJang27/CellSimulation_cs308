@@ -7,8 +7,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLOutput;
 
 /**
@@ -34,7 +36,7 @@ public class SimulationControl {
         myApplicationView = new ApplicationView(800, primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
     }
 
-    public SimulationControl(String fname, Stage primaryStage) {
+    public SimulationControl(String fname, Stage primaryStage) throws IOException, SAXException {
         //
         initializeModel(fname, primaryStage);
         //
@@ -62,7 +64,7 @@ public class SimulationControl {
         //update view? tell view to update?
     }
 
-    public void initializeModel(String fname, Stage primaryStage) {
+    public void initializeModel(String fname, Stage primaryStage) throws IOException, SAXException {
         File dataFile = new File(fname);
         mySim = new XMLParser("type").getSimulation(dataFile); //FIXME: Change "type" format
 

@@ -3,6 +3,7 @@ package cellsociety.Controller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
 import cellsociety.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -42,8 +44,9 @@ public class XMLParser {
 
     /**
      * Get data contained in this XML file as an object
+     * FIXME: Add additional exception comments
      */
-    public Simulation getSimulation (File dataFile) {
+    public Simulation getSimulation (File dataFile) throws IOException, SAXException {
         //resets file reading to root of XML File
         Element root = getRootElement(dataFile);
 
@@ -58,7 +61,9 @@ public class XMLParser {
         for (String field: SimType.of(simulationSettings.get(Simulation.DATA_FIELDS.get(0))).getFields()) {
             simulationSettings.put(field, getTextValue(root, field));
         }
-        return new Simulation(simulationSettings);
+        String gridType = getTextValue(root, Main.myResources.getString("GridType"));
+        Map grid = getGrid(dataFile, gridType);
+        return new Simulation(simulationSettings, grid);
     }
 
     // get root element of an XML file
@@ -94,6 +99,50 @@ public class XMLParser {
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
             //return "";
         }
+    }
+
+    //FIXME: Comments
+    private Map<Point, Integer> getGrid(File dataFile, String gridType) throws IOException, SAXException {
+        if (gridType.equals(Main.myResources.getString("All"))) {
+            return getAllGrid(dataFile);
+        } else if (gridType.equals(Main.myResources.getString("Some"))) {
+            return getSomeGrid(dataFile);
+        } else {
+            return new HashMap<>();
+        }
+    }
+
+    //FIXME: Comments, note assumption of grid size
+    private Map<Point, Integer> getAllGrid(File dataFile) throws IOException, SAXException {
+        Document doc = getDocumentBuilder().parse(dataFile);
+        NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
+        Map<Point, Integer> grid = new HashMap<>();
+        String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
+
+        for (int j = 0; j < wholeGrid.length; j++) {
+            String row = wholeGrid[j].trim();
+            String[] vals = row.split(" ");
+            for (int k = 0; k < vals.length; k ++) {
+                grid.put(new Point(k, j), Integer.parseInt(vals[k]));
+            }
+        }
+        return grid;
+    }
+
+    //FIXME: Comments, assumptions
+    private Map<Point, Integer> getSomeGrid(File dataFile) throws IOException, SAXException {
+        Document doc = getDocumentBuilder().parse(dataFile);
+        NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
+        Map<Point, Integer> grid = new HashMap<>();
+        String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
+
+        for (int j = 0; j < wholeGrid.length; j++) {
+            String row = wholeGrid[j].trim();
+            String[] vals = row.split(" ");
+            System.out.println(row);
+            grid.put(new Point(Integer.parseInt(vals[0]), Integer.parseInt(vals[1])), Integer.parseInt(vals[2]));
+        }
+        return grid;
     }
 
     // required boilerplate code needed to make a documentBuilder
