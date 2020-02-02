@@ -5,7 +5,6 @@ import cellsociety.Main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * An enumerated type for the Simulation Type, specifying all of the
@@ -29,6 +28,9 @@ public enum SimType {
 
     /**
      * Constructor for SimType, setting its name and fields
+     *
+     * @param name      the type of Simulation
+     * @param fields    the different Strings denoting acceptable Integer fields for that simulation
      */
     private SimType(String name, String[] fields) {
         myName = name;
@@ -36,14 +38,14 @@ public enum SimType {
     }
 
     /**
-     * Returns the SimType's fields
+     * Returns the SimType's field names
      */
     public List<String> getFields() {
         return myFields;
     }
 
     /**
-     * Returns the appropriate SimType
+     * Returns the appropriate SimType based off of its String name
      */
     public static SimType of (String code) {
         for (SimType r : SimType.values()) {

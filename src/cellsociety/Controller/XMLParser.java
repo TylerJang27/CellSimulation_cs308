@@ -12,7 +12,6 @@ import java.util.Map;
 import cellsociety.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -25,14 +24,12 @@ import org.xml.sax.SAXException;
  * FIXME: Comment style
  */
 public class XMLParser {
-
     // Readable error message that can be displayed by the GUI
     public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
     // name of root attribute that notes the type of file expecting to parse
     private final String TYPE_ATTRIBUTE;
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
-
 
     /**
      * Create parser for XML files of given type.
@@ -44,7 +41,11 @@ public class XMLParser {
 
     /**
      * Get data contained in this XML file as an object
-     * FIXME: Add additional exception comments
+     *
+     * @param dataFile file from which to read configuration
+     * @return Returns a Simulation with all of its configuration information stored
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
      */
     public Simulation getSimulation (File dataFile) throws IOException, SAXException {
         //resets file reading to root of XML File
@@ -54,6 +55,18 @@ public class XMLParser {
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
         }
         // read data associated with the fields given by the object
+        Map<String, String> simulationSettings = readSettings(root);
+        String gridType = getTextValue(root, Main.myResources.getString("GridType"));
+        Map grid = getGrid(dataFile, gridType);
+        return new Simulation(simulationSettings, grid);
+    }
+
+    /**
+     * Generates a Map of Strings of configuration settings
+     * @param root document root
+     * @return a Map of Strings of configuration settings
+     */
+    private Map<String, String> readSettings(Element root) {
         Map<String, String> simulationSettings = new HashMap<>();
         for (String field : Simulation.DATA_FIELDS) {
             simulationSettings.put(field, getTextValue(root, field));
@@ -61,12 +74,15 @@ public class XMLParser {
         for (String field: SimType.of(simulationSettings.get(Simulation.DATA_FIELDS.get(0))).getFields()) {
             simulationSettings.put(field, getTextValue(root, field));
         }
-        String gridType = getTextValue(root, Main.myResources.getString("GridType"));
-        Map grid = getGrid(dataFile, gridType);
-        return new Simulation(simulationSettings, grid);
+        return simulationSettings;
     }
 
-    // get root element of an XML file
+    /**
+     * Get root element of an XML file
+     *
+     * @param xmlFile the File from which to read
+     * @return the Root Element
+     */
     private Element getRootElement (File xmlFile) {
         try {
             DOCUMENT_BUILDER.reset();
@@ -78,17 +94,35 @@ public class XMLParser {
         }
     }
 
-    // returns if this is a valid XML file for the specified object type
+    /**
+     * Checks if file is valid
+     *
+     * @param root the Root Element
+     * @param type Simulation, the type of XML file
+     * @return a boolean if file is valid
+     */
     private boolean isValidFile (Element root, String type) {
         return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
     }
 
-    // get value of Element's attribute
+    /**
+     * Gets attribute of document based off of name
+     *
+     * @param e the Element to retrieve attribute
+     * @param attributeName the attribute's label to retrieve
+     * @return the retrieved Attribute
+     */
     private String getAttribute (Element e, String attributeName) {
         return e.getAttribute(attributeName);
     }
 
-    // get value of Element's text
+    /**
+     * Retrieves the value in the XML file for a given tagName
+     *
+     * @param e the Element from which to retrieve the attribute
+     * @param tagName the tag to search for in the XML file
+     * @return the text for that tag
+     */
     private String getTextValue (Element e, String tagName) {
         NodeList nodeList = e.getElementsByTagName(tagName);
         if (nodeList != null && nodeList.getLength() > 0) {
@@ -101,7 +135,15 @@ public class XMLParser {
         }
     }
 
-    //FIXME: Comments
+    /**
+     * Returns a grid based off of the type of grid stored in the XML file
+     *
+     * @param dataFile the file from which to read
+     * @param gridType the type of grid (all, some, or random)
+     * @return a Map representing points and values in the grid
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
+     */
     private Map<Point, Integer> getGrid(File dataFile, String gridType) throws IOException, SAXException {
         if (gridType.equals(Main.myResources.getString("All"))) {
             return getAllGrid(dataFile);
@@ -112,7 +154,15 @@ public class XMLParser {
         }
     }
 
-    //FIXME: Comments, note assumption of grid size
+    /**
+     * Returns a grid of the type where all points are specified in the XML file
+     * NOTE: Assumes all points have been specified
+     *
+     * @param dataFile the file from which to read
+     * @return a Map representing points and values in the grid
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
+     */
     private Map<Point, Integer> getAllGrid(File dataFile) throws IOException, SAXException {
         Document doc = getDocumentBuilder().parse(dataFile);
         NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
@@ -129,7 +179,15 @@ public class XMLParser {
         return grid;
     }
 
-    //FIXME: Comments, assumptions
+    /**
+     * Returns a grid of the type where all points are specified in the XML file
+     * NOTE: Assumes all points have been correctly specified as x y val
+     *
+     * @param dataFile the file from which to read
+     * @return a Map representing points and values in the grid
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
+     */
     private Map<Point, Integer> getSomeGrid(File dataFile) throws IOException, SAXException {
         Document doc = getDocumentBuilder().parse(dataFile);
         NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
@@ -145,7 +203,10 @@ public class XMLParser {
         return grid;
     }
 
-    // required boilerplate code needed to make a documentBuilder
+    /**
+     * Required boilerplate code needed to make a documentBuilder
+     * @return a DocumentBuilder for the entire class
+     */
     private DocumentBuilder getDocumentBuilder () {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder();

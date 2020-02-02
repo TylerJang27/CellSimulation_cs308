@@ -54,6 +54,11 @@ public class Main extends Application {
         return sliderListener;
     }
 
+    /**
+     * Resets the framerate to the new rate set by the slider
+     *
+     * @param newMillis
+     */
     private void changeFrameRate(Number newMillis) {
         frame = new KeyFrame(Duration.millis((double)newMillis), e -> {
             step((double)newMillis / 10);
@@ -62,6 +67,13 @@ public class Main extends Application {
         animation.play();
     }
 
+    /**
+     * Starts the Application by creating SimulationControl and starting the animation
+     *
+     * @param primaryStage the stage for the Application
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
+     */
     @Override
     public void start(Stage primaryStage) throws IOException, SAXException {
         mySim = new SimulationControl(primaryStage, getSliderListener());
@@ -79,12 +91,17 @@ public class Main extends Application {
         animation.play();
     }
 
+    /**
+     * Steps the simulation for each frame
+     *
+     * @param elapsedTime amount of time since last step
+     */
     private void step(double elapsedTime) {
-        mySim.next();
+        mySim.next(elapsedTime, false);
     }
 
     /**
-     * Start of the program.
+     * Start of the program, launching the Application
      */
     public static void main (String[] args) throws IOException, SAXException {
         File dataFile = new File("data/Fire1.xml");

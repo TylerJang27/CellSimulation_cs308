@@ -3,9 +3,7 @@ package cellsociety.Controller;
 import cellsociety.Main;
 import cellsociety.Model.Grid;
 import cellsociety.View.ApplicationView;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -14,7 +12,6 @@ import org.xml.sax.SAXException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 
 /**
@@ -23,7 +20,6 @@ import java.util.ResourceBundle;
  *
  * //FIXME: Add comments and documentation
  * //FIXME: All codestyle
- * //FIXME: Add package organization
  */
 public class SimulationControl {
 
@@ -32,50 +28,76 @@ public class SimulationControl {
     private ApplicationView myApplicationView;
     private boolean paused = false;
     private int numCols, numRows;
-
     private static ResourceBundle RESOURCES= Main.myResources;
 
     private static final double SIZE = 800;
-    private static final File DEFAULT_FILE = new File("data/Fire1.xml");
+    private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
 
+    /**
+     * Constructor for creating a SimulationControl instance
+     *
+     * @param primaryStage
+     * @param sliderListener
+     * @throws IOException
+     * @throws SAXException
+     */
     public SimulationControl(Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
-        initializeModel(DEFAULT_FILE, primaryStage, sliderListener);
-
+        initializeModel(DEFAULT_STARTING_FILE, primaryStage, sliderListener);
     }
 
-    //TODO: Implement these methods
+    /**
+     * Pauses the simulation by setting paused to true, halting the progress of next()
+     */
     private void pauseSimulation() {
         paused = true;
     }
 
+    /**
+     * Calls next() a singular time, but stopping the repeated play sequence
+     */
     private void stepSimulation() {
         paused = true;
-        next();
+        next(0, true);
     }
 
+    /**
+     * Plays the simulation by setting paused to false, resuming the progress of next()
+     */
     private void playSimulation() {
         paused = false;
     }
 
-    public void next() {
-        //update grid
-        //update view? tell view to update?
+    /**
+     * Steps the simulation by updating the Grid and updating ApplicationView
+     *
+     * @param elapsedTime amount of time since last step
+     * @param singleStep true if only one step is supposed to occur
+     */
+    public void next(double elapsedTime, boolean singleStep) {
         //FIXME: OPTIMIZE BASED ON OTHER CONSIDERATIONS
-        myGrid.nextFrame();
-        for (int j = 0; j < numCols; j ++) {
-            for (int k = 0; k < numRows; k ++) {
-                myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+        if (!paused || singleStep) {
+            myGrid.nextFrame();
+            for (int j = 0; j < numCols; j++) {
+                for (int k = 0; k < numRows; k++) {
+                    myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+                }
             }
         }
     }
 
+    /**
+     * Sets the initial settings for SimulationControl
+     *
+     * @param dataFile the File from which to read configuration instructions
+     * @param primaryStage the Stage on which to display the grid
+     * @param sliderListener Listener to change the frame rate
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
+     */
     public void initializeModel(File dataFile, Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
-        EventHandler<MouseEvent> playButtonClickedHandler = getPlayHandler();
-        EventHandler<MouseEvent> pauseButtonClickedHandler = getPauseListener();
-        EventHandler<MouseEvent> stepButtonClickedHandler = getStepHandler();
         //FIXME: ADD A THING FOR ERROR LOGGING IN MYAPPLICATION VIEW? I.E. DIRECT THE EXCEPTIONS THERE?
         //FIXME: ADD A LISTERNER/HANDLER FOR CHANGING THE FILE (CALL INITIALIZE MODEL)
-        myApplicationView = new ApplicationView(SIZE, primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
+        myApplicationView = new ApplicationView(SIZE, primaryStage,getPlayHandler(),getPauseListener(),getStepHandler(),sliderListener);
         mySim = new XMLParser("type").getSimulation(dataFile);
 
         numCols = mySim.getValue(RESOURCES.getString("Width"));
@@ -92,6 +114,13 @@ public class SimulationControl {
         }
     }
 
+    /**
+     * Creates grid based off of the type of Simulation stored in mySim
+     *
+     * @param cols the width of the grid in Cell units
+     * @param rows the height of the grid in Cell units
+     * @return a subclass of Grid
+     */
     private Grid createGrid(int cols, int rows) {
         String simType = mySim.getType().toString();
         if (simType.equals(RESOURCES.getString("GameOfLife"))) {
@@ -105,8 +134,12 @@ public class SimulationControl {
         } else if (simType.equals(RESOURCES.getString("Catch"))) {
             return new CatchGrid(cols, rows);
         }
+        return null;
     }
 
+    /**
+     * Returns a handler for playSimulation() to be sent to ApplicationView
+     */
     private EventHandler<MouseEvent> getPlayHandler() {
         EventHandler<MouseEvent> playButtonClickedHandler = new EventHandler<MouseEvent>() {
             @Override
@@ -117,6 +150,9 @@ public class SimulationControl {
         return playButtonClickedHandler;
     }
 
+    /**
+     * Returns a handler for pauseSimulation() to be sent to ApplicationView
+     */
     private EventHandler<MouseEvent> getPauseListener() {
         EventHandler<MouseEvent> pauseButtonClickedHandler = new EventHandler<>() {
             @Override
@@ -127,6 +163,9 @@ public class SimulationControl {
         return pauseButtonClickedHandler;
     }
 
+    /**
+     * Returns a handler for stepSimulation() to be sent to ApplicationView
+     */
     private EventHandler<MouseEvent> getStepHandler() {
         EventHandler<MouseEvent> stepButtonClickedHandler = new EventHandler<MouseEvent>() {
             @Override
@@ -146,6 +185,4 @@ public class SimulationControl {
         };
         return sliderListener;
     }*/
-
-
 }
