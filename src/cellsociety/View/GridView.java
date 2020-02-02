@@ -15,7 +15,7 @@ public class GridView extends GridPane {
 
     public GridView(int numRows, int numColumns,double width, double height){
         super();
-        setHgap(10);
+        setHgap(10); //FIXME: Magic values?
         setVgap(10);
         setPadding(new Insets(10,10,10,10));
         setConstraints(numRows);
