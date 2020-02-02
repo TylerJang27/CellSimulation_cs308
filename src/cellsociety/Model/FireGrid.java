@@ -15,4 +15,9 @@ public class FireGrid extends Grid {
         }
         buildNSEWNeighbors(pointCellMap);
     }
+
+    @Override
+    public void nextFrame() {
+        basicNextFrame();
+    }
 }

@@ -7,6 +7,7 @@ public class GameOfLifeCell extends Cell {
     private static final int ALIVE = 1;
 
     public GameOfLifeCell(int beginState) {
+        neighbors = new ArrayList<>();
         state = beginState;
     }
 

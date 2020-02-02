@@ -11,6 +11,7 @@ public class SegregationCell extends Cell {
     public SegregationCell(int beginState) {
         isSatisfied = 1;
         state = beginState;
+        neighbors = new ArrayList<>();
     }
 
     /* There are three rules to Game Of LIfe:

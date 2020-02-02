@@ -8,11 +8,12 @@ public class PercolationCell extends Cell {
     private static final int FILLED = 2;
 
     public PercolationCell(int beginState) {
+        neighbors = new ArrayList<>();
         state = beginState;
     }
     @Override
     public int calculateNextState() {
-        int newState = 0;
+        int newState = state;
         if (state == 1) {
             for (Cell neighbor : neighbors) {
                 if (neighbor.state == 2) {
@@ -20,8 +21,6 @@ public class PercolationCell extends Cell {
                     break;
                 }
             }
-        } else {
-            newState = state;
         }
         return newState;
     }

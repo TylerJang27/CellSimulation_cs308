@@ -12,7 +12,11 @@ public class GameOfLifeGrid extends Grid {
                 pointCellMap.put(p, new GameOfLifeCell(gridMap.getOrDefault(p, 0)));
             }
         }
-        buildNSEWNeighbors(pointCellMap);
+        buildSquareNeighbors(pointCellMap);
     }
 
+    @Override
+    public void nextFrame() {
+        basicNextFrame();
+    }
 }

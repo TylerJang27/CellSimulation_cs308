@@ -1,16 +1,20 @@
 package cellsociety.Model;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class PredatorPreyGrid extends Grid {
+    private static final int TURNS_TO_BREED = 4;
+    private static final int EMPTY = 0;
+
     public PredatorPreyGrid(HashMap<Point, Integer> gridMap, HashMap<String, Integer> cellValues) {
         super(cellValues);
-        for (int y = 0; y < myHeight; y++ ) {
-            for (int x = 0; x < myWidth; x++) {
+        for (int y = EMPTY; y < myHeight; y++ ) {
+            for (int x = EMPTY; x < myWidth; x++) {
                 Point p = new Point (x, y);
-                pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0)));
+                pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, EMPTY)));
             }
         }
         buildNSEWNeighbors(pointCellMap);
@@ -18,49 +22,42 @@ public class PredatorPreyGrid extends Grid {
 
     @Override
     public void nextFrame() {
-        int[] states = new int [pointCellMap.values().size()];
-        int index = 0;
-        for (Point p: pointCellMap.keySet()) {
-            int move = (int) Math.random()*4;
-            PredatorPreyCell c = (PredatorPreyCell) pointCellMap.get(p);
-            int activeNeighbors = c.countAliveNeighbors();
+        //Checks to see if a shark eats a fish
+        basicNextFrame();
 
-            states[index] = c.calculateNextState();
-            index++;
+        // handle movement of updated states
+        for (Cell c: pointCellMap.values()) {
+            PredatorPreyCell currentCell = (PredatorPreyCell) c;
+            int activeNeighbors = currentCell.countAliveNeighbors();
 
-            if (activeNeighbors < 4) {
-                if (c.getStepsAlive() >= 4) {
-                    for (Cell neighbor : c.getNeighbors()) {
-                        if (neighbor.getState() == 0) {
-                            neighbor.updateState(c.getState());
-                            buildNSEWNeighbors(pointCellMap);
+            if (currentCell.getState() != EMPTY) {
+                if (activeNeighbors < 4 && !currentCell.didKill) {
+                    List<Cell> neighborPoints = currentCell.getNeighbors();
+                    Collections.shuffle(neighborPoints);
+                    for (Cell neighbor : neighborPoints) {
+                        PredatorPreyCell predatorPreyNeighbor = (PredatorPreyCell) neighbor;
+                        if (predatorPreyNeighbor.getState() == EMPTY) {
+                            predatorPreyNeighbor.updateState(currentCell.getState());
+                            predatorPreyNeighbor.setStepsAlive(currentCell.getStepsAlive());
+                            currentCell.updateState(EMPTY);
+                            currentCell.setStepsAlive(0);
+                            currentCell = predatorPreyNeighbor;
                             break;
                         }
                     }
                 }
-                List<Point> neighbors = getNeighborPoints(p);
-
-                double counter = 1;
-                if (c.didKill) {
-                    for (Point newP : neighbors) {
-                        if (move == counter && pointCellMap.get(newP).getState() == 0) {
-                            pointCellMap.get(p).updateState(0);
-                            pointCellMap.get(newP).updateState(c.getState());
-                            break;
-                        } else {
-                            counter++;
-                        }
-                    }
-                } else {
-                    c.didKill = false;
-                }
+                currentCell.setStepsAlive(currentCell.getStepsAlive() + 1);
             }
 
-        }
-        index = 0;
-        for (Cell c: pointCellMap.values()) {
-            c.updateState(states[index]);
-            index++;
+            //Handles breeding
+            if (currentCell.getStepsAlive() >= TURNS_TO_BREED) {
+                for (Cell childCell: currentCell.getNeighbors()) {
+                    if (childCell.getState() == EMPTY) {
+                        childCell.updateState(currentCell.getState());
+                        currentCell.setStepsAlive(0);
+                    }
+                }
+            }
         }
     }
 }

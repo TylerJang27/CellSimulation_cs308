@@ -54,7 +54,9 @@ public abstract class Grid {
 
     //First calculates and stores new state of each cell
     //Then updates each cell's state
-    public void nextFrame() {
+    public abstract void nextFrame();
+
+    public void basicNextFrame() {
         int[] states = new int [pointCellMap.values().size()];
         int index = 0;
         for (Cell c: pointCellMap.values()) {
@@ -73,5 +75,11 @@ public abstract class Grid {
     public int getState(int r, int c) {
         Point p = new Point(r, c);
         return pointCellMap.get(p).getState();
+    }
+    //Used for debugging
+    public void printGrid() {
+        for (Point p: pointCellMap.keySet()) {
+            System.out.println("Location: " + p + "State: " + pointCellMap.get(p).getState() + "\n");
+        }
     }
 }

@@ -9,6 +9,7 @@ public class FireCell extends Cell {
     private static final int BURNING = 2;
 
     public FireCell(int beginState) {
+        neighbors = new ArrayList<>();
         state = beginState;
     }
 

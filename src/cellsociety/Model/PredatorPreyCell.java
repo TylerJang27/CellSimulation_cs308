@@ -8,20 +8,20 @@ public class PredatorPreyCell extends Cell {
     private static final int EMPTY = 0;
     private static final int FISH = 1;
     private static final int SHARK = 2;
-    private static final int TURNS_TO_BREED = 4;
 
     protected Boolean didKill;
     private int stepsAlive;
 
     public PredatorPreyCell(int beginState) {
+        neighbors = new ArrayList<>();
         state = beginState;
-        stepsAlive = 1;
-        didKill = false;
+        stepsAlive = 0;
     }
 
     @Override
     public int calculateNextState() {
-        int newState;
+        int newState = state;
+        didKill = false;
         if (state == SHARK) {
             ArrayList<Cell> fishNeighbors = neighbors;
             Collections.shuffle(fishNeighbors);
@@ -33,17 +33,16 @@ public class PredatorPreyCell extends Cell {
                 }
             }
         }
-        stepsAlive++;
         return newState;
     }
 
     public int getStepsAlive() {
         return stepsAlive;
     }
-
+    public void setStepsAlive(int n) { stepsAlive = n;}
     public ArrayList<Cell> getNeighbors() {
         return neighbors;
     }
 
-    public int
+//    public int
 }
