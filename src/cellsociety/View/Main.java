@@ -1,5 +1,7 @@
 package cellsociety.View;
 
+import cellsociety.Controller.Simulation;
+import cellsociety.Controller.SimulationControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,6 +17,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Running");
 
-        ApplicationView myApplicationView = new ApplicationView(800, primaryStage);
+        SimulationControl mySim = new SimulationControl(primaryStage);
     }
 }
