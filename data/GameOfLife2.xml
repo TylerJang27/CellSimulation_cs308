@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <mode>GameOfLife</mode>
+    <title>GameOfLife</title>
     <author>Team 15, Richard K. Guy</author>
     <description>A basic implementation of Richard K. Guy's Glider.</description>
     <rate>5</rate>

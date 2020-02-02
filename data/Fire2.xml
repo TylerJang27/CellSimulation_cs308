@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <mode>Fire</mode>
+    <title>Fire</title>
     <author>Team 15</author>
     <description>A basic test of Fire with some grid values specified.</description>
     <rate>5</rate>

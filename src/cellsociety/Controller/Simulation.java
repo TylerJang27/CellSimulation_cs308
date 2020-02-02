@@ -23,7 +23,7 @@ public class Simulation {
 
     //valid fields in the data file for all Simulation objects
     public static final List<String> DATA_FIELDS = List.of(
-            RESOURCES.getString("Mode"),
+            RESOURCES.getString("Title"),
             RESOURCES.getString("Rate"),
             RESOURCES.getString("Width"),
             RESOURCES.getString("Height"),
