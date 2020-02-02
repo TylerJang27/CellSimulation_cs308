@@ -62,7 +62,7 @@ public class Main extends Application {
      * Start of the program.
      */
     public static void main (String[] args) throws IOException, SAXException {
-        File dataFile = new File("data/Fire3.xml");
+        File dataFile = new File("data/Fire1.xml");
         Simulation mySim = new XMLParser("type").getSimulation(dataFile);
 
         System.out.printf("Simulation type: %s\n", mySim.getType());

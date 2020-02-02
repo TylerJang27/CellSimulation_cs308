@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <mode>GameOfLife</mode>
+    <author>Team 15, Richard K. Guy</author>
+    <description>A basic implementation of Richard K. Guy's Glider.</description>
+    <rate>5</rate>
+    <width>10</width>
+    <height>10</height>
+    <grid_type>all</grid_type>
+    <grid>
+        <row>0 0 0 0 0 0 0 0 0 0</row>
+        <row>0 0 1 0 0 0 0 0 1 0</row>
+        <row>1 0 1 0 0 0 1 0 1 0</row>
+        <row>0 1 1 0 0 0 0 1 1 0</row>
+        <row>0 0 0 0 0 0 0 0 0 0</row>
+        <row>0 0 0 0 0 0 0 0 0 0</row>
+        <row>0 0 1 0 0 0 0 0 0 0</row>
+        <row>1 0 1 0 0 0 0 0 0 1</row>
+        <row>0 1 1 0 0 0 0 1 0 1</row>
+        <row>0 0 0 0 0 0 0 0 1 1</row>
+    </grid>
+</data>

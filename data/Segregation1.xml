@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
     <mode>Segregation</mode>
+    <author>Team 15</author>
+    <description>A basic test of Segregation with some grid values specified.</description>
     <rate>5</rate>
     <width>20</width>
     <height>20</height>
