@@ -1,15 +1,52 @@
 package cellsociety;
 
 import cellsociety.Controller.Simulation;
+import cellsociety.Controller.SimulationControl;
 import cellsociety.Controller.XMLParser;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
  */
-public class Main {
+public class Main extends Application {
+
+    public static final int FRAMES_PER_SECOND = 60;
+    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    public static final String TITLE = "Cell Simulator"; //FIXME: properties
+
+    private SimulationControl mySim;
+
+    //FIXME: publicity of constants
+    //FIXME: go through methods for comments
+
+    @Override
+    public void start(Stage primaryStage) {
+        mySim = new SimulationControl(primaryStage);
+
+        primaryStage.setTitle(TITLE);
+        primaryStage.show();
+
+        //begins game loop to call step
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
+            step(MILLISECOND_DELAY / 10);
+        });
+        Timeline animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
+    }
+
+    private void step(double elapsedTime) {
+        mySim.next();
+    }
 
     /**
      * Start of the program.
@@ -29,5 +66,8 @@ public class Main {
         for (Point p: mySim.getGrid().keySet()) {
             System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
         }
+
+        launch(args);
+
     }
 }

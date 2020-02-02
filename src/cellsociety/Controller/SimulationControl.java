@@ -55,6 +55,7 @@ public class SimulationControl {
     private void playSimulation() {
         System.out.println("We are all living in a simulation, and now it is playing");
     }
+
     public void next() {
         //update grid
 
