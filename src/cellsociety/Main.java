@@ -6,13 +6,16 @@ import cellsociety.Controller.XMLParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.xml.sax.SAXException;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
@@ -22,7 +25,7 @@ import java.util.ResourceBundle;
 public class Main extends Application {
 
     public static final int FRAMES_PER_SECOND = 60;
-    public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+    public static final int DEFAULT_MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
     public static final String LANGUAGE = "English";
     private static final String RESOURCES = "resources";
@@ -33,22 +36,44 @@ public class Main extends Application {
     private static final String TITLE = myResources.getString("CellSimulator");
 
     private SimulationControl mySim;
+    private KeyFrame frame;
+    private Timeline animation;
 
     //FIXME: publicity of constants
-    //FIXME: go through methods for comments
+    //FIXME: go through methods for comments and code style
+
+
+    //FIXME: please help me clean this I'm bad at events
+    private ChangeListener<? super Number> getSliderListener() {
+        ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                changeFrameRate(observable.getValue());
+            }
+        };
+        return sliderListener;
+    }
+
+    private void changeFrameRate(Number newMillis) {
+        frame = new KeyFrame(Duration.millis((double)newMillis), e -> {
+            step((double)newMillis / 10);
+        });
+        animation.getKeyFrames().set(0, frame);
+        animation.play();
+    }
 
     @Override
-    public void start(Stage primaryStage) {
-        mySim = new SimulationControl(primaryStage);
+    public void start(Stage primaryStage) throws IOException, SAXException {
+        mySim = new SimulationControl(primaryStage, getSliderListener());
 
         primaryStage.setTitle(TITLE);
         primaryStage.show();
 
         //begins game loop to call step
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
-            step(MILLISECOND_DELAY / 10);
+        frame = new KeyFrame(Duration.millis(DEFAULT_MILLISECOND_DELAY), e -> {
+            step(DEFAULT_MILLISECOND_DELAY / 10);
         });
-        Timeline animation = new Timeline();
+        animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();

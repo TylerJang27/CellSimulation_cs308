@@ -41,7 +41,7 @@ public class ApplicationView {
     }
 
     public void initializeGrid(int numRows, int numColumns, double width, double length){
-        myGridView = new GridView(numRows,numColumns,width, length);
+        myGridView = new GridView(numRows, numColumns, width, length);
         root.setCenter((myGridView));
     }
 }

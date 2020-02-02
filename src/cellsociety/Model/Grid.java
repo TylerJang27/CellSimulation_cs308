@@ -19,6 +19,7 @@ public class Grid {
     //adds adjacent cells in each cell's neighbor list by creating adjacent points and seeing if they exist in Grid
     private void buildNeighbors() {
         for (Point p : pointCellHashMap.keySet()) {
+            //FIXME: In most cases needs to be all 8 neighbors
             Point left = new Point((int) p.getX() - 1, (int) p.getY());
             Point up = new Point((int) p.getX(), (int) p.getY() + 1);
             Point right = new Point((int) p.getX() + 1, (int) p.getY());
@@ -40,6 +41,9 @@ public class Grid {
         int index = 0;
         for (Cell c: pointCellHashMap.values()) {
             states[index] = c.calculateNextState();
+            //FIXME: Tyler's suggestion. Create a List of all the cells that will be changing so that
+            //FIXME: (A) The next loop will be more efficient and (B) you can have nextFrame() return this of Points
+            //FIXME: and I can use this to pass to ApplicationView/GridView
             index++;
         }
         index = 0;

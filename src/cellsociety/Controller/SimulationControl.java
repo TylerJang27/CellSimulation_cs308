@@ -1,5 +1,7 @@
 package cellsociety.Controller;
 
+import cellsociety.Main;
+import cellsociety.Model.Grid;
 import cellsociety.View.ApplicationView;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -9,9 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.ResourceBundle;
 
 /**
  * Core class of the Controller part of the MVC Model
@@ -23,62 +27,84 @@ import java.sql.SQLOutput;
  */
 public class SimulationControl {
 
-    //private Grid myGrid;
-    //private ApplicationView myView;
+    private Grid myGrid;
     private Simulation mySim;
     private ApplicationView myApplicationView;
+    private boolean paused = false;
+    private int numCols, numRows;
 
-    public SimulationControl(Stage primaryStage){
-        EventHandler<MouseEvent> playButtonClickedHandler = getPlayHandler();
-        EventHandler<MouseEvent> pauseButtonClickedHandler = getPauseListener();
-        EventHandler<MouseEvent> stepButtonClickedHandler = getStepHandler();
-        ChangeListener<? super Number> sliderListener = getSliderListener();
-        myApplicationView = new ApplicationView(800, primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
+    private static ResourceBundle RESOURCES= Main.myResources;
+
+    private static final double SIZE = 800;
+    private static final File DEFAULT_FILE = new File("data/Fire1.xml");
+
+    public SimulationControl(Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
+        initializeModel(DEFAULT_FILE, primaryStage, sliderListener);
+
     }
 
-    public SimulationControl(String fname, Stage primaryStage) throws IOException, SAXException {
-        //
-        initializeModel(fname, primaryStage);
-        //
-    }
     //TODO: Implement these methods
     private void pauseSimulation() {
-        System.out.println("Pause the Simulation");
+        paused = true;
     }
 
     private void stepSimulation() {
-        System.out.println("step the simulation");
-    }
-
-    private void changeSimulationSpeed(Number value) {
-        System.out.println(value);
+        paused = true;
+        next();
     }
 
     private void playSimulation() {
-        System.out.println("We are all living in a simulation, and now it is playing");
+        paused = false;
     }
 
     public void next() {
         //update grid
-
         //update view? tell view to update?
+        //FIXME: OPTIMIZE BASED ON OTHER CONSIDERATIONS
+        myGrid.nextFrame();
+        for (int j = 0; j < numCols; j ++) {
+            for (int k = 0; k < numRows; k ++) {
+                myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+            }
+        }
     }
 
-    public void initializeModel(String fname, Stage primaryStage) throws IOException, SAXException {
-        File dataFile = new File(fname);
-        mySim = new XMLParser("type").getSimulation(dataFile); //FIXME: Change "type" format
+    public void initializeModel(File dataFile, Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
+        EventHandler<MouseEvent> playButtonClickedHandler = getPlayHandler();
+        EventHandler<MouseEvent> pauseButtonClickedHandler = getPauseListener();
+        EventHandler<MouseEvent> stepButtonClickedHandler = getStepHandler();
+        //FIXME: ADD A THING FOR ERROR LOGGING IN MYAPPLICATION VIEW? I.E. DIRECT THE EXCEPTIONS THERE?
+        //FIXME: ADD A LISTERNER/HANDLER FOR CHANGING THE FILE (CALL INITIALIZE MODEL)
+        myApplicationView = new ApplicationView(SIZE, primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
+        mySim = new XMLParser("type").getSimulation(dataFile);
 
-        //myGrid = new Grid(mySim.getValueSet(), mySim.getGrid());
-            //need grid to take these parameters
-        //myView = new ApplicationView(myGrid, primaryStage)
-            //should we pass myGrid there?
+        numCols = mySim.getValue(RESOURCES.getString("Width"));
+        numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-        //anything else?
+        //FIXME: Determine accurate size parameter to pass in
+        myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE);
+        //FIXME: Fix width, height parameters if necessary
+        myGrid = createGrid(numCols, numRows);
+        //FIXME: need to pass in other thresholds and initial setups
+
+        for (Point p: mySim.getGrid().keySet()) {
+            myApplicationView.updateCell((int)p.getY(), (int)p.getX(), mySim.getGrid().get(p));
+        }
     }
 
-    //depreciated?
-    public void changeModelSetup(String fname) {
-
+    private Grid createGrid(int cols, int rows) {
+        String simType = mySim.getType().toString();
+        if (simType.equals(RESOURCES.getString("GameOfLife"))) {
+            return new GameOfLifeGrid(cols, rows);
+        } else if (simType.equals(RESOURCES.getString("Percolation"))) {
+            return new PercolationGrid(cols, rows);
+        } else if (simType.equals(RESOURCES.getString("Segregation"))) {
+            return new SegregationGrid(cols, rows);
+        } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
+            return new PredatorPreyGrid(cols, rows);
+        } else if (simType.equals(RESOURCES.getString("Catch"))) {
+            return new CatchGrid(cols, rows);
+        }
     }
 
     private EventHandler<MouseEvent> getPlayHandler() {
@@ -111,7 +137,7 @@ public class SimulationControl {
         return stepButtonClickedHandler;
     }
 
-    private ChangeListener<? super Number> getSliderListener() {
+    /*private ChangeListener<? super Number> getSliderListener() {
         ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -119,7 +145,7 @@ public class SimulationControl {
             }
         };
         return sliderListener;
-    }
+    }*/
 
 
 }
