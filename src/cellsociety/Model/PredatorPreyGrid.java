@@ -25,13 +25,18 @@ public class PredatorPreyGrid extends Grid {
         //Checks to see if a shark eats a fish
         basicNextFrame();
 
+        for (Cell c: pointCellMap.values()) {
+            PredatorPreyCell updateCell = (PredatorPreyCell) c;
+            updateCell.didMove = false;
+        }
+
         // handle movement of updated states
         for (Cell c: pointCellMap.values()) {
             PredatorPreyCell currentCell = (PredatorPreyCell) c;
             int activeNeighbors = currentCell.countAliveNeighbors();
 
-            if (currentCell.getState() != EMPTY) {
-                if (activeNeighbors < 4 && !currentCell.didKill) {
+            if (currentCell.getState() != EMPTY && !currentCell.didMove) {
+                if (activeNeighbors < 4 && !currentCell.didKill ) {
                     List<Cell> neighborPoints = currentCell.getNeighbors();
                     Collections.shuffle(neighborPoints);
                     for (Cell neighbor : neighborPoints) {
@@ -42,6 +47,7 @@ public class PredatorPreyGrid extends Grid {
                             currentCell.updateState(EMPTY);
                             currentCell.setStepsAlive(0);
                             currentCell = predatorPreyNeighbor;
+                            currentCell.didMove = true;
                             break;
                         }
                     }
@@ -55,6 +61,7 @@ public class PredatorPreyGrid extends Grid {
                     if (childCell.getState() == EMPTY) {
                         childCell.updateState(currentCell.getState());
                         currentCell.setStepsAlive(0);
+                        break;
                     }
                 }
             }

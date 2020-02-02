@@ -10,12 +10,14 @@ public class PredatorPreyCell extends Cell {
     private static final int SHARK = 2;
 
     protected Boolean didKill;
+    protected Boolean didMove;
     private int stepsAlive;
 
     public PredatorPreyCell(int beginState) {
         neighbors = new ArrayList<>();
         state = beginState;
         stepsAlive = 0;
+        didMove = false;
     }
 
     @Override
