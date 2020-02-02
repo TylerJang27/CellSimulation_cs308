@@ -12,9 +12,10 @@ public class ApplicationView {
     private Scene myScene;
     private BorderPane root;
     private GridView myGridView;
+    private ConsoleView myConsoleView;
     public ApplicationView(double size, Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener) {
         Node myGridView = new GridView(0,0,800,800);
-        Node myConsoleView = new ConsoleView();
+        myConsoleView = new ConsoleView();
         Node myDashboardView = new DashboardView(primaryStage,playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener);
 
         root = new BorderPane();
@@ -26,6 +27,11 @@ public class ApplicationView {
 
         primaryStage.setScene(myScene);
         primaryStage.show();
+    }
+
+
+    public void logError(String errorMessage){
+        myConsoleView.logError(errorMessage);
     }
 
     public void updateCell(int row, int column, int state){
