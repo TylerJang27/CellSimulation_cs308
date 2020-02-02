@@ -1,5 +1,7 @@
 package cellsociety.Controller;
 
+import cellsociety.Main;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -12,18 +14,20 @@ import java.util.List;
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
  */
 public class Simulation {
-    //name for the type of data file necessary to represent a simulation configuration file
-    public static final String DATA_TYPE = "simulation";
+    private static ResourceBundle RESOURCES=Main.myResources;
 
-    private static final String MISSING_MESSAGE = "XML file missing essential configuration setting for SimType %s";
+    //name for the type of data file necessary to represent a simulation configuration file
+    public static final String DATA_TYPE = RESOURCES.getString("Simulation");
+
+    private static final String MISSING_MESSAGE = RESOURCES.getString("MISSING_MESSAGE");
 
     //valid fields in the data file for all Simulation objects
     public static final List<String> DATA_FIELDS = List.of(
-            "mode",
-            "rate",
-            "width",
-            "height",
-            "grid"
+            RESOURCES.getString("Mode"),
+            RESOURCES.getString("Rate"),
+            RESOURCES.getString("Width"),
+            RESOURCES.getString("Height"),
+            RESOURCES.getString("Grid")
     );
 
     private Map<String, Integer> myDataValues;
@@ -87,7 +91,7 @@ public class Simulation {
             Integer x = Integer.parseInt(cellVals[0]);
             Integer y = Integer.parseInt(cellVals[1]);
             Integer val = Integer.parseInt(cellVals[2]);
-            if (x < this.getValue("width") && y < this.getValue("height")) { //FIXME: Remove hard-coded Strings
+            if (x < this.getValue(RESOURCES.getString("Width")) && y < this.getValue(RESOURCES.getString("Height"))) {
                 myGrid.put(new Point(x, y), val);
             }
         }

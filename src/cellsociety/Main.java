@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ResourceBundle;
 
 /**
  * Feel free to completely change this code or delete it entirely. 
@@ -20,7 +21,14 @@ public class Main extends Application {
 
     public static final int FRAMES_PER_SECOND = 60;
     public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
-    public static final String TITLE = "Cell Simulator"; //FIXME: properties
+
+    public static final String LANGUAGE = "English";
+    private static final String RESOURCES = "resources";
+    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    public static ResourceBundle myResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
+    //public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
+
+    private static final String TITLE = myResources.getString("CellSimulator");
 
     private SimulationControl mySim;
 

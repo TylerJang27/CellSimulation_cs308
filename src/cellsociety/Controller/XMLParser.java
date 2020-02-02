@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import cellsociety.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -23,7 +25,7 @@ import org.xml.sax.SAXException;
 public class XMLParser {
 
     // Readable error message that can be displayed by the GUI
-    public static final String ERROR_MESSAGE = "XML file does not correctly represent %s";
+    public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
     // name of root attribute that notes the type of file expecting to parse
     private final String TYPE_ATTRIBUTE;
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing

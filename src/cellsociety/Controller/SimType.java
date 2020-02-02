@@ -1,8 +1,11 @@
 package cellsociety.Controller;
 
+import cellsociety.Main;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * An enumerated type for the Simulation Type, specifying all of the
@@ -15,11 +18,11 @@ import java.util.List;
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/enumerated/ESRBRating.java
  */
 public enum SimType {
-    GAME_OF_LIFE ("GameOfLife", new String[]{}),
-    PERCOLATION ("Percolation", new String[]{}),
-    SEGREGATION ("Segregation", new String[]{"similar", "red", "empty"}),
-    PREDATOR_PREY ("PredatorPrey", new String[]{"fish", "shark", "fish_breed", "shark_starve", "shark_breed"}),
-    FIRE ("Fire", new String[]{"catch"});
+    GAME_OF_LIFE (Main.myResources.getString("GameOfLife"), new String[]{}),
+    PERCOLATION (Main.myResources.getString("Percolation"), new String[]{}),
+    SEGREGATION (Main.myResources.getString("Segregation"), new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"), Main.myResources.getString("Empty")}),
+    PREDATOR_PREY (Main.myResources.getString("PredatorPrey"), new String[]{Main.myResources.getString("Fish"), Main.myResources.getString("Shark"), Main.myResources.getString("FishBreed"), Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed")}),
+    FIRE ("Fire", new String[]{"Catch"});
 
     private String myName;
     private final List<String> myFields;
@@ -48,7 +51,7 @@ public enum SimType {
                 return r;
             }
         }
-        throw new IllegalArgumentException(String.format("ERROR: %s is not a valid rating code.", code));
+        throw new IllegalArgumentException(String.format(Main.myResources.getString("INVALID_ARGUMENT"), code));
     }
 
     /**
