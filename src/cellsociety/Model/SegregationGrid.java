@@ -1,12 +1,11 @@
 package cellsociety.Model;
 
-import java.awt.*;
-import java.lang.reflect.Array;
+import java.awt.*;;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class SegregationGrid extends Grid {
-    public SegregationGrid(HashMap<Point, Integer> gridMap, HashMap<String, Integer> cellValues) {
+    public SegregationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int r = 0; r < myHeight; r++) {
             for (int c = 0; c < myWidth; c++) {

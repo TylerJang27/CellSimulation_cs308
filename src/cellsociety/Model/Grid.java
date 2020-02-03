@@ -9,7 +9,7 @@ public abstract class Grid {
     protected int myHeight;
 
     //Make abstract, and 5 different grids
-    public Grid(HashMap<String, Integer> gridMap) { // change to take in map (simType class)
+    public Grid(Map<String, Integer> gridMap) { // change to take in map (simType class)
         myWidth = gridMap.get("width");
         myHeight = gridMap.get("height");
         pointCellMap = new LinkedHashMap<>();
@@ -27,7 +27,6 @@ public abstract class Grid {
             }
         }
     }
-<<<<<<< HEAD
 
     protected List<Point> getNeighborPoints(Point p) {
         Point left = new Point((int) p.getX() - 1, (int) p.getY());
@@ -46,22 +45,6 @@ public abstract class Grid {
                     if (potentialNeighbor != p && pointCellMap.containsKey(potentialNeighbor)) {
                         pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
                     }
-=======
-    //adds adjacent cells in each cell's neighbor list by creating adjacent points and seeing if they exist in Grid
-    private void buildNeighbors() {
-        for (Point p : pointCellHashMap.keySet()) {
-            //FIXME: In most cases needs to be all 8 neighbors
-            Point left = new Point((int) p.getX() - 1, (int) p.getY());
-            Point up = new Point((int) p.getX(), (int) p.getY() + 1);
-            Point right = new Point((int) p.getX() + 1, (int) p.getY());
-            Point down = new Point((int) p.getX(), (int) p.getY() - 1);
-
-            List<Point> potNeighbors = Arrays.asList(left, up, right, down);
-
-            for (Point nb : potNeighbors) {
-                if (pointCellHashMap.containsKey(nb)) {
-                    pointCellHashMap.get(p).setNeighbor(pointCellHashMap.get(nb));
->>>>>>> develop
                 }
             }
         }

@@ -2,9 +2,10 @@ package cellsociety.Model;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameOfLifeGrid extends Grid {
-    public GameOfLifeGrid(HashMap<Point, Integer> gridMap, HashMap<String, Integer> cellValues) {
+    public GameOfLifeGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int y = 0; y < myHeight; y++ ) {
             for (int x = 0; x < myWidth; x++) {

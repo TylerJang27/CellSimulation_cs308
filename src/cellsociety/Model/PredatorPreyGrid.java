@@ -4,12 +4,13 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PredatorPreyGrid extends Grid {
     private static final int TURNS_TO_BREED = 4;
     private static final int EMPTY = 0;
 
-    public PredatorPreyGrid(HashMap<Point, Integer> gridMap, HashMap<String, Integer> cellValues) {
+    public PredatorPreyGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int y = EMPTY; y < myHeight; y++ ) {
             for (int x = EMPTY; x < myWidth; x++) {
