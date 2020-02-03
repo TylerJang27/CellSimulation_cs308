@@ -1,6 +1,7 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
+import cellsociety.Model.*;
 import cellsociety.Model.Grid;
 import cellsociety.View.ApplicationView;
 import javafx.beans.value.ChangeListener;
@@ -124,15 +125,15 @@ public class SimulationControl {
     private Grid createGrid(int cols, int rows) {
         String simType = mySim.getType().toString();
         if (simType.equals(RESOURCES.getString("GameOfLife"))) {
-            return new GameOfLifeGrid(cols, rows);
+            return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueSet());
         } else if (simType.equals(RESOURCES.getString("Percolation"))) {
-            return new PercolationGrid(cols, rows);
+            return new PercolationGrid(mySim.getGrid(), mySim.getValueSet());
         } else if (simType.equals(RESOURCES.getString("Segregation"))) {
-            return new SegregationGrid(cols, rows);
+            return new SegregationGrid(mySim.getGrid(), mySim.getValueSet());
         } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
-            return new PredatorPreyGrid(cols, rows);
+            return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueSet());
         } else if (simType.equals(RESOURCES.getString("Catch"))) {
-            return new CatchGrid(cols, rows);
+            return new FireGrid(mySim.getGrid(), mySim.getValueSet());
         }
         return null;
     }
