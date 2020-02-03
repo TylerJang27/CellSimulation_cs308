@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>Fire</title>
+    <author>Team 15</author>
+    <description>A basic test of Fire with random grid specification.</description>
+    <rate>5</rate>
+    <width>20</width>
+    <height>20</height>
+    <catch>40</catch>
+    <grid_type>2</grid_type>
+</data>

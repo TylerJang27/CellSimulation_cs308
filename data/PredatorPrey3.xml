@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>PredatorPrey</title>
+    <author>Team 15</author>
+    <description>A basic test of Predator-Prey with random grid value specification.</description>
+    <rate>5</rate>
+    <width>30</width>
+    <height>30</height>
+    <fish>30</fish>
+    <shark>20</shark>
+    <fish_breed>2</fish_breed>
+    <shark_starve>4</shark_starve>
+    <shark_breed>7</shark_breed>
+    <grid_type>2</grid_type>
+</data>

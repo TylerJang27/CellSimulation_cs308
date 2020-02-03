@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>PredatorPrey</title>
+    <author>Team 15</author>
+    <description>A basic test of Predator-Prey with all grid values specified.</description>
+    <rate>5</rate>
+    <width>10</width>
+    <height>10</height>
+    <fish>30</fish>
+    <shark>20</shark>
+    <fish_breed>2</fish_breed>
+    <shark_starve>4</shark_starve>
+    <shark_breed>7</shark_breed>
+    <grid_type>0</grid_type>
+    <grid>
+        <row>0 0 0 1 0 2 0 1 0 1</row>
+        <row>0 0 1 0 0 2 0 0 1 0</row>
+        <row>1 0 1 0 0 2 1 0 1 0</row>
+        <row>0 1 1 0 0 2 0 1 1 0</row>
+        <row>0 1 0 0 0 2 0 0 1 0</row>
+        <row>0 0 1 0 0 2 0 1 0 0</row>
+        <row>0 0 1 0 0 2 0 0 1 0</row>
+        <row>1 0 1 0 0 2 0 0 0 1</row>
+        <row>0 1 1 0 0 2 0 1 0 1</row>
+        <row>0 0 0 1 0 2 0 0 1 1</row>
+    </grid>
+</data>
