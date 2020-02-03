@@ -7,13 +7,11 @@ public abstract class Grid {
     protected LinkedHashMap<Point, Cell> pointCellMap;
     protected int myWidth;
     protected int myHeight;
-    protected int myRate;
 
     //Make abstract, and 5 different grids
     public Grid(HashMap<String, Integer> gridMap) { // change to take in map (simType class)
         myWidth = gridMap.get("width");
         myHeight = gridMap.get("height");
-        myRate = gridMap.get("rate");
         pointCellMap = new LinkedHashMap<>();
     }
 
