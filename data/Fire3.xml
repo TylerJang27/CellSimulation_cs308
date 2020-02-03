@@ -7,5 +7,5 @@
     <width>20</width>
     <height>20</height>
     <catch>40</catch>
-    <grid_type>random</grid_type>
+    <grid_type>2</grid_type>
 </data>

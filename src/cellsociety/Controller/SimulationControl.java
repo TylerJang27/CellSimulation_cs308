@@ -32,7 +32,27 @@ public class SimulationControl {
     private static ResourceBundle RESOURCES= Main.myResources;
 
     private static final double SIZE = 800;
-    private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
+
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire2.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
+
+    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife1.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife2.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife3.xml");
+
+    private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation2.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation3.xml"); //problem?
+
+    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey1.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey2.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey3.xml");
+
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation1.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation2.xml");
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation3.xml");
+
 
     /**
      * Constructor for creating a SimulationControl instance
@@ -84,6 +104,7 @@ public class SimulationControl {
                 }
             }
         }
+        myApplicationView.updateCell(2, 3, (int)Math.random()*3);
     }
 
     /**
@@ -107,22 +128,20 @@ public class SimulationControl {
         //FIXME: Determine accurate size parameter to pass in
         myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE);
         //FIXME: Fix width, height parameters if necessary
-        myGrid = createGrid(numCols, numRows);
+        myGrid = createGrid();
         //FIXME: need to pass in other thresholds and initial setups
 
         for (Point p: mySim.getGrid().keySet()) {
-            myApplicationView.updateCell((int)p.getY(), (int)p.getX(), mySim.getGrid().get(p));
+            myApplicationView.updateCell((int)p.getX(), (int)p.getY(), mySim.getGrid().get(p));
         }
     }
 
     /**
      * Creates grid based off of the type of Simulation stored in mySim
      *
-     * @param cols the width of the grid in Cell units
-     * @param rows the height of the grid in Cell units
      * @return a subclass of Grid
      */
-    private Grid createGrid(int cols, int rows) {
+    private Grid createGrid() {
         String simType = mySim.getType().toString();
         if (simType.equals(RESOURCES.getString("GameOfLife"))) {
             return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueSet());
@@ -132,7 +151,7 @@ public class SimulationControl {
             return new SegregationGrid(mySim.getGrid(), mySim.getValueSet());
         } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
             return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueSet());
-        } else if (simType.equals(RESOURCES.getString("Catch"))) {
+        } else if (simType.equals(RESOURCES.getString("Fire"))) {
             return new FireGrid(mySim.getGrid(), mySim.getValueSet());
         }
         return null;

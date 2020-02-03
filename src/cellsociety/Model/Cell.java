@@ -16,14 +16,14 @@ public abstract class Cell {
     protected int countAliveNeighbors() {
         int count = 0;
         for (Cell neighbor: neighbors) {
-            if (neighbor.getState() != 0)
+            if (neighbor.getState() != 0) {
                 count++;
+            }
         }
         return count;
     }
 
     public abstract int calculateNextState();
-
 
     public void updateState(int newState) {
         state = newState;

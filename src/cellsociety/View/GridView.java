@@ -47,6 +47,9 @@ public class GridView extends GridPane {
     public void updateCell(int row, int column, int state){
         for(CellView cell : myCells){
             if(getColumnIndex(cell) == column && getRowIndex(cell) == row){
+                if (state == 1) {
+                    //System.out.println("Col: " + getColumnIndex(cell) + " Row: " + getRowIndex(cell));
+                }
                 cell.changeState(state);
             }
         }
