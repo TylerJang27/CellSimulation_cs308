@@ -69,7 +69,7 @@ public class Simulation {
      * @param dataValues map of field names to their values
      */
     private void setFields(Map<String, String> dataValues) {
-        for (int k = 1; k < 4; k ++) {
+        for (int k = 1; k < 5; k ++) {
             String val = dataValues.get(DATA_FIELDS.get(k));
             if (val != null) {
                 myDataValues.put(DATA_FIELDS.get(k), Integer.parseInt(val));

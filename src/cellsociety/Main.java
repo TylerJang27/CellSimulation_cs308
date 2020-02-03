@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  */
 public class Main extends Application {
 
-    public static final int FRAMES_PER_SECOND = 60;
+    public static final int FRAMES_PER_SECOND = 4;
     public static final int DEFAULT_MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
     public static final String LANGUAGE = "English";

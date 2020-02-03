@@ -31,6 +31,10 @@ public class XMLParser {
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
 
+    public static final int ALL = 0;
+    public static final int SOME = 1;
+    public static final int RANDOM = 2;
+
     /**
      * Create parser for XML files of given type.
      */
@@ -57,7 +61,7 @@ public class XMLParser {
         // read data associated with the fields given by the object
         Map<String, String> simulationSettings = readSettings(root);
         String gridType = getTextValue(root, Main.myResources.getString("GridType"));
-        Map grid = getGrid(dataFile, gridType);
+        Map grid = getGrid(dataFile, Integer.parseInt(gridType));
         return new Simulation(simulationSettings, grid);
     }
 
@@ -144,10 +148,10 @@ public class XMLParser {
      * @throws IOException  failed to read file
      * @throws SAXException failed to read file
      */
-    private Map<Point, Integer> getGrid(File dataFile, String gridType) throws IOException, SAXException {
-        if (gridType.equals(Main.myResources.getString("All"))) {
+    private Map<Point, Integer> getGrid(File dataFile, Integer gridType) throws IOException, SAXException {
+        if (gridType.equals(ALL)) {
             return getAllGrid(dataFile);
-        } else if (gridType.equals(Main.myResources.getString("Some"))) {
+        } else if (gridType.equals(SOME)) {
             return getSomeGrid(dataFile);
         } else {
             return new HashMap<>();
@@ -197,7 +201,6 @@ public class XMLParser {
         for (int j = 0; j < wholeGrid.length; j++) {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
-            System.out.println(row);
             grid.put(new Point(Integer.parseInt(vals[0]), Integer.parseInt(vals[1])), Integer.parseInt(vals[2]));
         }
         return grid;

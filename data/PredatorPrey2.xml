@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <title>GameOfLife</title>
+    <title>PredatorPrey</title>
     <author>Team 15</author>
-    <description>A basic test of GameOfLife with some grid values specified.</description>
+    <description>A basic test of Predator-Prey with some grid values specified.</description>
     <rate>5</rate>
     <width>20</width>
     <height>20</height>
+    <fish>30</fish>
+    <shark>20</shark>
+    <fish_breed>2</fish_breed>
+    <shark_starve>4</shark_starve>
+    <shark_breed>7</shark_breed>
     <grid_type>1</grid_type>
     <grid>
         <point>0 0 1</point>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>Segregation</title>
+    <author>Team 15</author>
+    <description>A basic test of Segregation with some grid values specified.</description>
+    <rate>5</rate>
+    <width>30</width>
+    <height>30</height>
+    <similar>69</similar>
+    <red>50</red>
+    <empty>20</empty>
+    <grid_type>2</grid_type>
+</data>

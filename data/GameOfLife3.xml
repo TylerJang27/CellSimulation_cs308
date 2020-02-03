@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>GameOfLife</title>
+    <author>Team 15</author>
+    <description>A basic random Game Of Life setup.</description>
+    <rate>5</rate>
+    <width>30</width>
+    <height>30</height>
+    <grid_type>2</grid_type>
+</data>
