@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <mode>Segregation</mode>
+    <title>Segregation</title>
+    <author>Team 15</author>
+    <description>A basic test of Segregation with some grid values specified.</description>
     <rate>5</rate>
     <width>20</width>
     <height>20</height>
     <similar>69</similar>
     <red>50</red>
     <empty>20</empty>
-    <grid>0 0 1, 0 1 1, 0 1 1, 0 1 1, 4 1 1</grid>
+    <grid_type>some</grid_type>
+    <grid>
+        <point>0 0 1</point>
+        <point>0 1 1</point>
+        <point>0 1 1</point>
+        <point>0 1 1</point>
+        <point>4 1 1</point>
+    </grid>
 </data>
