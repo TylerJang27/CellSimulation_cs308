@@ -1,6 +1,6 @@
 package cellsociety.Model;
 
-import java.awt.*;;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package cellsociety.Model;
 
 import java.awt.*;
-import java.util.HashMap;
+
 import java.util.Map;
 
 public class FireGrid extends Grid {

@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.*;
 
 public abstract class Grid {
-    protected LinkedHashMap<Point, Cell> pointCellMap;
+    protected HashMap<Point, Cell> pointCellMap;
     protected int myWidth;
     protected int myHeight;
 
@@ -42,7 +42,7 @@ public abstract class Grid {
             for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
                     Point potentialNeighbor = new Point((int) p.getX() + x, (int) p.getY() + y);
-                    if (potentialNeighbor != p && pointCellMap.containsKey(potentialNeighbor)) {
+                    if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
                         pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
                     }
                 }
