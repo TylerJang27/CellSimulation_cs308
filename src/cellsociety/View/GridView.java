@@ -11,6 +11,7 @@ import java.util.Collection;
 
 public class GridView extends GridPane {
     private static double GRID_PADDING = 10;
+    private static double SIZE = 800;
 
     private Collection<CellView> myCells;
 
@@ -24,6 +25,8 @@ public class GridView extends GridPane {
     public GridView(int numRows, int numColumns, double width, double height){
 
         super();
+
+        setId("grid");
 
         setHgap(GRID_PADDING);
         setVgap(GRID_PADDING);
@@ -40,10 +43,9 @@ public class GridView extends GridPane {
             }
         }
 
-        setPrefHeight(width);
-        setPrefWidth(height);
-
-        this.setStyle("-fx-background-color: green");
+        setPrefHeight(SIZE);
+        setPrefWidth(SIZE);
+        
     }
 
     /**

@@ -49,8 +49,6 @@ public class ConsoleView extends Pane {
 
         getChildren().add(myConsoleView);
 
-        setPrefHeight(30);
-
     }
 
     /**

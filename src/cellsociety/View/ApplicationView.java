@@ -17,6 +17,7 @@ import java.io.File;
  * @author Mariusz Derezinski-Choo
  */
 public class ApplicationView {
+    private static final String STYLESHEET = "cellsociety/View/style.css";
 
     private Scene myScene;
     private BorderPane root;
@@ -34,7 +35,7 @@ public class ApplicationView {
      * @param fileListener a ChangeListener to be triggered when the file is chosen
      */
     public ApplicationView(double size, Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
-        Node myGridView = new GridView(0,0,size,size);
+        myGridView = new GridView(0,0,size,size);
         myConsoleView = new ConsoleView();
         Node myDashboardView = new DashboardView(playButtonClickedHandler,pauseButtonClickedHandler,stepButtonClickedHandler,sliderListener,fileListener);
 
@@ -45,8 +46,13 @@ public class ApplicationView {
         root.setLeft(myDashboardView);
         myScene = new Scene(root);
 
+        myScene.getStylesheets().add(STYLESHEET);
+
+
         primaryStage.setScene(myScene);
         primaryStage.show();
+        primaryStage.setResizable(false);
+
     }
 
     /**

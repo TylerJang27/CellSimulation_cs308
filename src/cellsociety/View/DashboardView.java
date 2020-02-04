@@ -23,7 +23,8 @@ import java.util.ResourceBundle;
  * @author Mariusz Derezinski-Choo
  */
 public class DashboardView extends Pane {
-    private static final Insets PADDING = new Insets(10,10,10,10);
+    private static final double MARGINS = 10;
+    private static final Insets PADDING = new Insets(MARGINS,MARGINS,MARGINS,MARGINS);
     private static final double SPACING = 30;
 
     private static final ResourceBundle RESOURCES = Main.myResources;
@@ -46,7 +47,9 @@ public class DashboardView extends Pane {
      */
     public DashboardView(EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
         super();
+        setId("dashboard");
         VBox myDashBoard = new VBox(SPACING);
+
         myDashBoard.prefHeightProperty().bind(this.heightProperty());
         myDashBoard.setPadding(PADDING);
 
@@ -64,7 +67,7 @@ public class DashboardView extends Pane {
         myDashBoard.getChildren().addAll(fileChooserButton,mySpeedSlider,spacerRegion,playButtonsPane);
         getChildren().add(myDashBoard);
 
-        this.setStyle("-fx-background-color: red");
+        setHeight(myDashBoard.getMinHeight());
     }
 
     private Pane getPlayButtonsPane(EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler) {
