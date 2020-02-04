@@ -7,12 +7,14 @@ public abstract class Grid {
     protected LinkedHashMap<Point, Cell> pointCellMap;
     protected int myWidth;
     protected int myHeight;
+    protected int myFrame;
 
     //Make abstract, and 5 different grids
     public Grid(Map<String, Integer> gridMap) { // change to take in map (simType class)
         myWidth = gridMap.get("width");
         myHeight = gridMap.get("height");
         pointCellMap = new LinkedHashMap<>();
+        myFrame = 0;
     }
 
     //adds adjacent cells in each cell's neighbor list by creating adjacent points and seeing if they exist in Grid
@@ -55,6 +57,7 @@ public abstract class Grid {
     public abstract void nextFrame();
 
     public void basicNextFrame() {
+        myFrame++;
         int[] states = new int [pointCellMap.values().size()];
         int index = 0;
         for (Cell c: pointCellMap.values()) {
@@ -82,5 +85,9 @@ public abstract class Grid {
         for (Point p: pointCellMap.keySet()) {
             System.out.println("Location: " + p + "State: " + pointCellMap.get(p).getState() + "\n");
         }
+    }
+
+    public int getFrame(){
+        return myFrame;
     }
 }

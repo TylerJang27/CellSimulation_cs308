@@ -43,7 +43,7 @@ public class ConsoleView extends Pane {
     public void logError(String error){
         myErrorLabel.setText(error);
     }
-    public void incrementFrame(){
-        myFrameNumberLabel.setText(String.valueOf(++myFrame));
+    public void showFrame(int frameNumber){
+        myFrameNumberLabel.setText(String.valueOf(frameNumber));
     }
 }

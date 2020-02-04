@@ -4,7 +4,11 @@ import cellsociety.Main;
 import cellsociety.Model.*;
 import cellsociety.Model.Grid;
 import cellsociety.View.ApplicationView;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -27,7 +31,7 @@ public class SimulationControl {
     private Grid myGrid;
     private Simulation mySim;
     private ApplicationView myApplicationView;
-    private boolean paused = false;
+    private boolean paused;
     private int numCols, numRows;
     private static ResourceBundle RESOURCES= Main.myResources;
 
@@ -53,7 +57,6 @@ public class SimulationControl {
     //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation3.xml");
 
-
     /**
      * Constructor for creating a SimulationControl instance
      *
@@ -63,7 +66,8 @@ public class SimulationControl {
      * @throws SAXException
      */
     public SimulationControl(Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
-        initializeModel(DEFAULT_STARTING_FILE, primaryStage, sliderListener);
+        paused = true;
+        initializeView(primaryStage, sliderListener);
     }
 
     /**
@@ -103,23 +107,28 @@ public class SimulationControl {
                     myApplicationView.updateCell(j, k, myGrid.getState(j, k));
                 }
             }
+            myApplicationView.displayFrameNumber(myGrid.getFrame());
+            myApplicationView.updateCell(2, 3, (int)Math.random()*3);
+        } else{
+            myApplicationView.logError("Choose a configuration file to start a simulation!");
         }
-        myApplicationView.updateCell(2, 3, (int)Math.random()*3);
     }
+    private void initializeView(Stage primaryStage, ChangeListener<? super Number> sliderListener){
+        myApplicationView = new ApplicationView(SIZE, primaryStage,getPlayHandler(),getPauseListener(),getStepHandler(),sliderListener,getFileHandler());
+    }
+
 
     /**
      * Sets the initial settings for SimulationControl
      *
      * @param dataFile the File from which to read configuration instructions
-     * @param primaryStage the Stage on which to display the grid
-     * @param sliderListener Listener to change the frame rate
      * @throws IOException  failed to read file
      * @throws SAXException failed to read file
      */
-    public void initializeModel(File dataFile, Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
+    public void initializeModel(File dataFile) throws IOException, SAXException {
         //FIXME: ADD A THING FOR ERROR LOGGING IN MYAPPLICATION VIEW? I.E. DIRECT THE EXCEPTIONS THERE?
         //FIXME: ADD A LISTERNER/HANDLER FOR CHANGING THE FILE (CALL INITIALIZE MODEL)
-        myApplicationView = new ApplicationView(SIZE, primaryStage,getPlayHandler(),getPauseListener(),getStepHandler(),sliderListener);
+
         mySim = new XMLParser("type").getSimulation(dataFile);
 
         numCols = mySim.getValue(RESOURCES.getString("Width"));
@@ -195,7 +204,22 @@ public class SimulationControl {
         };
         return stepButtonClickedHandler;
     }
+    private ChangeListener<File> getFileHandler(){
+        return new ChangeListener<File>() {
+            @Override
+            public void changed(ObservableValue<? extends File> observable, File oldValue, File newValue) {
+                //uploadSimulationFile(newValue);
+                System.out.println("This worked! " + newValue.getName());
+                try{
+                    initializeModel(newValue);
+                } catch(Exception e){
+                    myApplicationView.logError("Invalid Configuration File!");
 
+                    //FIXME: This doesn't actually work but idk how to fix it
+                }
+            }
+        };
+    }
     /*private ChangeListener<? super Number> getSliderListener() {
         ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
             @Override
