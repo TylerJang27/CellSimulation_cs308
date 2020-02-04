@@ -35,7 +35,6 @@ public class GridView extends GridPane {
     setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
     setConstraints(numRows, numColumns);
 
-    //TODO: HashMap implementation to make updateCell() O(1) (right now it is O(n^2), doesn't really matter since the size is small enough for it to be fine but still good idea to change it
     myCells = new ArrayList<>();
     for (int i = 0; i < numRows; i++) {
       for (int j = 0; j < numColumns; j++) {
