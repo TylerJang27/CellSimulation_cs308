@@ -2,10 +2,19 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Game of Life type
+ *
+ * @author Thomas Quintanilla
+ */
 public class GameOfLifeCell extends Cell {
     private static final int DEAD = 0;
     private static final int ALIVE = 1;
 
+    /**
+     * Constructs cell with initial state and values to be evaluated per step
+     * @param beginState Initial state to construct cell
+     */
     public GameOfLifeCell(int beginState) {
         neighbors = new ArrayList<>();
         state = beginState;

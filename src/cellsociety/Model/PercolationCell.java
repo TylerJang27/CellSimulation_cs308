@@ -2,6 +2,11 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Percolation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class PercolationCell extends Cell {
     private static final int CLOSED = 0;
     private static final int OPENED = 1;
@@ -23,10 +28,10 @@ public class PercolationCell extends Cell {
     @Override
     public int calculateNextState() {
         int newState = state;
-        if (state == 1) {
+        if (state == OPENED) {
             for (Cell neighbor : neighbors) {
-                if (neighbor.state == 2) {
-                    newState = 2;
+                if (neighbor.state == FILLED) {
+                    newState = FILLED;
                     break;
                 }
             }

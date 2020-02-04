@@ -7,6 +7,11 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.ResourceBundle;
 
+/**
+ * Class for an abstraction of grid types, defining some basic functions
+ *
+ * @author Thomas Quintanilla
+ */
 public abstract class Grid {
     protected HashMap<Point, Cell> pointCellMap;
     protected int myWidth;

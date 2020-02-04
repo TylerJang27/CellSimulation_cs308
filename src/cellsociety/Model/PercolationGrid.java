@@ -7,7 +7,11 @@ import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
+/**
+ * Class for Grids of the Percolation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class PercolationGrid extends Grid {
 
     private static ResourceBundle RESOURCES= Main.myResources;
