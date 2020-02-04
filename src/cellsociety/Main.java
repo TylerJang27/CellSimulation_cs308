@@ -28,9 +28,6 @@ public class Main extends Application {
 
   private SimulationControl mySim;
 
-  //FIXME: publicity of constants
-  //FIXME: go through methods for comments and code style
-
   /**
    * Starts the Application by creating SimulationControl and starting the animation
    *
