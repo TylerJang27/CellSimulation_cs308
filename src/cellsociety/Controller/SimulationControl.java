@@ -80,7 +80,6 @@ public class SimulationControl {
    * @param singleStep true if only one step is supposed to occur
    */
   public void next(boolean singleStep) {
-    //FIXME: OPTIMIZE BASED ON OTHER CONSIDERATIONS
     try {
       int stepper = frameStepNext();
       if ((!paused && stepper == 0) || singleStep) {
@@ -146,7 +145,6 @@ public class SimulationControl {
 
     myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE);
     myGrid = createGrid();
-    //FIXME: need to pass in other thresholds and initial setups
 
     updateViewGrid();
   }
