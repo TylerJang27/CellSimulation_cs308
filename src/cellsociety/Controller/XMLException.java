@@ -5,6 +5,8 @@ package cellsociety.Controller;
  *
  * Class based mainly on XMLException.java from spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLException.java
+ *
+ * @author Tyler Jang
  */
 
 public class XMLException extends RuntimeException {

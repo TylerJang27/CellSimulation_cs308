@@ -10,8 +10,8 @@ import java.util.ResourceBundle;
 
 public class FireGrid extends Grid {
 
-    private static ResourceBundle RESOURCES= Main.myResources;
-    private static int MAX_VAL = 2;
+    private ResourceBundle RESOURCES= Main.myResources;
+    private static final int MAX_VAL = 2;
 
     /**
      * Uses gridMap to construct Fire grid and define fire chance percentage
