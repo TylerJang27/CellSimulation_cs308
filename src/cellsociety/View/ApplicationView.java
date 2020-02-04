@@ -83,8 +83,6 @@ public class ApplicationView {
     myConsoleView.logError(errorMessage);
   }
 
-  //FIXME: I think in tandem with the way you've set this up, it may be most efficient if when Thomas updates the grids, if a cell's
-  //changes it returns its point to grid, allowing grid to make a List<Point> changed that gets pipelined to this method here
   public void updateCell(int row, int column, int state) {
     myGridView.updateCell(row, column, state);
   }
