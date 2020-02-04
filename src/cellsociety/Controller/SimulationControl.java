@@ -35,13 +35,13 @@ public class SimulationControl {
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Fire2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
+    private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife3.xml");
 
-    private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation3.xml"); //problem?
 
