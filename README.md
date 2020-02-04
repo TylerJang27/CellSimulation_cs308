@@ -18,9 +18,9 @@ Hours Spent: 40
 
 ### Primary Roles
 #### Tyler
-Tyler worked on the Controller part of the project. He implemented the XMLParser, and designed the XML structure so that the XML could be converted to a Simulation. Tyler worked on the logic behind the methods to start, stop, and step through the simulation. the key components of this work is in SimulationControl
+Tyler worked on the Controller part of the project. He implemented the XMLParser, and designed the XML structure so that the XML could be converted to a Simulation. Tyler worked on the logic behind the methods to start, stop, and step through the simulation. The key components of this work is in SimulationControl.
 #### Thomas
-Thomas worked on developing the various different types of cells and Grids. This was accomplished by adding several subclasses to the abstract Cell and Grid classes in the model. The structured use of inheritance allows for diferent rules to be easily instantiated in Controller depending on the file uploaded.
+Thomas worked on developing the various different types of cells and Grids. This was accomplished by adding several subclasses to the abstract Cell and Grid classes in the model. The structured use of inheritance allows for different Grid types to be easily instantiated in Controller depending on the file uploaded.
 #### Mariusz
 Mariusz worked on rendering the various elements of the GUI, and connecting them to the Controller via the use of EventHandlers and ChangeListeners. He constructed generic listeners in the Controller that could be added to the graphics elements once they were rendered. The appearance of the elements were styled with the use of css.
 ### Resources Used
