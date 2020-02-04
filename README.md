@@ -36,7 +36,7 @@ Features implemented:
 
 Assumptions or Simplifications:
 
-Interesting data files:
+Interesting data files: The 3rd data file for each simulation type creates a 30x30 grid with a random state for each cell. So it's interesting to see patterns that occur when ran multiple times.
 
 Known Bugs:
 
