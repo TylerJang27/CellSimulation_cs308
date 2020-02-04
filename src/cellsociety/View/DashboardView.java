@@ -1,5 +1,7 @@
 package cellsociety.View;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,13 +20,16 @@ import java.io.File;
 
 public class DashboardView extends Pane {
     private Slider mySpeedSlider;
+    private ObjectProperty<File> myFileProperty;
 
-    public DashboardView(Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener) {
+    public DashboardView(Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener,ChangeListener<? super File> fileListener) {
         super();
         VBox myDashBoard = new VBox(30);
         myDashBoard.prefHeightProperty().bind(this.heightProperty());
         myDashBoard.setPadding(new Insets(10,10,10,10));
 
+        myFileProperty = new SimpleObjectProperty<>();
+        myFileProperty.addListener(fileListener);
         Button fileChooserButton = new Button();
         fileChooserButton.setText("Choose Configuration File");
         fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked(primaryStage));
@@ -74,7 +79,7 @@ public class DashboardView extends Pane {
         FileChooser myFileChooser = new FileChooser();
         File selectedFile = myFileChooser.showOpenDialog(primaryStage);
         System.out.println("File Chosen: " + selectedFile.getName());
-
+        myFileProperty.setValue(selectedFile);
     }
 
 }

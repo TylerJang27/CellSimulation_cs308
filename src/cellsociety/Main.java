@@ -3,6 +3,7 @@ package cellsociety;
 import cellsociety.Controller.Simulation;
 import cellsociety.Controller.SimulationControl;
 import cellsociety.Controller.XMLParser;
+import cellsociety.Model.GameOfLifeGrid;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ import org.xml.sax.SAXException;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -118,7 +120,6 @@ public class Main extends Application {
         for (Point p: mySim.getGrid().keySet()) {
             System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
         }
-
         launch(args);
 
     }
