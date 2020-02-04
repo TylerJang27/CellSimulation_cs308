@@ -221,7 +221,6 @@ public class SimulationControl {
      * @param newValue the new simulation rate, usually on a scale of 1-10
      */
     private void changeSimulationSpeed(Number newValue) {
-        System.out.println(newValue.intValue());
         rate = (10-newValue.intValue());
     }
 

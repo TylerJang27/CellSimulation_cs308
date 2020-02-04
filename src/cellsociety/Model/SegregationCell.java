@@ -6,10 +6,10 @@ public class SegregationCell extends Cell {
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
 
-    double threshold;
+    double myThreshold;
     private int isSatisfied;
-    public SegregationCell(int beginState) {
-        threshold = 0.30;
+    public SegregationCell(int beginState, double threshold) {
+        myThreshold = threshold;
         isSatisfied = 1;
         state = beginState;
         neighbors = new ArrayList<>();
@@ -24,7 +24,7 @@ public class SegregationCell extends Cell {
     public int calculateNextState() {
         double activeNeighbors = countAliveNeighbors();
         double sameNeighbors = countSameNeighbors();
-        if ((activeNeighbors + sameNeighbors) != 0 && !(sameNeighbors / activeNeighbors > threshold)) {
+        if ((activeNeighbors + sameNeighbors) != 0 && !(sameNeighbors / activeNeighbors > myThreshold)) {
             isSatisfied = UNSATISFIED;
         } else {
             isSatisfied = SATISFIED;
