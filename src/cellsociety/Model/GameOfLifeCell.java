@@ -8,38 +8,40 @@ import java.util.ArrayList;
  * @author Thomas Quintanilla
  */
 public class GameOfLifeCell extends Cell {
-    private static final int DEAD = 0;
-    private static final int ALIVE = 1;
 
-    /**
-     * Constructs cell with initial state and values to be evaluated per step
-     * @param beginState Initial state to construct cell
-     */
-    public GameOfLifeCell(int beginState) {
-        neighbors = new ArrayList<>();
-        state = beginState;
-    }
+  private static final int DEAD = 0;
+  private static final int ALIVE = 1;
 
-    /**
-     * There are three rules to Game Of LIfe:
-     * Any live cell with two or three neighbors survives.
-     * Any dead cell with three live neighbors becomes a live cell.
-     * All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-     *
-     * This method calculates and returns the new state of the cell based on the rules mentioned.
-     * @return new state of cell
-    */
-    @Override
-    public int calculateNextState() {
-        int newState;
-        int aliveNeighbors = countAliveNeighbors();
-        if (state == ALIVE && (aliveNeighbors == 2 || aliveNeighbors == 3)) {
-            newState = 1;
-        } else if (state == DEAD && aliveNeighbors == 3) {
-            newState = 1;
-        } else {
-            newState = 0;
-        }
-        return newState;
+  /**
+   * Constructs cell with initial state and values to be evaluated per step
+   *
+   * @param beginState Initial state to construct cell
+   */
+  public GameOfLifeCell(int beginState) {
+    neighbors = new ArrayList<>();
+    state = beginState;
+  }
+
+  /**
+   * There are three rules to Game Of LIfe: Any live cell with two or three neighbors survives. Any
+   * dead cell with three live neighbors becomes a live cell. All other live cells die in the next
+   * generation. Similarly, all other dead cells stay dead.
+   * <p>
+   * This method calculates and returns the new state of the cell based on the rules mentioned.
+   *
+   * @return new state of cell
+   */
+  @Override
+  public int calculateNextState() {
+    int newState;
+    int aliveNeighbors = countAliveNeighbors();
+    if (state == ALIVE && (aliveNeighbors == 2 || aliveNeighbors == 3)) {
+      newState = 1;
+    } else if (state == DEAD && aliveNeighbors == 3) {
+      newState = 1;
+    } else {
+      newState = 0;
     }
+    return newState;
+  }
 }

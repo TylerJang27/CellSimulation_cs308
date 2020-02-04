@@ -1,16 +1,19 @@
 .button {
-    -fx-text-fill: #305864;
-    -fx-background-color: #79c1df;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-padding: 8;
+  -fx-text-fill: #305864;
+  -fx-background-color: #79c1df;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
+  -fx-padding: 8;
 }
+
 .button:hover {
-    -fx-background-color: #0d51b6;
+  -fx-background-color: #0d51b6;
 }
+
 #grid {
-    -fx-background-color: #b2aa62;
+  -fx-background-color: #b2aa62;
 }
+
 #dashboard {
-    -fx-background-color: #6f6f72;
+  -fx-background-color: #6f6f72;
 }
