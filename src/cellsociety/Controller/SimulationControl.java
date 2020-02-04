@@ -2,11 +2,7 @@ package cellsociety.Controller;
 
 import cellsociety.Main;
 import cellsociety.Model.*;
-import cellsociety.Model.Grid;
 import cellsociety.View.ApplicationView;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -14,7 +10,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;

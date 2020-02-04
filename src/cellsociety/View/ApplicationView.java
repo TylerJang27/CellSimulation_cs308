@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 import java.io.File;
 
 /**
@@ -48,11 +49,19 @@ public class ApplicationView {
         primaryStage.show();
     }
 
+    /**
+     * Display the Frame number in the consnole
+     * @param frameNumber the frame number to be displayed
+     */
     public void displayFrameNumber(int frameNumber){
         myConsoleView.showFrame(frameNumber);
     }
 
 
+    /**
+     * Log an error to the console
+     * @param errorMessage a String detailing the error message
+     */
     public void logError(String errorMessage){
         myConsoleView.logError(errorMessage);
     }
@@ -63,6 +72,13 @@ public class ApplicationView {
         myGridView.updateCell(row, column, state);
     }
 
+    /**
+     * Initialize a grid to the Application View to be displayed
+     * @param numRows the number of rows in the grid
+     * @param numColumns the number of columns in the grid
+     * @param width the width of the grid in pixels
+     * @param length the length of the grid in pixels
+     */
     public void initializeGrid(int numRows, int numColumns, double width, double length){
         myGridView = new GridView(numRows, numColumns, width, length);
         root.setCenter((myGridView));
