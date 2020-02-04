@@ -1,17 +1,21 @@
 package cellsociety.Model;
 
+import cellsociety.Main;
+
 import java.awt.Point;
 import java.util.*;
+import java.util.ResourceBundle;
 
 public abstract class Grid {
     protected HashMap<Point, Cell> pointCellMap;
     protected int myWidth;
     protected int myHeight;
+    protected static ResourceBundle RESOURCES= Main.myResources;
 
     //Make abstract, and 5 different grids
     public Grid(Map<String, Integer> gridMap) { // change to take in map (simType class)
-        myWidth = gridMap.get("width");
-        myHeight = gridMap.get("height");
+        myWidth = gridMap.get(RESOURCES.getString("Width"));
+        myHeight = gridMap.get(RESOURCES.getString("Height"));
         pointCellMap = new LinkedHashMap<>();
     }
 

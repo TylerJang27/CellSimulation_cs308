@@ -7,16 +7,17 @@ public class FireCell extends Cell {
     private static final int EMPTY = 0;
     private static final int ALIVE = 1;
     private static final int BURNING = 2;
+    private static double probCatch;
 
-    public FireCell(int beginState) {
+    public FireCell(int beginState, double fireProb) {
         neighbors = new ArrayList<>();
         state = beginState;
+        probCatch = fireProb;
     }
 
     @Override
     public int calculateNextState() {
         int newState;
-        double probCatch = 0.15;
         boolean neighborBurning = false;
         if (state == BURNING || state == EMPTY) {
             newState = EMPTY;
@@ -27,7 +28,7 @@ public class FireCell extends Cell {
                     break;
                 }
             }
-            if (neighborBurning && Math.random() < 0.15) {
+            if (neighborBurning && Math.random() < probCatch) {
                 newState = BURNING;
             } else {
                 newState = ALIVE;

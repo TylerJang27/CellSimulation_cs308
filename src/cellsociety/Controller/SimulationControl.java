@@ -41,13 +41,13 @@ public class SimulationControl {
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife3.xml");
 
-    private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
+//    private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation3.xml"); //problem?
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey3.xml");
+    private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey3.xml");
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation2.xml");

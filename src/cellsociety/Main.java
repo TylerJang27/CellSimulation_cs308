@@ -120,25 +120,6 @@ public class Main extends Application {
         for (Point p: mySim.getGrid().keySet()) {
             System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
         }
-
-        HashMap<String, Integer> cellValues = new HashMap<>();
-        cellValues.put("width", 5);
-        cellValues.put("height", 5);
-        HashMap<Point, Integer> pointGrid = new HashMap<>();
-        for (int x = 0; x < 5; x++) {
-            for (int y = 0; y < 5; y++) {
-                pointGrid.put(new Point(x, y), (int)(Math.random()*2));
-            }
-        }
-        GameOfLifeGrid grid = new GameOfLifeGrid(pointGrid, cellValues);
-        grid.printGrid();
-        for (int i = 0; i < 5; i++) {
-            System.out.println(grid.getState(0,0) + " testing this value");
-            System.out.println("------------------");
-            grid.nextFrame();
-            grid.printGrid();
-            System.out.println(grid.getState(0,0) + "testing this value");
-        }
         launch(args);
 
     }
