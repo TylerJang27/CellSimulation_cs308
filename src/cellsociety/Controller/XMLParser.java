@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import cellsociety.Main;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

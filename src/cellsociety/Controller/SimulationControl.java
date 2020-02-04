@@ -9,7 +9,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ResourceBundle;

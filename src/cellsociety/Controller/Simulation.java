@@ -1,7 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-
 import java.awt.*;
 import java.util.*;
 import java.util.List;
