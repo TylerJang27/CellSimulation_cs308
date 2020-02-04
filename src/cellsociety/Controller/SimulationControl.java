@@ -35,28 +35,6 @@ public class SimulationControl {
     private int numCols, numRows;
     private static ResourceBundle RESOURCES= Main.myResources;
 
-
-
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire2.xml");
-    private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
-
-    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife1.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife3.xml");
-
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation3.xml"); //problem?
-
-    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey1.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/PredatorPrey3.xml");
-
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation1.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Segregation3.xml");
-
     /**
      * Constructor for creating a SimulationControl instance
      *
@@ -68,6 +46,7 @@ public class SimulationControl {
         paused = true;
         frameStep = 0;
         initializeView(primaryStage);
+        myApplicationView.logError("Choose a configuration file to start a simulation!");
     }
 
     /**
@@ -99,21 +78,35 @@ public class SimulationControl {
      */
     public void next(boolean singleStep) {
         //FIXME: OPTIMIZE BASED ON OTHER CONSIDERATIONS
-        int stepper = frameStepNext();
-        if ((!paused && stepper == 0) || singleStep) {
-            myGrid.nextFrame();
-            for (int j = 0; j < numCols; j++) {
-                for (int k = 0; k < numRows; k++) {
-                    myApplicationView.updateCell(j, k, myGrid.getState(j, k));
-                }
+        try {
+            int stepper = frameStepNext();
+            if ((!paused && stepper == 0) || singleStep) {
+                myGrid.nextFrame();
+                updateViewGrid();
+                myApplicationView.displayFrameNumber(myGrid.getFrame());
+                myApplicationView.updateCell(2, 3, (int)Math.random()*3);
             }
-            myApplicationView.displayFrameNumber(myGrid.getFrame());
-            myApplicationView.updateCell(2, 3, (int)Math.random()*3);
-        } else{
-            myApplicationView.logError("Choose a configuration file to start a simulation!");
+        } catch (Exception e) {
+            myApplicationView.logError(RESOURCES.getString("BadStep"));
         }
     }
 
+    /**
+     * Updates all the Cells in GridView based off of the values in myGrid
+     */
+    private void updateViewGrid() {
+        for (int j = 0; j < numCols; j++) {
+            for (int k = 0; k < numRows; k++) {
+                myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+            }
+        }
+    }
+
+    /**
+     * Increments frameStep and resets it based on the desired framerate
+     *
+     * @return frameStep
+     */
     private int frameStepNext() {
         frameStep += 1;
         if (frameStep >= rate) {
@@ -140,28 +133,16 @@ public class SimulationControl {
      * @throws SAXException failed to read file
      */
     public void initializeModel(File dataFile) throws IOException, SAXException {
-        //FIXME: ADD A THING FOR ERROR LOGGING IN MYAPPLICATION VIEW? I.E. DIRECT THE EXCEPTIONS THERE?
-        //FIXME: ADD A LISTERNER/HANDLER FOR CHANGING THE FILE (CALL INITIALIZE MODEL)
-
         mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
         numCols = mySim.getValue(RESOURCES.getString("Width"));
         numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-        //FIXME: Determine accurate size parameter to pass in
         myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE);
-        //FIXME: Fix width, height parameters if necessary
         myGrid = createGrid();
         //FIXME: need to pass in other thresholds and initial setups
 
-        /*for (Point p: mySim.getGrid().keySet()) {
-            myApplicationView.updateCell((int)p.getX(), (int)p.getY(), mySim.getGrid().get(p));
-        }*/
-        for (int j = 0; j < numCols; j++) {
-            for (int k = 0; k < numRows; k++) {
-                myApplicationView.updateCell(j, k, myGrid.getState(j, k));
-            }
-        }
+        updateViewGrid();
     }
 
     /**
@@ -231,14 +212,11 @@ public class SimulationControl {
         return new ChangeListener<File>() {
             @Override
             public void changed(ObservableValue<? extends File> observable, File oldValue, File newValue) {
-                //uploadSimulationFile(newValue);
-                //System.out.println("This worked! " + newValue.getName());
                 try{
                     initializeModel(newValue);
                 } catch(Exception e){
-                    myApplicationView.logError("Invalid Configuration File!");
+                    myApplicationView.logError(e.getMessage());
 
-                    //FIXME: This doesn't actually work but idk how to fix it
                 }
             }
         };
@@ -246,7 +224,8 @@ public class SimulationControl {
 
     /**
      * Sets the new simulation rate
-     * @param newValue
+     *
+     * @param newValue the new simulation rate, usually on a scale of 1-10
      */
     private void changeSimulationSpeed(Number newValue) {
         System.out.println(newValue.intValue());

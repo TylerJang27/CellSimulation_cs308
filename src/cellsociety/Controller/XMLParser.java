@@ -27,6 +27,7 @@ public class XMLParser {
     // Readable error message that can be displayed by the GUI
     public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
     // name of root attribute that notes the type of file expecting to parse
+    private static final String XML_END = ".xml";
     private final String TYPE_ATTRIBUTE;
     // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
@@ -52,12 +53,16 @@ public class XMLParser {
      * @throws SAXException failed to read file
      */
     public Simulation getSimulation (File dataFile) throws IOException, SAXException {
-        //resets file reading to root of XML File
+        if (! isXML(dataFile)) {
+            throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
+        }
+
         Element root = getRootElement(dataFile);
 
         if (! isValidFile(root, Simulation.DATA_TYPE)) {
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
         }
+
         // read data associated with the fields given by the object
         Map<String, String> simulationSettings = readSettings(root);
         String gridType = getTextValue(root, Main.myResources.getString("GridType"));
@@ -96,6 +101,10 @@ public class XMLParser {
         catch (SAXException | IOException e) {
             throw new XMLException(e);
         }
+    }
+
+    private boolean isXML(File dataFile) {
+        return -1 != dataFile.getName().indexOf(XML_END);
     }
 
     /**
