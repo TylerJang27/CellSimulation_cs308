@@ -1,39 +1,49 @@
 package cellsociety.Model;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Fire type
+ *
+ * @author Thomas Quintanilla
+ */
 public class FireCell extends Cell {
-    private static final int EMPTY = 0;
-    private static final int ALIVE = 1;
-    private static final int BURNING = 2;
 
-    public FireCell(int beginState) {
-        neighbors = new ArrayList<>();
-        state = beginState;
-    }
+  private static final int EMPTY = 0;
+  private static final int ALIVE = 1;
+  private static final int BURNING = 2;
+  private static double probCatch;
 
-    @Override
-    public int calculateNextState() {
-        int newState;
-        double probCatch = 0.15;
-        boolean neighborBurning = false;
-        if (state == BURNING || state == EMPTY) {
-            newState = EMPTY;
-        } else {
-            for (Cell neighbor : neighbors) {
-                if (neighbor.getState() == BURNING) {
-                    neighborBurning = true;
-                    break;
-                }
-            }
-            if (neighborBurning && Math.random() < 0.15) {
-                newState = BURNING;
-            } else {
-                newState = ALIVE;
-            }
+  /**
+   * Constructs cell with initial state and values to be evaluated per step
+   *
+   * @param beginState Initial state to construct cell
+   * @param fireProb   initial probability of chance to catch on fire
+   */
+  public FireCell(int beginState, double fireProb) {
+    neighbors = new ArrayList<>();
+    state = beginState;
+    probCatch = fireProb;
+  }
+
+  /**
+   * If cell was burning last step or already dead, it dies then checks alive trees to see if any
+   * neighbor are burning, then applies chance to catch fire per neighbor
+   *
+   * @return new state of cell
+   */
+  @Override
+  public int calculateNextState() {
+    int newState = state;
+    if (state == BURNING || state == EMPTY) {
+      newState = EMPTY;
+    } else {
+      for (Cell neighbor : neighbors) {
+        if (neighbor.getState() == 2 && Math.random() < probCatch) {
+          newState = BURNING;
         }
-        return newState;
+      }
     }
-
+    return newState;
+  }
 }

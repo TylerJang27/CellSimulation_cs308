@@ -2,47 +2,64 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Segregation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class SegregationCell extends Cell {
-    private static final int SATISFIED = 1;
-    private static final int UNSATISFIED = 2;
 
-    private int isSatisfied;
+  private static final int SATISFIED = 1;
+  private static final int UNSATISFIED = 2;
 
-    public SegregationCell(int beginState) {
-        isSatisfied = 1;
-        state = beginState;
-        neighbors = new ArrayList<>();
+  double myThreshold;
+  private int isSatisfied;
+
+  /**
+   * Constructs cell with initial state and threshold for sameness
+   *
+   * @param beginState Initial state to construct cell
+   * @param threshold  threshold for determining difference required to move
+   */
+  public SegregationCell(int beginState, double threshold) {
+    myThreshold = threshold;
+    isSatisfied = 1;
+    state = beginState;
+    neighbors = new ArrayList<>();
+  }
+
+  /**
+   * Checks to see if each cell passes the satisfaction threshold and returns whether cell is
+   * satisfied Assumption: if a cell has no neighbors, it is satisfied (this is a reclusive
+   * neighborhood)
+   *
+   * @return satisfied or unsatisfied for cell
+   */
+  @Override
+  public int calculateNextState() {
+    double activeNeighbors = countAliveNeighbors();
+    double sameNeighbors = countSameNeighbors();
+    if ((activeNeighbors + sameNeighbors) != 0 && !(sameNeighbors / activeNeighbors
+        > myThreshold)) {
+      isSatisfied = UNSATISFIED;
+    } else {
+      isSatisfied = SATISFIED;
     }
+    return isSatisfied;
+  }
 
-    /* There are three rules to Game Of LIfe:
-    Any live cell with two or three neighbors survives.
-    Any dead cell with three live neighbors becomes a live cell.
-    All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-
-    This method calculates and returns the new state of the cell based on the rules mentioned.
-
-    */
-    @Override
-    public int calculateNextState() {
-        double threshold = 0.30;
-        double  activeNeighbors = countAliveNeighbors();
-        double sameNeighbors = countSameNeighbors();
-        //Rule where any live cell that has two or three neighbors alive stay alive
-        if (!(sameNeighbors / (activeNeighbors + sameNeighbors) > threshold)) {
-            isSatisfied = UNSATISFIED;
-        } else {
-            isSatisfied = SATISFIED;
+  /**
+   * counts the neighbors sharing the same state
+   *
+   * @return total same neighbors
+   */
+  protected int countSameNeighbors() {
+    int count = 0;
+    for (Cell neighbor : neighbors) {
+        if (neighbor.getState() == state) {
+            count++;
         }
-            //Rule where if any dead cell has exactly three live neighbors, it becomes a live cell
-        return isSatisfied;
     }
-
-    protected int countSameNeighbors() {
-        int count = 0;
-        for (Cell neighbor: neighbors) {
-            if (neighbor.getState() == state)
-                count++;
-        }
-        return count;
-    }
+    return count;
+  }
 }

@@ -1,50 +1,90 @@
 package cellsociety.Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * Class for Cells of the Percolation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class PredatorPreyCell extends Cell {
-    private static final int EMPTY = 0;
-    private static final int FISH = 1;
-    private static final int SHARK = 2;
 
-    protected Boolean didKill;
-    protected Boolean didMove;
-    private int stepsAlive;
+  private static final int EMPTY = 0;
+  private static final int FISH = 1;
+  private static final int SHARK = 2;
+  private static int timeToStarve;
 
-    public PredatorPreyCell(int beginState) {
-        neighbors = new ArrayList<>();
-        state = beginState;
-        stepsAlive = 0;
-        didMove = false;
-    }
+  protected Boolean didKill;
+  protected Boolean didMove;
+  protected int timeSinceEaten;
+  private int stepsAlive;
 
-    @Override
-    public int calculateNextState() {
-        int newState = state;
-        didKill = false;
-        if (state == SHARK) {
-            ArrayList<Cell> fishNeighbors = neighbors;
-            Collections.shuffle(fishNeighbors);
-            for (Cell neighbor: fishNeighbors) {
-                if (neighbor.getState() == FISH) {
-                    neighbor.updateState(EMPTY);
-                    didKill = true;
-                    break;
-                }
-            }
+  /**
+   * Constructs cell with initial state and values to be evaluated per step
+   *
+   * @param beginState  Initial state to construct cell
+   * @param sharkStarve Threshold before shark dies, passed from PredatorPreyGrid
+   */
+  public PredatorPreyCell(int beginState, int sharkStarve) {
+    neighbors = new ArrayList<>();
+    state = beginState;
+    stepsAlive = 0;
+    didMove = false;
+    timeSinceEaten = 0;
+    timeToStarve = sharkStarve;
+  }
+
+  /**
+   * Checks to see if a shark eats a fish (updates fish cell to 0) or if shark starves to death.
+   *
+   * @return new state of cell
+   */
+  @Override
+  public int calculateNextState() {
+    int newState = state;
+    didKill = false;
+    if (state == SHARK) {
+      ArrayList<Cell> fishNeighbors = neighbors;
+      Collections.shuffle(fishNeighbors);
+      for (Cell neighbor : fishNeighbors) {
+        if (neighbor.getState() == FISH) {
+          neighbor.updateState(EMPTY);
+          didKill = true;
+          timeSinceEaten = 0;
+          break;
         }
-        return newState;
+      }
+      newState = checkIfStarves();
     }
+    return newState;
+  }
 
-    public int getStepsAlive() {
-        return stepsAlive;
+  /**
+   * Checks if shark should die from malnourishment
+   *
+   * @return 0 if shark dies, 2 if shark still lives on
+   */
+  private int checkIfStarves() {
+    if (!didKill) {
+      timeSinceEaten++;
     }
-    public void setStepsAlive(int n) { stepsAlive = n;}
-    public ArrayList<Cell> getNeighbors() {
-        return neighbors;
+    if (timeSinceEaten >= timeToStarve) {
+      return EMPTY;
+    } else {
+      return SHARK;
     }
+  }
 
-//    public int
+  public int getStepsAlive() {
+    return stepsAlive;
+  }
+
+  public void setStepsAlive(int n) {
+    stepsAlive = n;
+  }
+
+  public ArrayList<Cell> getNeighbors() {
+    return neighbors;
+  }
 }
