@@ -79,8 +79,7 @@ public class PredatorPreyGrid extends Grid {
             int breedingTime = 0;
             if (state == FISH) {
                 breedingTime = FISH_TURNS_TO_BREED;
-            }
-            else if (state == SHARK) {
+            } else if (state == SHARK) {
                 breedingTime = SHARK_TURNS_TO_BREED;
             }
             if (currentCell.getStepsAlive() >= breedingTime) {
