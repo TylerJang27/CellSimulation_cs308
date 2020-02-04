@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Class for Grids of the Segregation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class SegregationGrid extends Grid {
 
     private static final int DEFAULT_THRESHOLD = 30;

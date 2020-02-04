@@ -8,6 +8,11 @@ import java.util.*;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Class for Grids of the Predator-Prey Type
+ *
+ * @author Thomas Quintanilla
+ */
 public class PredatorPreyGrid extends Grid {
     private static final int DEFAULT_FISH_BREED = 2;
     private static final int DEFAULT_SHARK_BREED = 7;

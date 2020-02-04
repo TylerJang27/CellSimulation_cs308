@@ -3,6 +3,11 @@ package cellsociety.Model;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Class for Cells of the Percolation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class PredatorPreyCell extends Cell {
     private static final int EMPTY = 0;
     private static final int FISH = 1;

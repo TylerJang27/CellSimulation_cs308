@@ -1,8 +1,12 @@
 package cellsociety.Model;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Fire type
+ *
+ * @author Thomas Quintanilla
+ */
 public class FireCell extends Cell {
     private static final int EMPTY = 0;
     private static final int ALIVE = 1;

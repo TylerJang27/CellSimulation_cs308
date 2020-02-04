@@ -2,13 +2,26 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
-//Super class for all cell types
+/**
+ * Super class for all Cell types
+ *
+ * @author Thomas Quintanilla
+ */
+
 public abstract class Cell {
     protected int state;
     protected ArrayList<Cell> neighbors;
+
+    /**
+     * Default constructor
+     */
     public Cell() {
     }
 
+    /**
+     * Adds a neighbor to a cell's List of neighbors (up to 8)
+     * @param c A neighboring Cell
+     */
     public void setNeighbor(Cell c) {
         neighbors.add(c);
     }
@@ -27,12 +40,23 @@ public abstract class Cell {
         return count;
     }
 
+    /**
+     * Abstract method to calculate a cell's state in the next update
+     * @return new state
+     */
     public abstract int calculateNextState();
 
+    /**
+     * Updates a cell's state to newState
+     * @param newState
+     */
     public void updateState(int newState) {
         state = newState;
     }
 
+    /**
+     * Returns a cell's current state
+     */
     public int getState() {
         return state;
     }
