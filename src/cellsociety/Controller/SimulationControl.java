@@ -135,6 +135,8 @@ public class SimulationControl {
     public void initializeModel(File dataFile) throws IOException, SAXException {
         mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
+        rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
+
         numCols = mySim.getValue(RESOURCES.getString("Width"));
         numRows = mySim.getValue(RESOURCES.getString("Height"));
 

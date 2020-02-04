@@ -142,9 +142,7 @@ public class XMLParser {
             return nodeList.item(0).getTextContent();
         }
         else {
-            // FIXME: Determine if should be return String or Exception
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
-            //return "";
         }
     }
 
@@ -186,7 +184,7 @@ public class XMLParser {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
             for (int k = 0; k < vals.length; k ++) {
-                grid.put(new Point(k, j), Integer.parseInt(vals[k]));
+                grid.put(new Point(j, k), Integer.parseInt(vals[k]));
             }
         }
         return grid;
@@ -210,7 +208,7 @@ public class XMLParser {
         for (int j = 0; j < wholeGrid.length; j++) {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
-            grid.put(new Point(Integer.parseInt(vals[0]), Integer.parseInt(vals[1])), Integer.parseInt(vals[2]));
+            grid.put(new Point(Integer.parseInt(vals[1]), Integer.parseInt(vals[0])), Integer.parseInt(vals[2]));
         }
         return grid;
     }
