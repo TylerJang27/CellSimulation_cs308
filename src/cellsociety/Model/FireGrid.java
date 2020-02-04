@@ -8,6 +8,12 @@ import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Class for Grids of the Fire type
+ *
+ *
+ * @author Thomas Quintanilla
+ */
 public class FireGrid extends Grid {
 
     private ResourceBundle RESOURCES= Main.myResources;

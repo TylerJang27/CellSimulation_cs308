@@ -56,7 +56,7 @@ public class DashboardView extends Pane {
         setUpFileProperty(fileListener);
         Button fileChooserButton = getFileChooserButton();
 
-        mySpeedSlider = new Slider(1,10, SimulationControl.DEFAULT_RATE);
+        mySpeedSlider = new Slider(1,SimulationControl.RATE_MAX, SimulationControl.DEFAULT_RATE);
         mySpeedSlider.valueProperty().addListener(sliderListener);
 
         Pane playButtonsPane = getPlayButtonsPane(playButtonClickedHandler, pauseButtonClickedHandler, stepButtonClickedHandler);

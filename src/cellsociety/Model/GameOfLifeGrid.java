@@ -7,6 +7,11 @@ import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Class for Grids of the Game of Life type
+ *
+ * @author Thomas Quintanilla
+ */
 public class GameOfLifeGrid extends Grid {
 
     private static ResourceBundle RESOURCES= Main.myResources;

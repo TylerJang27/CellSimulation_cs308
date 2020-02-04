@@ -23,6 +23,7 @@ public class SimulationControl {
 
     public static final int DEFAULT_RATE = 5;
     private static final double SIZE = 800;
+    public static final int RATE_MAX = 10;
 
     private Grid myGrid;
     private Simulation mySim;
@@ -221,7 +222,7 @@ public class SimulationControl {
      * @param newValue the new simulation rate, usually on a scale of 1-10
      */
     private void changeSimulationSpeed(Number newValue) {
-        rate = (10-newValue.intValue());
+        rate = (RATE_MAX-newValue.intValue());
     }
 
     /**

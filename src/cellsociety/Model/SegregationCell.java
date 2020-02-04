@@ -2,12 +2,23 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class for Cells of the Segregation type
+ *
+ * @author Thomas Quintanilla
+ */
 public class SegregationCell extends Cell {
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
 
     double myThreshold;
     private int isSatisfied;
+
+    /**
+     * Constructs cell with initial state and threshold for sameness
+     * @param beginState Initial state to construct cell
+     * @param threshold threshold for determining difference required to move
+     */
     public SegregationCell(int beginState, double threshold) {
         myThreshold = threshold;
         isSatisfied = 1;
