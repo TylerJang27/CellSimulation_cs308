@@ -2,6 +2,7 @@ package cellsociety.Model;
 
 import java.util.ArrayList;
 
+//Super class for all cell types
 public abstract class Cell {
     protected int state;
     protected ArrayList<Cell> neighbors;
@@ -12,7 +13,10 @@ public abstract class Cell {
         neighbors.add(c);
     }
 
-
+    /**
+     * Counts number of active neighbors (state not 0) for a cell
+     * @return total active neigbors
+     */
     protected int countAliveNeighbors() {
         int count = 0;
         for (Cell neighbor: neighbors) {

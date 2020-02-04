@@ -13,6 +13,11 @@ public class SegregationGrid extends Grid {
     private static ResourceBundle RESOURCES= Main.myResources;
     private static int MAX_VAL = 2;
 
+    /**
+     * Uses gridMap to construct Percolation and gridcell values to set cells at points.
+     * @param gridMap: Map with KVP of a coordinate point to an int, which represents the state to construct cell with.
+     * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the parameter value
+     */
     public SegregationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int r = 0; r < myHeight; r++) {
@@ -25,17 +30,19 @@ public class SegregationGrid extends Grid {
                 }
             }
         }
-        buildSquareNeighbors(pointCellMap);
+        buildSquareNeighbors();
     }
 
+    /**
+     * Creates list of all unsatisfied cells in the grid then places each of them in a random empty cell
+     */
     @Override
     public void nextFrame() {
         ArrayList<Point> unsatisfiedPoints = new ArrayList<>();
         int index = 0;
         for (Point p : pointCellMap.keySet()) {
             Cell c = pointCellMap.get(p);
-            int satisfied = c.calculateNextState();
-            if (satisfied == 2) {
+            if (c.calculateNextState() == 2) {
                 unsatisfiedPoints.add(p);
             }
         }

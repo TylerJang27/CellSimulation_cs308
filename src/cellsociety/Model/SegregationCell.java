@@ -6,37 +6,36 @@ public class SegregationCell extends Cell {
     private static final int SATISFIED = 1;
     private static final int UNSATISFIED = 2;
 
+    double threshold;
     private int isSatisfied;
-
     public SegregationCell(int beginState) {
+        threshold = 0.30;
         isSatisfied = 1;
         state = beginState;
         neighbors = new ArrayList<>();
     }
 
-    /* There are three rules to Game Of LIfe:
-    Any live cell with two or three neighbors survives.
-    Any dead cell with three live neighbors becomes a live cell.
-    All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-
-    This method calculates and returns the new state of the cell based on the rules mentioned.
-
-    */
+    /**
+     * Checks to see if each cell passes the satisfaction threshold and returns whether cell is satisfied
+     * Assumption: if a cell has no neighbors, it is satisfied (this is a reclusive neighborhood)
+     * @return satisfied or unsatisfied for cell
+     */
     @Override
     public int calculateNextState() {
-        double threshold = 0.30;
-        double  activeNeighbors = countAliveNeighbors();
+        double activeNeighbors = countAliveNeighbors();
         double sameNeighbors = countSameNeighbors();
-        //Rule where any live cell that has two or three neighbors alive stay alive
-        if (!(sameNeighbors / (activeNeighbors + sameNeighbors) > threshold)) {
+        if ((activeNeighbors + sameNeighbors) != 0 && !(sameNeighbors / activeNeighbors > threshold)) {
             isSatisfied = UNSATISFIED;
         } else {
             isSatisfied = SATISFIED;
         }
-            //Rule where if any dead cell has exactly three live neighbors, it becomes a live cell
         return isSatisfied;
     }
 
+    /**
+     * counts the neighbors sharing the same state
+     * @return total same neighbors
+     */
     protected int countSameNeighbors() {
         int count = 0;
         for (Cell neighbor: neighbors) {
