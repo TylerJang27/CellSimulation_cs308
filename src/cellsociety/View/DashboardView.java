@@ -3,7 +3,6 @@ package cellsociety.View;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -15,14 +14,26 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 
+/**
+ * Class to handle the behavior of a DashBoard
+ *
+ * @author Mariusz Derezinski-Choo
+ */
 public class DashboardView extends Pane {
     private Slider mySpeedSlider;
     private ObjectProperty<File> myFileProperty;
 
-    public DashboardView(Stage primaryStage, EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener,ChangeListener<? super File> fileListener) {
+    /**
+     * Construct a DashBoardView Object whose elements trigger the EventHandlers and Listeners provided
+     * @param playButtonClickedHandler
+     * @param pauseButtonClickedHandler
+     * @param stepButtonClickedHandler
+     * @param sliderListener
+     * @param fileListener
+     */
+    public DashboardView(EventHandler<MouseEvent> playButtonClickedHandler, EventHandler<MouseEvent> pauseButtonClickedHandler, EventHandler<MouseEvent> stepButtonClickedHandler, ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
         super();
         VBox myDashBoard = new VBox(30);
         myDashBoard.prefHeightProperty().bind(this.heightProperty());
@@ -32,7 +43,7 @@ public class DashboardView extends Pane {
         myFileProperty.addListener(fileListener);
         Button fileChooserButton = new Button();
         fileChooserButton.setText("Choose Configuration File");
-        fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked(primaryStage));
+        fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked());
 
         mySpeedSlider = new Slider(0,1,.5);
         mySpeedSlider.valueProperty().addListener(sliderListener);
@@ -75,9 +86,9 @@ public class DashboardView extends Pane {
         this.setStyle("-fx-background-color: red");
     }
 
-    private void handleFileButtonClicked(Stage primaryStage) {
+    private void handleFileButtonClicked() {
         FileChooser myFileChooser = new FileChooser();
-        File selectedFile = myFileChooser.showOpenDialog(primaryStage);
+        File selectedFile = myFileChooser.showOpenDialog(new Stage());
         System.out.println("File Chosen: " + selectedFile.getName());
         myFileProperty.setValue(selectedFile);
     }
