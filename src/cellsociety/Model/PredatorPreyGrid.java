@@ -9,14 +9,18 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PredatorPreyGrid extends Grid {
-    private static ResourceBundle RESOURCES= Main.myResources;
-    private static int FISH_TURNS_TO_BREED;
-    private static int SHARK_TURNS_TO_BREED;
-    private static int TURNS_TO_STARVE;
-    private static int FISH = 1;
-    private static int SHARK = 2;
-    private static int EMPTY = 0;
-    private static int MAX_VAL = 2;
+    private static final int DEFAULT_FISH_BREED = 2;
+    private static final int DEFAULT_SHARK_BREED = 7;
+    private static final int DEFAULT_SHARK_STARVE = 4;
+
+    private ResourceBundle RESOURCES= Main.myResources;
+    private int FISH_TURNS_TO_BREED;
+    private int SHARK_TURNS_TO_BREED;
+    private int TURNS_TO_STARVE;
+    private int FISH = 1;
+    private int SHARK = 2;
+    private int EMPTY = 0;
+    private int MAX_VAL = 2;
 
     /**
      * Uses gridMap to construct Wa-Tor grid and define specific thresholds for breeding and death and cellValues
@@ -26,9 +30,9 @@ public class PredatorPreyGrid extends Grid {
      */
     public PredatorPreyGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
-        FISH_TURNS_TO_BREED = cellValues.getOrDefault(RESOURCES.getString("FishBreed"), 2);
-        SHARK_TURNS_TO_BREED = cellValues.getOrDefault(RESOURCES.getString("SharkBreed"), 7);
-        TURNS_TO_STARVE = cellValues.getOrDefault(RESOURCES.getString("SharkStarve"), 4);
+        FISH_TURNS_TO_BREED = cellValues.getOrDefault(RESOURCES.getString("FishBreed"), DEFAULT_FISH_BREED);
+        SHARK_TURNS_TO_BREED = cellValues.getOrDefault(RESOURCES.getString("SharkBreed"), DEFAULT_SHARK_BREED);
+        TURNS_TO_STARVE = cellValues.getOrDefault(RESOURCES.getString("SharkStarve"), DEFAULT_SHARK_STARVE);
         for (int y = EMPTY; y < myHeight; y++ ) {
             for (int x = EMPTY; x < myWidth; x++) {
                 Point p = new Point (x, y);

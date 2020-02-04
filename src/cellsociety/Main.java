@@ -31,9 +31,8 @@ public class Main extends Application {
 
     public static final String LANGUAGE = "English";
     private static final String RESOURCES = "resources";
-    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     public static ResourceBundle myResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
-    //public static final String DEFAULT_RESOURCE_FOLDER = "/" + RESOURCES + "/";
 
     private static final String TITLE = myResources.getString("CellSimulator");
 
@@ -78,21 +77,6 @@ public class Main extends Application {
      * Start of the program, launching the Application
      */
     public static void main (String[] args) throws IOException, SAXException {
-        File dataFile = new File("data/Fire1.xml");
-        Simulation mySim = new XMLParser("type").getSimulation(dataFile);
-
-        System.out.printf("Simulation type: %s\n", mySim.getType());
-        System.out.printf("grid type: \t %s\n", mySim.getGridType());
-
-        for (String s: mySim.getValueSet().keySet()) {
-            System.out.printf("%s: \t %s \n", s, mySim.getValue(s).toString());
-        }
-
-        System.out.println("\ngrid:");
-        for (Point p: mySim.getGrid().keySet()) {
-            System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
-        }
         launch(args);
-
     }
 }

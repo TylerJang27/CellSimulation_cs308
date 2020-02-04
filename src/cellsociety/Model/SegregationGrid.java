@@ -10,8 +10,10 @@ import java.util.ResourceBundle;
 
 public class SegregationGrid extends Grid {
 
-    private static ResourceBundle RESOURCES= Main.myResources;
-    private static int MAX_VAL = 2;
+    private static final int DEFAULT_THRESHOLD = 30;
+
+    private ResourceBundle RESOURCES= Main.myResources;
+    private static final int MAX_VAL = 2;
 
     /**
      * Uses gridMap to construct Percolation and gridcell values to set cells at points.
@@ -24,9 +26,11 @@ public class SegregationGrid extends Grid {
             for (int c = 0; c < myWidth; c++) {
                 Point p = new Point(c, r);
                 if (cellValues.get(RESOURCES.getString("GridType")).equals(XMLParser.RANDOM)) {
-                    pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, (int)(Math.random() * (1 + MAX_VAL)))));
+                    pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, (int)(Math.random() * (1 + MAX_VAL))),
+                            (double)cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)/100));
                 } else {
-                    pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0)));
+                    pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0),
+                            (double)cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)/100));
                 }
             }
         }
