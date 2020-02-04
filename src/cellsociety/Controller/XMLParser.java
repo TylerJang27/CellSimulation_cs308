@@ -24,12 +24,9 @@ import org.xml.sax.SAXException;
  * FIXME: Comment style
  */
 public class XMLParser {
-    // Readable error message that can be displayed by the GUI
     public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
-    // name of root attribute that notes the type of file expecting to parse
     private static final String XML_END = ".xml";
     private final String TYPE_ATTRIBUTE;
-    // keep only one documentBuilder because it is expensive to make and can reset it before parsing
     private final DocumentBuilder DOCUMENT_BUILDER;
 
     public static final int ALL = 0;
@@ -63,7 +60,6 @@ public class XMLParser {
             throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
         }
 
-        // read data associated with the fields given by the object
         Map<String, String> simulationSettings = readSettings(root);
         String gridType = getTextValue(root, Main.myResources.getString("GridType"));
         Map grid = getGrid(dataFile, Integer.parseInt(gridType));

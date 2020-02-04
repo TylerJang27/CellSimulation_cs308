@@ -78,21 +78,6 @@ public class Main extends Application {
      * Start of the program, launching the Application
      */
     public static void main (String[] args) throws IOException, SAXException {
-        File dataFile = new File("data/Fire1.xml");
-        Simulation mySim = new XMLParser("type").getSimulation(dataFile);
-
-        System.out.printf("Simulation type: %s\n", mySim.getType());
-        System.out.printf("grid type: \t %s\n", mySim.getGridType());
-
-        for (String s: mySim.getValueSet().keySet()) {
-            System.out.printf("%s: \t %s \n", s, mySim.getValue(s).toString());
-        }
-
-        System.out.println("\ngrid:");
-        for (Point p: mySim.getGrid().keySet()) {
-            System.out.printf("x: %f y: %f \t %d\n", p.getX(), p.getY(), mySim.getGrid().get(p));
-        }
         launch(args);
-
     }
 }

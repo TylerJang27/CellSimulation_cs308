@@ -9,8 +9,8 @@ import java.util.ResourceBundle;
 
 public class PercolationGrid extends Grid {
 
-    private static ResourceBundle RESOURCES= Main.myResources;
-    private static int MAX_VAL = 2;
+    private ResourceBundle RESOURCES= Main.myResources;
+    private static final int MAX_VAL = 2;
 
     public PercolationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);

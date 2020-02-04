@@ -9,8 +9,8 @@ import java.util.ResourceBundle;
 
 public class GameOfLifeGrid extends Grid {
 
-    private static ResourceBundle RESOURCES= Main.myResources;
-    private static int MAX_VAL = 1;
+    private ResourceBundle RESOURCES= Main.myResources;
+    private static final int MAX_VAL = 1;
 
     public GameOfLifeGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);

@@ -18,7 +18,6 @@ public class Simulation {
 
     //name for the type of data file necessary to represent a simulation configuration file
     public static final String DATA_TYPE = RESOURCES.getString("Simulation");
-
     private static final String MISSING_MESSAGE = RESOURCES.getString("MISSING_MESSAGE");
 
     //valid fields in the data file for all Simulation objects
@@ -32,7 +31,6 @@ public class Simulation {
 
     private Map<String, Integer> myDataValues;
 
-    //specific data values for this instances
     private SimType myType;
     private String gridType;
     private Map<Point, Integer> myGrid;

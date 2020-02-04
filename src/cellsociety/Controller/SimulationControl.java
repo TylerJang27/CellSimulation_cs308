@@ -57,7 +57,7 @@ public class SimulationControl {
     }
 
     /**
-     * Calls next() a singular time, but stopping the repeated play sequence
+     * Calls next() a singular time, but stops the repeated play sequence
      */
     private void stepSimulation() {
         paused = true;
@@ -218,7 +218,6 @@ public class SimulationControl {
                     initializeModel(newValue);
                 } catch(Exception e){
                     myApplicationView.logError(e.getMessage());
-
                 }
             }
         };

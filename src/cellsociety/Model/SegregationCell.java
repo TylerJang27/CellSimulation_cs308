@@ -7,8 +7,10 @@ public class SegregationCell extends Cell {
     private static final int UNSATISFIED = 2;
 
     private int isSatisfied;
+    private double myThreshold;
 
-    public SegregationCell(int beginState) {
+    public SegregationCell(int beginState, double threshold) {
+        myThreshold = threshold;
         isSatisfied = 1;
         state = beginState;
         neighbors = new ArrayList<>();
@@ -24,11 +26,10 @@ public class SegregationCell extends Cell {
     */
     @Override
     public int calculateNextState() {
-        double threshold = 0.30;
         double  activeNeighbors = countAliveNeighbors();
         double sameNeighbors = countSameNeighbors();
         //Rule where any live cell that has two or three neighbors alive stay alive
-        if (!(sameNeighbors / (activeNeighbors + sameNeighbors) > threshold)) {
+        if (!(sameNeighbors / (activeNeighbors + sameNeighbors) > myThreshold)) {
             isSatisfied = UNSATISFIED;
         } else {
             isSatisfied = SATISFIED;
