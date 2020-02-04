@@ -20,8 +20,6 @@ import org.xml.sax.SAXException;
  *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
- *
- * FIXME: Comment style
  */
 public class XMLParser {
     public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
@@ -43,7 +41,6 @@ public class XMLParser {
 
     /**
      * Get data contained in this XML file as an object
-     *
      * @param dataFile file from which to read configuration
      * @return Returns a Simulation with all of its configuration information stored
      * @throws IOException  failed to read file
@@ -84,7 +81,6 @@ public class XMLParser {
 
     /**
      * Get root element of an XML file
-     *
      * @param xmlFile the File from which to read
      * @return the Root Element
      */
@@ -105,7 +101,6 @@ public class XMLParser {
 
     /**
      * Checks if file is valid
-     *
      * @param root the Root Element
      * @param type Simulation, the type of XML file
      * @return a boolean if file is valid
@@ -116,7 +111,6 @@ public class XMLParser {
 
     /**
      * Gets attribute of document based off of name
-     *
      * @param e the Element to retrieve attribute
      * @param attributeName the attribute's label to retrieve
      * @return the retrieved Attribute
@@ -127,7 +121,6 @@ public class XMLParser {
 
     /**
      * Retrieves the value in the XML file for a given tagName
-     *
      * @param e the Element from which to retrieve the attribute
      * @param tagName the tag to search for in the XML file
      * @return the text for that tag
@@ -144,7 +137,6 @@ public class XMLParser {
 
     /**
      * Returns a grid based off of the type of grid stored in the XML file
-     *
      * @param dataFile the file from which to read
      * @param gridType the type of grid (all, some, or random)
      * @return a Map representing points and values in the grid
@@ -164,7 +156,6 @@ public class XMLParser {
     /**
      * Returns a grid of the type where all points are specified in the XML file
      * NOTE: Assumes all points have been specified
-     *
      * @param dataFile the file from which to read
      * @return a Map representing points and values in the grid
      * @throws IOException  failed to read file
@@ -189,7 +180,6 @@ public class XMLParser {
     /**
      * Returns a grid of the type where all points are specified in the XML file
      * NOTE: Assumes all points have been correctly specified as x y val
-     *
      * @param dataFile the file from which to read
      * @return a Map representing points and values in the grid
      * @throws IOException  failed to read file

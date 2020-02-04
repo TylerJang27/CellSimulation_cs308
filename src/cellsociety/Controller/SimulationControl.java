@@ -73,7 +73,6 @@ public class SimulationControl {
 
     /**
      * Steps the simulation by updating the Grid and updating ApplicationView
-     *
      * @param singleStep true if only one step is supposed to occur
      */
     public void next(boolean singleStep) {
@@ -104,7 +103,6 @@ public class SimulationControl {
 
     /**
      * Increments frameStep and resets it based on the desired framerate
-     *
      * @return frameStep
      */
     private int frameStepNext() {
@@ -117,7 +115,6 @@ public class SimulationControl {
 
     /**
      * Creates a new ApplicationView to start the display
-     *
      * @param primaryStage the stage for the animation
      */
     private void initializeView(Stage primaryStage){
@@ -127,7 +124,6 @@ public class SimulationControl {
 
     /**
      * Sets the initial settings for SimulationControl
-     *
      * @param dataFile the File from which to read configuration instructions
      * @throws IOException  failed to read file
      * @throws SAXException failed to read file
@@ -149,7 +145,6 @@ public class SimulationControl {
 
     /**
      * Creates grid based off of the type of Simulation stored in mySim
-     *
      * @return a subclass of Grid
      */
     private Grid createGrid() {
@@ -225,7 +220,6 @@ public class SimulationControl {
 
     /**
      * Sets the new simulation rate
-     *
      * @param newValue the new simulation rate, usually on a scale of 1-10
      */
     private void changeSimulationSpeed(Number newValue) {

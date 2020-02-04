@@ -28,7 +28,6 @@ public enum SimType {
 
     /**
      * Constructor for SimType, setting its name and fields
-     *
      * @param name      the type of Simulation
      * @param fields    the different Strings denoting acceptable Integer fields for that simulation
      */
