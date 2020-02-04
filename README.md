@@ -83,11 +83,11 @@ Assumptions or Simplifications:
 * Different simulations all share the same cell color scheme (red = 1, blue = 2, black = 0/empty).
 * Each cell has access to its neighboring cells so that calculating the next state for each cell would be easier to handle.
 * Assumptions for simulation rules:
-   - Fire: each burning neighbor of a not burning tree cell has a set % chance to spread the fire to the cell. 
+   * **Fire**: each burning neighbor of a not burning tree cell has a set % chance to spread the fire to the cell. 
    The rule description was vague on whether this probability is only checked once no matter how many neighbors are burning or if its checked per neighbor.
-   - PredatorPrey: A fish who meets breeding threshold but cannot reproduce due to neighboring cells being occupied will reproduce any step after where an adjacent cell is free.
-   - PredatorPrey: It is interpreted when the rules state "After eating or moving" that a shark can not do both.
-   - Segregation: Randomly moving unsatisfied cells will eventually balance out.
+   * **PredatorPrey**: A fish who meets breeding threshold but cannot reproduce due to neighboring cells being occupied will reproduce any step after where an adjacent cell is free.
+   * **PredatorPrey**: It is interpreted when the rules state "After eating or moving" that a shark can not do both.
+   * **Segregation**: Randomly moving unsatisfied cells will eventually balance out.
 
 Interesting data files: The 3rd data file for each simulation type creates a 30x30 grid of cells with a random state for each cell. 
 So it's interesting to see patterns that occur when run multiple times.
