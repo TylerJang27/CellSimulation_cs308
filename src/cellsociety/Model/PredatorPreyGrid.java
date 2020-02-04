@@ -18,6 +18,12 @@ public class PredatorPreyGrid extends Grid {
     private static int EMPTY = 0;
     private static int MAX_VAL = 2;
 
+    /**
+     * Uses gridMap to construct Wa-Tor grid and define specific thresholds for breeding and death and cellValues
+     * to set cells at points.
+     * @param gridMap: Map with KVP of a coordinate point to an int, which represents the state to construct the cell
+     * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the parameter value
+     */
     public PredatorPreyGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         FISH_TURNS_TO_BREED = cellValues.getOrDefault(RESOURCES.getString("FishBreed"), 2);
@@ -33,9 +39,14 @@ public class PredatorPreyGrid extends Grid {
                 }
             }
         }
-        buildNSEWNeighbors(pointCellMap);
+        buildNSEWNeighbors();
     }
 
+    /**
+     * Calls basicNextFrame(), which updates states of each cell.
+     * Then moves cells if there are empty adjacent cells.
+     * Finally checks if each cell can breed a new cell of the same state.
+     */
     @Override
     public void nextFrame() {
         //Checks to see if a shark eats a fish
@@ -80,6 +91,11 @@ public class PredatorPreyGrid extends Grid {
         }
     }
 
+    /**
+     * Transfers values to any adjacent empty cell to represent a move
+     * @param currentCell Cell being moved
+     * @return cell that received transferred data
+     */
     private PredatorPreyCell moveCell(PredatorPreyCell currentCell) {
         List<Cell> neighborPoints = currentCell.getNeighbors();
 
