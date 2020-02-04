@@ -93,9 +93,6 @@ public abstract class Grid {
     int index = 0;
     for (Cell c : pointCellMap.values()) {
       states[index] = c.calculateNextState();
-      //FIXME: Tyler's suggestion. Create a List of all the cells that will be changing so that
-      //FIXME: (A) The next loop will be more efficient and (B) you can have nextFrame() return this of Points
-      //FIXME: and I can use this to pass to ApplicationView/GridView
       index++;
     }
 
