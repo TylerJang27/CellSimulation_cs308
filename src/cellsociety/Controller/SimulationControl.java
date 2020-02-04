@@ -28,24 +28,29 @@ import java.util.ResourceBundle;
  */
 public class SimulationControl {
 
+    public static final int DEFAULT_RATE = 5;
+    private static final double SIZE = 800;
+
     private Grid myGrid;
     private Simulation mySim;
     private ApplicationView myApplicationView;
     private boolean paused;
+    private int rate = DEFAULT_RATE;
+    private int frameStep;
     private int numCols, numRows;
     private static ResourceBundle RESOURCES= Main.myResources;
 
-    private static final double SIZE = 800;
+
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/Fire1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Fire2.xml");
-    //private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
+    private static final File DEFAULT_STARTING_FILE = new File("data/Fire3.xml"); //problem?
 
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife1.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/GameOfLife3.xml");
 
-    private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
+    //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation1.xml"); //problem?
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation2.xml");
     //private static final File DEFAULT_STARTING_FILE = new File("data/Percolation3.xml"); //problem?
 
@@ -60,14 +65,14 @@ public class SimulationControl {
     /**
      * Constructor for creating a SimulationControl instance
      *
-     * @param primaryStage
-     * @param sliderListener
-     * @throws IOException
-     * @throws SAXException
+     * @param primaryStage the stage for the animation
+     * @throws IOException  failed to read file
+     * @throws SAXException failed to read file
      */
-    public SimulationControl(Stage primaryStage, ChangeListener<? super Number> sliderListener) throws IOException, SAXException {
+    public SimulationControl(Stage primaryStage) throws IOException, SAXException {
         paused = true;
-        initializeView(primaryStage, sliderListener);
+        frameStep = 0;
+        initializeView(primaryStage);
     }
 
     /**
@@ -82,7 +87,7 @@ public class SimulationControl {
      */
     private void stepSimulation() {
         paused = true;
-        next(0, true);
+        next(true);
     }
 
     /**
@@ -95,12 +100,12 @@ public class SimulationControl {
     /**
      * Steps the simulation by updating the Grid and updating ApplicationView
      *
-     * @param elapsedTime amount of time since last step
      * @param singleStep true if only one step is supposed to occur
      */
-    public void next(double elapsedTime, boolean singleStep) {
+    public void next(boolean singleStep) {
         //FIXME: OPTIMIZE BASED ON OTHER CONSIDERATIONS
-        if (!paused || singleStep) {
+        int stepper = frameStepNext();
+        if ((!paused && stepper == 0) || singleStep) {
             myGrid.nextFrame();
             for (int j = 0; j < numCols; j++) {
                 for (int k = 0; k < numRows; k++) {
@@ -113,8 +118,22 @@ public class SimulationControl {
             myApplicationView.logError("Choose a configuration file to start a simulation!");
         }
     }
-    private void initializeView(Stage primaryStage, ChangeListener<? super Number> sliderListener){
-        myApplicationView = new ApplicationView(SIZE, primaryStage,getPlayHandler(),getPauseListener(),getStepHandler(),sliderListener,getFileHandler());
+
+    private int frameStepNext() {
+        frameStep += 1;
+        if (frameStep >= rate) {
+            frameStep = 0;
+        }
+        return frameStep;
+    }
+
+    /**
+     * Creates a new ApplicationView to start the display
+     *
+     * @param primaryStage the stage for the animation
+     */
+    private void initializeView(Stage primaryStage){
+        myApplicationView = new ApplicationView(SIZE, primaryStage,getPlayHandler(),getPauseListener(),getStepHandler(),getSliderListener(),getFileHandler());
     }
 
 
@@ -129,7 +148,7 @@ public class SimulationControl {
         //FIXME: ADD A THING FOR ERROR LOGGING IN MYAPPLICATION VIEW? I.E. DIRECT THE EXCEPTIONS THERE?
         //FIXME: ADD A LISTERNER/HANDLER FOR CHANGING THE FILE (CALL INITIALIZE MODEL)
 
-        mySim = new XMLParser("type").getSimulation(dataFile);
+        mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
         numCols = mySim.getValue(RESOURCES.getString("Width"));
         numRows = mySim.getValue(RESOURCES.getString("Height"));
@@ -140,8 +159,13 @@ public class SimulationControl {
         myGrid = createGrid();
         //FIXME: need to pass in other thresholds and initial setups
 
-        for (Point p: mySim.getGrid().keySet()) {
+        /*for (Point p: mySim.getGrid().keySet()) {
             myApplicationView.updateCell((int)p.getX(), (int)p.getY(), mySim.getGrid().get(p));
+        }*/
+        for (int j = 0; j < numCols; j++) {
+            for (int k = 0; k < numRows; k++) {
+                myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+            }
         }
     }
 
@@ -204,12 +228,16 @@ public class SimulationControl {
         };
         return stepButtonClickedHandler;
     }
+
+    /**
+     * Returns a handler for selecting the file to reset configuration
+     */
     private ChangeListener<File> getFileHandler(){
         return new ChangeListener<File>() {
             @Override
             public void changed(ObservableValue<? extends File> observable, File oldValue, File newValue) {
                 //uploadSimulationFile(newValue);
-                System.out.println("This worked! " + newValue.getName());
+                //System.out.println("This worked! " + newValue.getName());
                 try{
                     initializeModel(newValue);
                 } catch(Exception e){
@@ -220,7 +248,20 @@ public class SimulationControl {
             }
         };
     }
-    /*private ChangeListener<? super Number> getSliderListener() {
+
+    /**
+     * Sets the new simulation rate
+     * @param newValue
+     */
+    private void changeSimulationSpeed(Number newValue) {
+        System.out.println(newValue.intValue());
+        rate = (10-newValue.intValue());
+    }
+
+    /**
+     * Returns a handler for changing the new simulation rate
+     */
+    private ChangeListener<? super Number> getSliderListener() {
         ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -228,5 +269,5 @@ public class SimulationControl {
             }
         };
         return sliderListener;
-    }*/
+    }
 }

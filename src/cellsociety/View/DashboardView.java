@@ -1,5 +1,6 @@
 package cellsociety.View;
 
+import cellsociety.Controller.SimulationControl;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -45,7 +46,7 @@ public class DashboardView extends Pane {
         fileChooserButton.setText("Choose Configuration File");
         fileChooserButton.setOnMouseClicked(event -> handleFileButtonClicked());
 
-        mySpeedSlider = new Slider(0,1,.5);
+        mySpeedSlider = new Slider(1,10, SimulationControl.DEFAULT_RATE);
         mySpeedSlider.valueProperty().addListener(sliderListener);
         ObservableList<String> options =
                 FXCollections.observableArrayList(
@@ -89,8 +90,11 @@ public class DashboardView extends Pane {
     private void handleFileButtonClicked() {
         FileChooser myFileChooser = new FileChooser();
         File selectedFile = myFileChooser.showOpenDialog(new Stage());
-        System.out.println("File Chosen: " + selectedFile.getName());
-        myFileProperty.setValue(selectedFile);
+        if(selectedFile != null){
+            System.out.println("File Chosen: " + selectedFile.getName()); //FIXME: Null pointer exception?
+            myFileProperty.setValue(selectedFile);
+        }
+
     }
 
 }
