@@ -31,7 +31,7 @@ public class Main extends Application {
 
     public static final String LANGUAGE = "English";
     private static final String RESOURCES = "resources";
-    public static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
+    private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
     public static ResourceBundle myResources=ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
 
     private static final String TITLE = myResources.getString("CellSimulator");
