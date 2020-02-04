@@ -9,9 +9,13 @@ import java.util.ResourceBundle;
 
 public class GameOfLifeGrid extends Grid {
 
-    private ResourceBundle RESOURCES= Main.myResources;
-    private static final int MAX_VAL = 1;
-
+    private static ResourceBundle RESOURCES= Main.myResources;
+    private static int MAX_VAL = 1;
+    /**
+     * Uses gridMap to construct GameOfLife and gridcell values to set cells at points.
+     * @param gridMap: Map with KVP of a coordinate point to an int, which represents the state to construct cell with.
+     * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the parameter value
+     */
     public GameOfLifeGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int y = 0; y < myHeight; y++ ) {
@@ -24,9 +28,11 @@ public class GameOfLifeGrid extends Grid {
                 }
             }
         }
-        buildSquareNeighbors(pointCellMap);
+        buildSquareNeighbors();
     }
-
+    /**
+     * Uses default nextFrame from grid superclass
+     */
     @Override
     public void nextFrame() {
         basicNextFrame();

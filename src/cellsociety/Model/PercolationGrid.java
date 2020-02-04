@@ -7,11 +7,16 @@ import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+
 public class PercolationGrid extends Grid {
 
-    private ResourceBundle RESOURCES= Main.myResources;
-    private static final int MAX_VAL = 2;
-
+    private static ResourceBundle RESOURCES= Main.myResources;
+    private static int MAX_VAL = 2;
+    /**
+     * Uses gridMap to construct Percolation and gridcell values to set cells at points.
+     * @param gridMap: Map with KVP of a coordinate point to an int, which represents the state to construct cell with.
+     * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the parameter value
+     */
     public PercolationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         for (int y = 0; y < myHeight; y++ ) {
@@ -24,9 +29,11 @@ public class PercolationGrid extends Grid {
                 }
             }
         }
-        buildSquareNeighbors(pointCellMap);
+        buildSquareNeighbors();
     }
-
+    /**
+     * Uses default nextFrame from grid superclass
+     */
     @Override
     public void nextFrame() {
         basicNextFrame();

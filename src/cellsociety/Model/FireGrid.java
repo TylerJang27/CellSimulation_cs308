@@ -13,6 +13,11 @@ public class FireGrid extends Grid {
     private ResourceBundle RESOURCES= Main.myResources;
     private static final int MAX_VAL = 2;
 
+    /**
+     * Uses gridMap to construct Fire grid and define fire chance percentage
+     * @param gridMap: Map with KVP of a coordinate point to an int, which represents the state to construct cell with.
+     * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the parameter value
+     */
     public FireGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
         super(cellValues);
         double chanceToBurn = (double) gridMap.getOrDefault(RESOURCES.getString("Fire"), 50)/100;
@@ -27,9 +32,12 @@ public class FireGrid extends Grid {
                 }
             }
         }
-        buildNSEWNeighbors(pointCellMap);
+        buildNSEWNeighbors();
     }
 
+    /**
+     * Uses default nextFrame from grid superclass
+     */
     @Override
     public void nextFrame() {
         basicNextFrame();

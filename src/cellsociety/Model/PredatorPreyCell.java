@@ -14,6 +14,11 @@ public class PredatorPreyCell extends Cell {
     protected int timeSinceEaten;
     private int stepsAlive;
 
+    /**
+     * Constructs cell with initial state and values to be evaluated per step
+     * @param beginState Initial state to construct cell
+     * @param sharkStarve Threshold before shark dies, passed from PredatorPreyGrid
+     */
     public PredatorPreyCell(int beginState, int sharkStarve) {
         neighbors = new ArrayList<>();
         state = beginState;
@@ -23,6 +28,10 @@ public class PredatorPreyCell extends Cell {
         timeToStarve = sharkStarve;
     }
 
+    /**
+     * Checks to see if a shark eats a fish (updates fish cell to 0) or if shark starves to death.
+     * @return new state of cell
+     */
     @Override
     public int calculateNextState() {
         int newState = state;
@@ -43,6 +52,10 @@ public class PredatorPreyCell extends Cell {
         return newState;
     }
 
+    /**
+     * Checks if shark should die from malnourishment
+     * @return 0 if shark dies, 2 if shark still lives on
+     */
     private int checkIfStarves() {
         if (!didKill) {
             timeSinceEaten++;
