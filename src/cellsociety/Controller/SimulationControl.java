@@ -17,8 +17,7 @@ import java.util.ResourceBundle;
  * Core class of the Controller part of the MVC Model
  * Reads in data from the XML file and
  *
- * //FIXME: Add comments and documentation
- * //FIXME: All codestyle
+ * @author Tyler Jang
  */
 public class SimulationControl {
 

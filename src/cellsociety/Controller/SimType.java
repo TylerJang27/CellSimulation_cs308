@@ -14,6 +14,8 @@ import java.util.List;
  *
  * Portions taken from ESRBRating.java from spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/enumerated/ESRBRating.java
+ *
+ * @author Tyler Jang
  */
 public enum SimType {
     GAME_OF_LIFE (Main.myResources.getString("GameOfLife"), new String[]{}),

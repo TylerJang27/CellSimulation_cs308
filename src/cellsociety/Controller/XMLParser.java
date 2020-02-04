@@ -19,6 +19,8 @@ import org.xml.sax.SAXException;
  *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
+ *
+ * @author Tyler Jang
  */
 public class XMLParser {
     public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");

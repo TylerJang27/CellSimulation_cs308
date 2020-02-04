@@ -11,6 +11,8 @@ import java.util.List;
  *
  * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
+ *
+ * @author Tyler Jang
  */
 public class Simulation {
     private static ResourceBundle RESOURCES=Main.myResources;
