@@ -3,7 +3,7 @@ package cellsociety.Model;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Main;
 
-import java.awt.*;;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
