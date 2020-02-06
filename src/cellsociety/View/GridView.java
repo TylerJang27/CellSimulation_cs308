@@ -11,8 +11,8 @@ import javafx.scene.layout.RowConstraints;
 
 public class GridView extends GridPane {
 
-  private static double GRID_PADDING = 10;
-  private double mySize;
+  private static final double GRID_PADDING = 10;
+  private double mySize = 800;
 
   private Collection<CellView> myCells;
 

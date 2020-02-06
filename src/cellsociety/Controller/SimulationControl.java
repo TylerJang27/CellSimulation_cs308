@@ -171,39 +171,36 @@ public class SimulationControl {
    * Returns a handler for playSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getPlayHandler() {
-    EventHandler<MouseEvent> playButtonClickedHandler = new EventHandler<MouseEvent>() {
+    return new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         playSimulation();
       }
     };
-    return playButtonClickedHandler;
   }
 
   /**
    * Returns a handler for pauseSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getPauseListener() {
-    EventHandler<MouseEvent> pauseButtonClickedHandler = new EventHandler<>() {
+    return new EventHandler<>() {
       @Override
       public void handle(MouseEvent event) {
         pauseSimulation();
       }
     };
-    return pauseButtonClickedHandler;
   }
 
   /**
    * Returns a handler for stepSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getStepHandler() {
-    EventHandler<MouseEvent> stepButtonClickedHandler = new EventHandler<MouseEvent>() {
+    return new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         stepSimulation();
       }
     };
-    return stepButtonClickedHandler;
   }
 
   /**
@@ -236,13 +233,12 @@ public class SimulationControl {
    * Returns a handler for changing the new simulation rate
    */
   private ChangeListener<? super Number> getSliderListener() {
-    ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
+    return new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> observable, Number oldValue,
           Number newValue) {
         changeSimulationSpeed(observable.getValue());
       }
     };
-    return sliderListener;
   }
 }
