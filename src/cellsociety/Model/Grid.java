@@ -109,13 +109,6 @@ public abstract class Grid {
     return pointCellMap.get(p).getState();
   }
 
-  //Used for debugging
-  public void printGrid() {
-    for (Point p : pointCellMap.keySet()) {
-      System.out.println("Location: " + p + "State: " + pointCellMap.get(p).getState() + "\n");
-    }
-  }
-
   public int getFrame() {
     return myFrame;
   }
