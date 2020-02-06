@@ -66,42 +66,58 @@ public class PredatorPreyGrid extends Grid {
    */
   @Override
   public void nextFrame() {
-    //Checks to see if a shark eats a fish
     basicNextFrame();
 
-    //resets all cells before moving any
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell updateCell = (PredatorPreyCell) c;
       updateCell.didMove = false;
     }
 
-    // handle movement of updated states
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell currentCell = (PredatorPreyCell) c;
-      int activeNeighbors = currentCell.countAliveNeighbors();
       int state = currentCell.getState();
 
-      if (state != EMPTY && !currentCell.didMove) {
-        if (!currentCell.didKill && activeNeighbors < 4) {
-          currentCell = moveCell(currentCell);
-        }
-        currentCell.setStepsAlive(currentCell.getStepsAlive() + 1);
-      }
+      currentCell = handleMovement(currentCell, state);
 
-      //Handles breeding
-      int breedingTime = 0;
-      if (state == FISH) {
-        breedingTime = FISH_TURNS_TO_BREED;
-      } else if (state == SHARK) {
-        breedingTime = SHARK_TURNS_TO_BREED;
+      handleBreeding(currentCell, state);
+    }
+  }
+
+  /**
+   * Checks if current cell is capable of moving and calls method to move cell if so
+   * @param currentCell Current cell being looked at
+   * @param state state of that current cell
+   * @return the nwe cell that the fish/shark moved, or the original if it didn't move
+   */
+  private PredatorPreyCell handleMovement(PredatorPreyCell currentCell, int state) {
+    int activeNeighbors = currentCell.countAliveNeighbors();
+    if (state != EMPTY && !currentCell.didMove) {
+      if (!currentCell.didKill && activeNeighbors < 4) {
+        currentCell = moveCell(currentCell);
       }
-      if (currentCell.getStepsAlive() >= breedingTime) {
-        for (Cell childCell : currentCell.getNeighbors()) {
-          if (childCell.getState() == EMPTY) {
-            childCell.updateState(state);
-            currentCell.setStepsAlive(0);
-            break;
-          }
+      currentCell.setStepsAlive(currentCell.getStepsAlive() + 1);
+    }
+    return currentCell;
+  }
+
+  /**
+   * Checks if cell should breed or not
+   * @param currentCell Current cell being looked at
+   * @param state state of that current cell
+   */
+  private void handleBreeding(PredatorPreyCell currentCell, int state) {
+    int breedingTime = 0;
+    if (state == FISH) {
+      breedingTime = FISH_TURNS_TO_BREED;
+    } else if (state == SHARK) {
+      breedingTime = SHARK_TURNS_TO_BREED;
+    }
+    if (currentCell.getStepsAlive() >= breedingTime) {
+      for (Cell childCell : currentCell.getNeighbors()) {
+        if (childCell.getState() == EMPTY) {
+          childCell.updateState(state);
+          currentCell.setStepsAlive(0);
+          break;
         }
       }
     }
