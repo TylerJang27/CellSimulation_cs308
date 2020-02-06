@@ -68,10 +68,7 @@ public class PredatorPreyGrid extends Grid {
   public void nextFrame() {
     basicNextFrame();
 
-    for (Cell c : pointCellMap.values()) {
-      PredatorPreyCell updateCell = (PredatorPreyCell) c;
-      updateCell.didMove = false;
-    }
+    resetMovement();
 
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell currentCell = (PredatorPreyCell) c;
@@ -80,6 +77,13 @@ public class PredatorPreyGrid extends Grid {
       currentCell = handleMovement(currentCell, state);
 
       handleBreeding(currentCell, state);
+    }
+  }
+
+  private void resetMovement() {
+    for (Cell c : pointCellMap.values()) {
+      PredatorPreyCell updateCell = (PredatorPreyCell) c;
+      updateCell.didMove = false;
     }
   }
 
