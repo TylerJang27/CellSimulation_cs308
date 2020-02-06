@@ -39,9 +39,7 @@ public class ConsoleView extends Pane {
     myConsoleView.setPadding(new Insets(MARGINS, MARGINS, MARGINS, MARGINS));
     myConsoleView.prefWidthProperty().bind(this.widthProperty());
 
-    myFrameTextLabel = new Label(FRAME_NUMBER_TEXT);
-    myErrorLabel = new Label(SIMULATION_NO_ERRORS);
-    myFrameNumberLabel = new Label(String.valueOf(myFrame));
+    constructLabels();
 
     Region region1 = new Region();
     HBox.setHgrow(region1, Priority.ALWAYS);
@@ -49,6 +47,12 @@ public class ConsoleView extends Pane {
 
     getChildren().add(myConsoleView);
 
+  }
+
+  private void constructLabels() {
+    myFrameTextLabel = new Label(FRAME_NUMBER_TEXT);
+    myErrorLabel = new Label(SIMULATION_NO_ERRORS);
+    myFrameNumberLabel = new Label(String.valueOf(myFrame));
   }
 
   /**

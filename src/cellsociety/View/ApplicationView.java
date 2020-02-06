@@ -44,7 +44,7 @@ public class ApplicationView {
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
-    myGridView = new GridView(0, 0, size, size);
+    myGridView = new GridView();
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
@@ -54,8 +54,8 @@ public class ApplicationView {
     root.setBottom(myConsoleView);
     root.setCenter(myGridView);
     root.setLeft(myDashboardView);
-    myScene = new Scene(root);
 
+    myScene = new Scene(root);
     myScene.getStylesheets().add(STYLESHEET);
 
     primaryStage.setScene(myScene);
