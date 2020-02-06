@@ -50,6 +50,13 @@ public class GridView extends GridPane {
   }
 
   /**
+   * Default constructor for a Grid View. has no rows and no columns by default
+   */
+  public GridView(){
+    this(0,0,SIZE,SIZE);
+  }
+
+  /**
    * update the appearance of a cell to the specified state
    *
    * @param row    the row of the cell to be modified
