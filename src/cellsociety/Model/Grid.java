@@ -20,7 +20,7 @@ public abstract class Grid {
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  protected static ResourceBundle RESOURCES = Main.myResources;
+  private static ResourceBundle RESOURCES = Main.myResources;
   protected int myFrame;
 
   /**
@@ -71,12 +71,19 @@ public abstract class Grid {
    */
   protected void buildSquareNeighbors() {
     for (Point p : pointCellMap.keySet()) {
-      for (int x = -1; x <= 1; x++) {
-        for (int y = -1; y <= 1; y++) {
-          Point potentialNeighbor = new Point((int) p.getX() + x, (int) p.getY() + y);
-          if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
-            pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
-          }
+      buildSquareSingleNeighbor(p);
+    }
+  }
+
+  private void buildSquareSingleNeighbor(Point p) {
+    int xPos = (int) p.getX();
+    int yPos = (int) p.getY();
+
+    for (int x = -1; x <= 1; x++) {
+      for (int y = -1; y <= 1; y++) {
+        Point potentialNeighbor = new Point(xPos + x, yPos + y);
+        if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
+          pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
         }
       }
     }
@@ -86,7 +93,7 @@ public abstract class Grid {
   //Then updates each cell's state
   public abstract void nextFrame();
 
-  public void basicNextFrame() {
+  protected void basicNextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
     ArrayList<Cell> activeCells = new ArrayList<>();
@@ -107,13 +114,6 @@ public abstract class Grid {
   public int getState(int r, int c) {
     Point p = new Point(r, c);
     return pointCellMap.get(p).getState();
-  }
-
-  //Used for debugging
-  public void printGrid() {
-    for (Point p : pointCellMap.keySet()) {
-      System.out.println("Location: " + p + "State: " + pointCellMap.get(p).getState() + "\n");
-    }
   }
 
   public int getFrame() {

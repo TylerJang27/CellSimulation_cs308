@@ -62,8 +62,8 @@ public class DashboardView extends Pane {
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
     super();
     setId("dashboard");
-    VBox myDashBoard = new VBox(SPACING);
 
+    VBox myDashBoard = new VBox(SPACING);
     myDashBoard.prefHeightProperty().bind(this.heightProperty());
     myDashBoard.setPadding(PADDING);
 

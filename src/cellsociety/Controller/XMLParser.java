@@ -1,7 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,14 +23,12 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
 
-  public static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
+  private static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
+  //TODO: Add new XML reading type (shape)?
 
-  public static final int ALL = 0;
-  public static final int SOME = 1;
-  public static final int RANDOM = 2;
 
   /**
    * Create parser for XML files of given type.
@@ -46,10 +43,8 @@ public class XMLParser {
    *
    * @param dataFile file from which to read configuration
    * @return Returns a Simulation with all of its configuration information stored
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public Simulation getSimulation(File dataFile) throws IOException, SAXException {
+  public Simulation getSimulation(File dataFile) {
     if (!isXML(dataFile)) {
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
     }
@@ -61,9 +56,10 @@ public class XMLParser {
     }
 
     Map<String, String> simulationSettings = readSettings(root);
-    String gridType = getTextValue(root, Main.myResources.getString("GridType"));
-    Map grid = getGrid(dataFile, Integer.parseInt(gridType));
-    return new Simulation(simulationSettings, grid);
+    int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType")));
+
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
+    return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
   }
 
   /**
@@ -73,6 +69,7 @@ public class XMLParser {
    * @return a Map of Strings of configuration settings
    */
   private Map<String, String> readSettings(Element root) {
+    //FIXME: ACCOUNT FOR DIFFERENT DATA TYPES AND ALSO THROW EXCEPTIONS
     Map<String, String> simulationSettings = new HashMap<>();
     for (String field : Simulation.DATA_FIELDS) {
       simulationSettings.put(field, getTextValue(root, field));
@@ -100,6 +97,9 @@ public class XMLParser {
     }
   }
 
+  /**
+   * Checks whether or not a file is an XML file based on its name
+   */
   private boolean isXML(File dataFile) {
     return -1 != dataFile.getName().indexOf(XML_END);
   }
@@ -140,75 +140,6 @@ public class XMLParser {
     } else {
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
     }
-  }
-
-  /**
-   * Returns a grid based off of the type of grid stored in the XML file
-   *
-   * @param dataFile the file from which to read
-   * @param gridType the type of grid (all, some, or random)
-   * @return a Map representing points and values in the grid
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
-   */
-  private Map<Point, Integer> getGrid(File dataFile, Integer gridType)
-      throws IOException, SAXException {
-    if (gridType.equals(ALL)) {
-      return getAllGrid(dataFile);
-    } else if (gridType.equals(SOME)) {
-      return getSomeGrid(dataFile);
-    } else {
-      return new HashMap<>();
-    }
-  }
-
-  /**
-   * Returns a grid of the type where all points are specified in the XML file NOTE: Assumes all
-   * points have been specified
-   *
-   * @param dataFile the file from which to read
-   * @return a Map representing points and values in the grid
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
-   */
-  private Map<Point, Integer> getAllGrid(File dataFile) throws IOException, SAXException {
-    Document doc = getDocumentBuilder().parse(dataFile);
-    NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
-    Map<Point, Integer> grid = new HashMap<>();
-    String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
-
-    for (int j = 0; j < wholeGrid.length; j++) {
-      String row = wholeGrid[j].trim();
-      String[] vals = row.split(" ");
-      for (int k = 0; k < vals.length; k++) {
-        grid.put(new Point(j, k), Integer.parseInt(vals[k]));
-      }
-    }
-    return grid;
-  }
-
-  /**
-   * Returns a grid of the type where all points are specified in the XML file NOTE: Assumes all
-   * points have been correctly specified as x y val
-   *
-   * @param dataFile the file from which to read
-   * @return a Map representing points and values in the grid
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
-   */
-  private Map<Point, Integer> getSomeGrid(File dataFile) throws IOException, SAXException {
-    Document doc = getDocumentBuilder().parse(dataFile);
-    NodeList nodeList = doc.getElementsByTagName(Main.myResources.getString("Grid"));
-    Map<Point, Integer> grid = new HashMap<>();
-    String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
-
-    for (int j = 0; j < wholeGrid.length; j++) {
-      String row = wholeGrid[j].trim();
-      String[] vals = row.split(" ");
-      grid.put(new Point(Integer.parseInt(vals[1]), Integer.parseInt(vals[0])),
-          Integer.parseInt(vals[2]));
-    }
-    return grid;
   }
 
   /**

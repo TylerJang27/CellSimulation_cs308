@@ -44,7 +44,7 @@ public class ApplicationView {
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
-    myGridView = new GridView(0, 0, size, size);
+    myGridView = new GridView(size);
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
@@ -54,8 +54,8 @@ public class ApplicationView {
     root.setBottom(myConsoleView);
     root.setCenter(myGridView);
     root.setLeft(myDashboardView);
-    myScene = new Scene(root);
 
+    myScene = new Scene(root);
     myScene.getStylesheets().add(STYLESHEET);
 
     primaryStage.setScene(myScene);
@@ -95,8 +95,8 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length) {
-    myGridView = new GridView(numRows, numColumns, width, length);
+  public void initializeGrid(double size, int numRows, int numColumns, double width, double length) {
+    myGridView = new GridView(size, numRows, numColumns, width, length);
     root.setCenter((myGridView));
   }
 }
