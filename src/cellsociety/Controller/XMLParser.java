@@ -1,7 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -28,11 +27,7 @@ public class XMLParser {
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
-
-  public static final int ALL = 0;
-  public static final int SOME = 1;
-  public static final int RANDOM = 2;
-  //TODO: Add new XML reading type
+  //TODO: Add new XML reading type (shape)?
 
 
   /**
@@ -48,10 +43,8 @@ public class XMLParser {
    *
    * @param dataFile file from which to read configuration
    * @return Returns a Simulation with all of its configuration information stored
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public Simulation getSimulation(File dataFile) throws IOException, SAXException {
+  public Simulation getSimulation(File dataFile) {
     if (!isXML(dataFile)) {
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
     }
@@ -65,8 +58,8 @@ public class XMLParser {
     Map<String, String> simulationSettings = readSettings(root);
     int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType")));
 
-    Map grid = getGrid(dataFile, gridType);
-    return new Simulation(simulationSettings, grid);
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
+    return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
   }
 
   /**
@@ -104,6 +97,9 @@ public class XMLParser {
     }
   }
 
+  /**
+   * Checks whether or not a file is an XML file based on its name
+   */
   private boolean isXML(File dataFile) {
     return -1 != dataFile.getName().indexOf(XML_END);
   }
@@ -143,29 +139,6 @@ public class XMLParser {
       return nodeList.item(0).getTextContent();
     } else {
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
-    }
-  }
-
-  /**
-   * Returns a grid based off of the type of grid stored in the XML file
-   *
-   * @param dataFile the file from which to read
-   * @param gridType the type of grid (all, some, or random)
-   * @return a Map representing points and values in the grid
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
-   */
-  private Map<Point, Integer> getGrid(File dataFile, int gridType)
-      throws IOException, SAXException {
-    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
-
-    //FIXME: This should all be in Grid Parser
-    if (gridType == ALL) {
-      return myGridParser.getAllGrid(dataFile);
-    } else if (gridType == SOME) {
-      return myGridParser.getSomeGrid(dataFile);
-    } else {
-      return new HashMap<>();
     }
   }
 

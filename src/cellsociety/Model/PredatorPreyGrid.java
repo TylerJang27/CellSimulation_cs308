@@ -1,5 +1,6 @@
 package cellsociety.Model;
 
+import cellsociety.Controller.GridParser;
 import cellsociety.Controller.XMLParser;
 import cellsociety.Main;
 import java.awt.Point;
@@ -48,7 +49,7 @@ public class PredatorPreyGrid extends Grid {
     for (int y = EMPTY; y < myHeight; y++) {
       for (int x = EMPTY; x < myWidth; x++) {
         Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(XMLParser.RANDOM)) {
+        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) { //TODO: SEARCH FOR GRIDPARSER AND CHANGE THIS?
           pointCellMap.put(p,
               new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
                   TURNS_TO_STARVE));
