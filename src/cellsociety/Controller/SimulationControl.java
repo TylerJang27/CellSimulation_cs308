@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 public class SimulationControl {
 
   public static final int DEFAULT_RATE = 5;
-  private static final double SIZE = 800;
+  private static final double SIZE = 700;
   public static final int RATE_MAX = 10;
 
   private Grid myGrid;
@@ -36,16 +36,14 @@ public class SimulationControl {
   private int rate = DEFAULT_RATE;
   private int frameStep;
   private int numCols, numRows;
-  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final ResourceBundle RESOURCES = Main.myResources;
 
   /**
    * Constructor for creating a SimulationControl instance
    *
    * @param primaryStage the stage for the animation
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public SimulationControl(Stage primaryStage) throws IOException, SAXException {
+  public SimulationControl(Stage primaryStage) {
     paused = true;
     frameStep = 0;
     initializeView(primaryStage);
@@ -86,9 +84,8 @@ public class SimulationControl {
         myGrid.nextFrame();
         updateViewGrid();
         myApplicationView.displayFrameNumber(myGrid.getFrame());
-        myApplicationView.updateCell(2, 3, (int) Math.random() * 3);
       }
-    } catch (Exception e) {
+    } catch (NullPointerException e) {
       myApplicationView.logError(RESOURCES.getString("BadStep"));
     }
   }
@@ -143,7 +140,7 @@ public class SimulationControl {
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE);
+    myApplicationView.initializeGrid(SIZE, numRows, numCols, SIZE, SIZE);
     myGrid = createGrid();
 
     updateViewGrid();
@@ -174,39 +171,36 @@ public class SimulationControl {
    * Returns a handler for playSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getPlayHandler() {
-    EventHandler<MouseEvent> playButtonClickedHandler = new EventHandler<MouseEvent>() {
+    return new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         playSimulation();
       }
     };
-    return playButtonClickedHandler;
   }
 
   /**
    * Returns a handler for pauseSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getPauseListener() {
-    EventHandler<MouseEvent> pauseButtonClickedHandler = new EventHandler<>() {
+    return new EventHandler<>() {
       @Override
       public void handle(MouseEvent event) {
         pauseSimulation();
       }
     };
-    return pauseButtonClickedHandler;
   }
 
   /**
    * Returns a handler for stepSimulation() to be sent to ApplicationView
    */
   private EventHandler<MouseEvent> getStepHandler() {
-    EventHandler<MouseEvent> stepButtonClickedHandler = new EventHandler<MouseEvent>() {
+    return new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
         stepSimulation();
       }
     };
-    return stepButtonClickedHandler;
   }
 
   /**
@@ -239,13 +233,12 @@ public class SimulationControl {
    * Returns a handler for changing the new simulation rate
    */
   private ChangeListener<? super Number> getSliderListener() {
-    ChangeListener<? super Number> sliderListener = new ChangeListener<Number>() {
+    return new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> observable, Number oldValue,
           Number newValue) {
         changeSimulationSpeed(observable.getValue());
       }
     };
-    return sliderListener;
   }
 }
