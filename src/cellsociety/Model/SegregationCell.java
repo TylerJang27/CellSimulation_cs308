@@ -53,7 +53,7 @@ public class SegregationCell extends Cell {
    *
    * @return total same neighbors
    */
-  protected int countSameNeighbors() {
+  private int countSameNeighbors() {
     int count = 0;
     for (Cell neighbor : neighbors) {
         if (neighbor.getState() == state) {

@@ -21,33 +21,26 @@ public class Main extends Application {
   public static final String LANGUAGE = "English";
   private static final String RESOURCES = "resources";
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
-  public static ResourceBundle myResources = ResourceBundle
+  public static final ResourceBundle myResources = ResourceBundle
       .getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
 
   private static final String TITLE = myResources.getString("CellSimulator");
-
-  private SimulationControl mySim;
-
-  //FIXME: publicity of constants
-  //FIXME: go through methods for comments and code style
 
   /**
    * Starts the Application by creating SimulationControl and starting the animation
    *
    * @param primaryStage the stage for the Application
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
   @Override
-  public void start(Stage primaryStage) throws IOException, SAXException {
-    mySim = new SimulationControl(primaryStage);
+  public void start(Stage primaryStage) {
+    SimulationControl mySim = new SimulationControl(primaryStage);
 
     primaryStage.setTitle(TITLE);
     primaryStage.show();
 
     //begins game loop to call step
     KeyFrame frame = new KeyFrame(Duration.millis(DEFAULT_MILLISECOND_DELAY), e -> {
-      step();
+      step(mySim);
     });
     Timeline animation = new Timeline();
     animation.setCycleCount(Timeline.INDEFINITE);
@@ -58,14 +51,13 @@ public class Main extends Application {
   /**
    * Steps the simulation for each frame
    */
-  private void step() {
-    mySim.next(false);
+  private void step(SimulationControl sim) { sim.next(false);
   }
 
   /**
    * Start of the program, launching the Application
    */
-  public static void main(String[] args) throws IOException, SAXException {
+  public static void main(String[] args) {
     launch(args);
   }
 }

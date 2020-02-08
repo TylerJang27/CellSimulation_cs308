@@ -11,8 +11,8 @@ import javafx.scene.layout.RowConstraints;
 
 public class GridView extends GridPane {
 
-  private static double GRID_PADDING = 10;
-  private static double SIZE = 800;
+  private static final double GRID_PADDING = 10;
+  private double mySize = 800;
 
   private Collection<CellView> myCells;
 
@@ -24,10 +24,9 @@ public class GridView extends GridPane {
    * @param width      the width of the grid
    * @param height     the height of the grid
    */
-  public GridView(int numRows, int numColumns, double width, double height) {
-
+  public GridView(double size, int numRows, int numColumns, double width, double height) {
     super();
-
+    mySize = size;
     setId("grid");
 
     setHgap(GRID_PADDING);
@@ -35,7 +34,6 @@ public class GridView extends GridPane {
     setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
     setConstraints(numRows, numColumns);
 
-    //TODO: HashMap implementation to make updateCell() O(1) (right now it is O(n^2), doesn't really matter since the size is small enough for it to be fine but still good idea to change it
     myCells = new ArrayList<>();
     for (int i = 0; i < numRows; i++) {
       for (int j = 0; j < numColumns; j++) {
@@ -45,9 +43,16 @@ public class GridView extends GridPane {
       }
     }
 
-    setPrefHeight(SIZE);
-    setPrefWidth(SIZE);
+    setPrefHeight(mySize);
+    setPrefWidth(mySize);
 
+  }
+
+  /**
+   * Default constructor for a Grid View. has no rows and no columns by default
+   */
+  public GridView(double size){
+    this(size, 0,0, size, size);
   }
 
   /**
