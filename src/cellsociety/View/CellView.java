@@ -4,6 +4,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class to render the Appearance of a cell.
  *
@@ -11,19 +14,50 @@ import javafx.scene.shape.Rectangle;
  */
 public class CellView extends Pane {
 
-  private Rectangle myDisplay;
+  private List<CellState> cellStateList;
+  private CellState myCurrentState;
 
-  /**
-   * Default constructor for a CellView. Implemented as a Rectangle
-   */
-  public CellView() {
+//List<CellState> cellStates
+  public CellView(){
     super();
-    myDisplay = new Rectangle();
 
-    myDisplay.widthProperty().bind(this.widthProperty());
-    myDisplay.heightProperty().bind(this.heightProperty());
+    setUpDefaultConfiguration();
+    myCurrentState = cellStateList.get(0);
+    for(CellState state : cellStateList){
+      state.prefHeightProperty().bind(this.heightProperty());
+      state.prefWidthProperty().bind(this.widthProperty());
+    }
+    getChildren().add(myCurrentState);
+  }
+  public CellView(List<CellStateConfiguration> configuration){
+    super();
+    setUpDefaultConfiguration();
+    for(CellStateConfiguration config : configuration){
+      System.out.println(configuration);
 
-    getChildren().add(myDisplay);
+    }
+
+    for(int i = 0; i < configuration.size(); i++){
+      CellStateConfiguration currentConfiguration = configuration.get(0);
+      switch(currentConfiguration.getStyle()){
+
+      }
+    }
+
+    myCurrentState = cellStateList.get(0);
+    for(CellState state : cellStateList){
+      state.prefHeightProperty().bind(this.heightProperty());
+      state.prefWidthProperty().bind(this.widthProperty());
+    }
+    getChildren().add(myCurrentState);
+  }
+
+  private void setUpDefaultConfiguration(){
+    cellStateList = new ArrayList<>();
+    cellStateList.add(new ImageCellState());
+    cellStateList.add(new ColoredCellState(Color.RED));
+    cellStateList.add(new ColoredCellState(Color.BLUE));
+    cellStateList.add(new ColoredCellState(Color.YELLOW));
   }
 
   /**
@@ -32,20 +66,15 @@ public class CellView extends Pane {
    * @param state the next state of the cell
    */
   public void changeState(int state) {
-    switch (state) {
-      case 0:
-        myDisplay.setFill(Color.BLACK);
-        break;
-      case 1:
-        myDisplay.setFill(Color.RED);
-        break;
-      case 2:
-        myDisplay.setFill(Color.BLUE);
-        break;
-      case 3:
-        myDisplay.setFill(Color.YELLOW);
-        break;
-    }
+    getChildren().remove(myCurrentState);
+    getChildren().add(cellStateList.get(state));
+    myCurrentState = cellStateList.get(state);
+  }
 
+  private void getCellConfiguration(CellStateConfiguration configuration){
+    String style = configuration.getStyle();
+    if(style.equals("IMAGE")){
+      return new ImageCellState(configuration.getParameters())
+    }
   }
 }

@@ -1,6 +1,8 @@
 package cellsociety.View;
 
 import java.io.File;
+import java.util.List;
+
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -23,6 +25,7 @@ public class ApplicationView {
   private BorderPane root;
   private GridView myGridView;
   private ConsoleView myConsoleView;
+  private EventHandler<CellClickedEvent> myCellClickedHandler;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -43,7 +46,8 @@ public class ApplicationView {
       EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
-      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
+      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
+    myCellClickedHandler = cellClickedHandler;
     myGridView = new GridView();
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
@@ -95,8 +99,8 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length) {
-    myGridView = new GridView(numRows, numColumns, width, length);
+  public void initializeGrid(int numRows, int numColumns, double width, double length, List<CellStateConfiguration> cellStateConfigs) {
+    myGridView = new GridView(numRows, numColumns, width, length, myCellClickedHandler, cellStateConfigs);
     root.setCenter((myGridView));
   }
 }
