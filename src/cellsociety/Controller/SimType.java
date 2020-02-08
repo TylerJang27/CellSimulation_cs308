@@ -21,14 +21,14 @@ import java.util.List;
  */
 public enum SimType {
   GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{Main.myResources.getString("Coverage")}, GameOfLifeGrid.MAX_VAL),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, PercolationGrid.MAX_VAL), //FIXME: IMPLEMENT BLOCKED AND FILLED RANDOM
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, PercolationGrid.MAX_VAL),
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
-          Main.myResources.getString("Empty")}, SegregationGrid.MAX_VAL), //FIXME: IMPLEMENT RANDOM GENERATOR
+          Main.myResources.getString("Empty")}, SegregationGrid.MAX_VAL),
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
-      new String[]{Main.myResources.getString("FishBreed"), //FIXME: IMPLEMENT RANDOM GENERATOR
+      new String[]{Main.myResources.getString("FishBreed"),
           Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, PredatorPreyGrid.MAX_VAL),
-  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL); //FIXME: IMPLEMENT DEFAULT CATCH
+  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL);
 
   private String myName;
   private final List<String> myMandatoryFields;

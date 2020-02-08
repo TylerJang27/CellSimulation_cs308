@@ -146,7 +146,7 @@ public class Simulation {
   }
 
   /**
-   * Returns the gridType: all, random, or some
+   * Returns the gridType: 1-3
    */
   public String getGridType() {
     return gridType;
@@ -162,7 +162,7 @@ public class Simulation {
   /**
    * Returns Map with all String and Integer values for fields
    */
-  public Map<String, Integer> getValueSet() {
+  public Map<String, Integer> getValueMap() {
     return myDataValues;
   }
 

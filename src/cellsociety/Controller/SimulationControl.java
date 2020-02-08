@@ -9,14 +9,12 @@ import cellsociety.Model.PredatorPreyGrid;
 import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
 import java.io.File;
-import java.io.IOException;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
 /**
  * Core class of the Controller part of the MVC Model Reads in data from the XML file and
@@ -93,7 +91,7 @@ public class SimulationControl {
   /**
    * Updates all the Cells in GridView based off of the values in myGrid
    */
-  private void updateViewGrid() {
+  private void updateViewGrid() { //FIXME: HANDLE HEX?
     for (int j = 0; j < numCols; j++) {
       for (int k = 0; k < numRows; k++) {
         myApplicationView.updateCell(j, k, myGrid.getState(j, k));
@@ -132,7 +130,7 @@ public class SimulationControl {
   public void initializeModel(File dataFile) {
     mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
-    rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
+    rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
 
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
@@ -152,15 +150,15 @@ public class SimulationControl {
   private Grid createGrid() {
     String simType = mySim.getType().toString();
     if (simType.equals(RESOURCES.getString("GameOfLife"))) {
-      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueSet());
+      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Percolation"))) {
-      return new PercolationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PercolationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Segregation"))) {
-      return new SegregationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new SegregationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
-      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Fire"))) {
-      return new FireGrid(mySim.getGrid(), mySim.getValueSet());
+      return new FireGrid(mySim.getGrid(), mySim.getValueMap());
     }
     return null;
   }
@@ -212,8 +210,7 @@ public class SimulationControl {
         try {
           initializeModel(newValue);
           myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
-        } catch (Exception e) {
-          //FIXME: TOO GENERAL EXCEPTION
+        } catch (XMLException e) {
           myApplicationView.logError(e.getMessage());
         }
       }

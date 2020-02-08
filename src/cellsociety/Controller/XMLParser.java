@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Class for parsing XML files to determine simulation configuration.
- * <p>
+ *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *

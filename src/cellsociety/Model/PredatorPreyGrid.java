@@ -50,7 +50,7 @@ public class PredatorPreyGrid extends Grid {
     for (int y = EMPTY; y < myHeight; y++) {
       for (int x = EMPTY; x < myWidth; x++) {
         Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) { //TODO: SEARCH FOR GRIDPARSER AND CHANGE THIS?
+        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
           pointCellMap.put(p,
               new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
                       turnsToStarve));
