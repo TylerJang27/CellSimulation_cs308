@@ -28,7 +28,7 @@ public enum SimType {
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"), //FIXME: IMPLEMENT RANDOM GENERATOR
           Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Fish"), Main.myResources.getString("Shark")}, PredatorPreyGrid.MAX_VAL),
-  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch")}, FireGrid.MAX_VAL); //FIXME: IMPLEMENT DEFAULT CATCH
+  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL); //FIXME: IMPLEMENT DEFAULT CATCH
 
   private String myName;
   private final List<String> myMandatoryFields;
