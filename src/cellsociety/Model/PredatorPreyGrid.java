@@ -1,7 +1,6 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
-import cellsociety.Controller.XMLParser;
 import cellsociety.Main;
 import java.awt.Point;
 import java.util.Collections;
@@ -67,7 +66,7 @@ public class PredatorPreyGrid extends Grid {
    */
   @Override
   public void nextFrame() {
-    basicNextFrame();
+    super.nextFrame();
 
     resetMovement();
 

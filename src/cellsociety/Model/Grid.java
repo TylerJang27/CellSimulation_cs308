@@ -91,12 +91,9 @@ public abstract class Grid {
 
   //First calculates and stores new state of each cell
   //Then updates each cell's state
-  public abstract void nextFrame();
-
-  protected void basicNextFrame() {
+  public void nextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
-    ArrayList<Cell> activeCells = new ArrayList<>();
     int index = 0;
     for (Cell c : pointCellMap.values()) {
       states[index] = c.calculateNextState();

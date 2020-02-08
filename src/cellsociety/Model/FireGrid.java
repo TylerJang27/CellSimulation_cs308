@@ -1,7 +1,6 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
-import cellsociety.Controller.XMLParser;
 import cellsociety.Main;
 import java.awt.Point;
 import java.util.Map;
@@ -42,13 +41,5 @@ public class FireGrid extends Grid {
       }
     }
     buildNSEWNeighbors();
-  }
-
-  /**
-   * Uses default nextFrame from grid superclass
-   */
-  @Override
-  public void nextFrame() {
-    basicNextFrame();
   }
 }
