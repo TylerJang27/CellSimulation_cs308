@@ -1,14 +1,13 @@
 package cellsociety;
 
 import cellsociety.Controller.SimulationControl;
-import java.io.IOException;
-import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.xml.sax.SAXException;
+
+import java.util.ResourceBundle;
 
 /**
  * Feel free to completely change this code or delete it entirely.

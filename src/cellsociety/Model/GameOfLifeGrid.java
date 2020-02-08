@@ -1,9 +1,8 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
-import cellsociety.Controller.XMLParser;
 import cellsociety.Main;
-import java.awt.Point;
+import java.awt.*;
 import java.util.Map;
 import java.util.ResourceBundle;
 

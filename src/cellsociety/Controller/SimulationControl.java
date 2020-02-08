@@ -129,10 +129,8 @@ public class SimulationControl {
    * Sets the initial settings for SimulationControl
    *
    * @param dataFile the File from which to read configuration instructions
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public void initializeModel(File dataFile) throws IOException, SAXException {
+  public void initializeModel(File dataFile) {
     mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -144,6 +142,7 @@ public class SimulationControl {
     myGrid = createGrid();
 
     updateViewGrid();
+    pauseSimulation();
   }
 
   /**
@@ -214,6 +213,7 @@ public class SimulationControl {
         try {
           initializeModel(newValue);
         } catch (Exception e) {
+          //FIXME: TOO GENERAL EXCEPTION
           myApplicationView.logError(e.getMessage());
         }
       }

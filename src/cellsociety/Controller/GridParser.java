@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 
 public class GridParser {
 
-    private DocumentBuilder myDocBuilder;
     private Document myDoc;
     private static final ResourceBundle RESOURCES = Main.myResources;
 
@@ -25,13 +24,12 @@ public class GridParser {
 
     //TODO: add comments
     public GridParser(DocumentBuilder docBuilder, File dataFile) { //TODO: MAKE ENUM IF NECESSARY FOR THE DIFFERENT TYPES
-        myDocBuilder = docBuilder;
         try {
-            myDoc = myDocBuilder.parse(dataFile);
+            myDoc = docBuilder.parse(dataFile);
         } catch (SAXException e) {
-            throw new XMLException(RESOURCES.getString(String.format("BadFormat", dataFile.getName())));
+            throw new XMLException(String.format(RESOURCES.getString("BadFormat"), dataFile.getName()));
         } catch (IOException e) {
-            throw new XMLException(RESOURCES.getString(String.format("FileMissing", dataFile.getName())));
+            throw new XMLException(String.format(RESOURCES.getString("FileMissing"), dataFile.getName()));
         }
         //TODO: determine type of grid needed to read (both some, all, random) as well as shape
     }
