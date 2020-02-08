@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 public class XMLParser {
 
   private static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
+  private static final String ERROR_FIELD_MESSAGE = Main.myResources.getString("XML_ERROR_FIELD_MESSAGE");
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
@@ -138,8 +139,7 @@ public class XMLParser {
     if (nodeList != null && nodeList.getLength() > 0) {
       return nodeList.item(0).getTextContent();
     } else {
-      System.out.println(2 + tagName);
-      throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
+      throw new XMLException(ERROR_FIELD_MESSAGE, Simulation.DATA_TYPE, tagName);
     }
   }
 
