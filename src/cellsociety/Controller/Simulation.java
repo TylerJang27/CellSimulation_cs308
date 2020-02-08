@@ -79,34 +79,61 @@ public class Simulation {
   private void setFields(Map<String, String> dataValues) {
     extractMandatoryValues(dataValues);
     extractOptionalValues(dataValues);
-
-    for (String field : myType.getMandatoryFields()) {
-      if (field.length() > 0) {
-        myDataValues.put(field, Integer.parseInt(dataValues.get(field)));
-      }
-    }
   }
 
   /**
    * Removes the mandatory values from dataValues and throws error if missing
    * @param dataValues Map of String to String from constructor
+   * @throws XMLException if mandatory field is missing or if invalid data type when expecting Integer
    */
   private void extractMandatoryValues(Map<String, String> dataValues) {
     for (int k = 1; k < MANDATORY_DATA_FIELDS.size(); k++) {
       String val = dataValues.get(MANDATORY_DATA_FIELDS.get(k));
       if (val != null) {
-        myDataValues.put(MANDATORY_DATA_FIELDS.get(k), Integer.parseInt(val));
+        try {
+          myDataValues.put(MANDATORY_DATA_FIELDS.get(k), Integer.parseInt(val));
+        } catch (NumberFormatException e) {
+          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), MANDATORY_DATA_FIELDS.get(k));
+        }
       } else {
         throw new XMLException(MISSING_MESSAGE, myType);
       }
     }
+    for (String field : myType.getMandatoryFields()) {
+      if (field.length() > 0) {
+        try {
+          Integer val = Integer.parseInt(dataValues.get(field));
+          myDataValues.put(field, val);
+        } catch (NumberFormatException e) {
+          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), field);
+        }
+      }
+    }
   }
 
+  /**
+   * Removes the optional values from dataValues but throws no error if missing
+   * @param dataValues Map of String to String from constructor
+   * @throws XMLException if invalid data type when expecting Integer
+   */
   private void extractOptionalValues(Map<String, String> dataValues) {
-    for (String s: OPTIONAL_DATA_FIELDS) {
-      String val = dataValues.get(s);
+    for (String field: OPTIONAL_DATA_FIELDS) {
+      String val = dataValues.get(field);
       if (val != null) {
-        myDataValues.put(s, Integer.parseInt(val));
+        try {
+          myDataValues.put(field, Integer.parseInt(val));
+        } catch (NumberFormatException e) {
+          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), field);
+        }
+      }
+    }
+    for (String field: myType.getOptionalFields()) {
+      if (field.length() > 0) {
+        try {
+          myDataValues.put(field, Integer.parseInt(dataValues.get(field)));
+        } catch (NumberFormatException e) {
+          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), field);
+        }
       }
     }
   }

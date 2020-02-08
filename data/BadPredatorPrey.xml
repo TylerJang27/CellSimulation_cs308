@@ -5,7 +5,7 @@
     <author>Team 15</author>
     <description>A poor Predator-Prey XML file used to ensure bad inputs are caught.</description>
     <rate>5</rate>
-    <width>30</width>
+    <width>5</width>
     <height>30</height>
     <fish_breed>2</fish_breed>
     <shark_starve>4</shark_starve>
