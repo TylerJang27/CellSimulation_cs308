@@ -138,6 +138,7 @@ public class XMLParser {
     if (nodeList != null && nodeList.getLength() > 0) {
       return nodeList.item(0).getTextContent();
     } else {
+      System.out.println(2 + tagName);
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
     }
   }

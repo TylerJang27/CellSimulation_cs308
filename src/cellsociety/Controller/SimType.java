@@ -54,7 +54,7 @@ public enum SimType {
    */
   public static SimType of(String code) {
     for (SimType r : SimType.values()) {
-      if (r.myName.equals(code)) {
+      if (code.contains(r.myName)) {
         return r;
       }
     }
