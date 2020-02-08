@@ -28,8 +28,6 @@ public class XMLParser {
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
-  //TODO: Add new XML reading type (shape)?
-
 
   /**
    * Create parser for XML files of given type.
@@ -57,7 +55,7 @@ public class XMLParser {
     }
 
     Map<String, String> simulationSettings = readSettings(root);
-    int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType")));
+    int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType"), true));
 
     GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
     return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
@@ -70,16 +68,35 @@ public class XMLParser {
    * @return a Map of Strings of configuration settings
    */
   private Map<String, String> readSettings(Element root) {
-    //FIXME: ACCOUNT FOR DIFFERENT DATA TYPES AND ALSO THROW EXCEPTIONS
     Map<String, String> simulationSettings = new HashMap<>();
-    for (String field : Simulation.DATA_FIELDS) {
-      simulationSettings.put(field, getTextValue(root, field));
+    for (String field : Simulation.MANDATORY_DATA_FIELDS) {
+      simulationSettings.put(field, getTextValue(root, field, true));
     }
-    for (String field : SimType.of(simulationSettings.get(Simulation.DATA_FIELDS.get(0)))
-        .getFields()) {
-      simulationSettings.put(field, getTextValue(root, field));
+    for (String field: Simulation.OPTIONAL_DATA_FIELDS) {
+      putOptional(root, simulationSettings, field);
+    }
+    for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
+        .getMandatoryFields()) {
+      simulationSettings.put(field, getTextValue(root, field, true));
+    }
+    for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
+            .getOptionalFields()) {
+      putOptional(root, simulationSettings, field);
     }
     return simulationSettings;
+  }
+
+  /**
+   * Adds value in field to simulationSettings if its value exists, throws no exception
+   * @param root document root
+   * @param simulationSettings Map of fields and data for Simulation
+   * @param field name of field in XML file
+   */
+  private void putOptional(Element root, Map<String, String> simulationSettings, String field) {
+    String val = getTextValue(root, field, false);
+    if (val.length() > 0) {
+      simulationSettings.put(field, val);
+    }
   }
 
   /**
@@ -133,14 +150,16 @@ public class XMLParser {
    * @param e       the Element from which to retrieve the attribute
    * @param tagName the tag to search for in the XML file
    * @return the text for that tag
+   * @throws XMLException if field is mandatory and missing
    */
-  private String getTextValue(Element e, String tagName) {
+  private String getTextValue(Element e, String tagName, boolean mandatory) {
     NodeList nodeList = e.getElementsByTagName(tagName);
     if (nodeList != null && nodeList.getLength() > 0) {
       return nodeList.item(0).getTextContent();
-    } else {
+    } else if (mandatory) {
       throw new XMLException(ERROR_FIELD_MESSAGE, Simulation.DATA_TYPE, tagName);
     }
+    return "";
   }
 
   /**

@@ -212,6 +212,7 @@ public class SimulationControl {
           File newValue) {
         try {
           initializeModel(newValue);
+          myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
         } catch (Exception e) {
           //FIXME: TOO GENERAL EXCEPTION
           myApplicationView.logError(e.getMessage());
