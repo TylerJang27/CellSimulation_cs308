@@ -15,15 +15,25 @@ import java.util.ResourceBundle;
 
 public class GridParser {
 
-    private Document myDoc;
     private static final ResourceBundle RESOURCES = Main.myResources;
-
     public static final int ALL = 0;
     public static final int SOME = 1;
     public static final int RANDOM = 2;
+    public static final int PARAMETRIZED_RANDOM = 3;
+
+    private Document myDoc;
+    private int myWidth;
+    private int myHeight;
 
     //TODO: add comments
-    public GridParser(DocumentBuilder docBuilder, File dataFile) { //TODO: MAKE ENUM IF NECESSARY FOR THE DIFFERENT TYPES
+    public GridParser(DocumentBuilder docBuilder, File dataFile, String width, String height) { //TODO: MAKE ENUM IF NECESSARY FOR THE DIFFERENT TYPES
+        try {
+            myWidth = Integer.parseInt(width);
+            myHeight = Integer.parseInt(height);
+        } catch (NumberFormatException e) {
+            throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("WidthHeight"));
+        }
+
         try {
             myDoc = docBuilder.parse(dataFile);
         } catch (SAXException e) {

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,8 +24,9 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
 
-  private static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
-  private static final String ERROR_FIELD_MESSAGE = Main.myResources.getString("XML_ERROR_FIELD_MESSAGE");
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final String ERROR_MESSAGE = RESOURCES.getString("XML_ERROR_MESSAGE");
+  private static final String ERROR_FIELD_MESSAGE = RESOURCES.getString("XML_ERROR_FIELD_MESSAGE");
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
@@ -55,9 +57,9 @@ public class XMLParser {
     }
 
     Map<String, String> simulationSettings = readSettings(root);
-    int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType"), true));
+    int gridType = Integer.parseInt(getTextValue(root, RESOURCES.getString("GridType"), true));
 
-    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, simulationSettings.get(RESOURCES.getString("Width")), simulationSettings.get(RESOURCES.getString("Height")));
     return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
   }
 

@@ -19,7 +19,7 @@ import java.util.List;
  */
 public enum SimType {
   GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{}),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked")}), //FIXME: IMPLEMENT BLOCKED RANDOM
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}), //FIXME: IMPLEMENT BLOCKED AND FILLED RANDOM
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
           Main.myResources.getString("Empty")}), //FIXME: IMPLEMENT RANDOM GENERATOR
