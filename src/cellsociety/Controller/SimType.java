@@ -1,6 +1,8 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
+import cellsociety.Model.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,19 +20,20 @@ import java.util.List;
  * @author Tyler Jang
  */
 public enum SimType {
-  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{}),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}), //FIXME: IMPLEMENT BLOCKED AND FILLED RANDOM
+  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{}, GameOfLifeGrid.MAX_VAL),
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, PercolationGrid.MAX_VAL), //FIXME: IMPLEMENT BLOCKED AND FILLED RANDOM
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
-          Main.myResources.getString("Empty")}), //FIXME: IMPLEMENT RANDOM GENERATOR
+          Main.myResources.getString("Empty")}, SegregationGrid.MAX_VAL), //FIXME: IMPLEMENT RANDOM GENERATOR
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"), //FIXME: IMPLEMENT RANDOM GENERATOR
-          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Fish"), Main.myResources.getString("Shark")}),
-  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch")}); //FIXME: IMPLEMENT DEFAULT CATCH
+          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Fish"), Main.myResources.getString("Shark")}, PredatorPreyGrid.MAX_VAL),
+  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch")}, FireGrid.MAX_VAL); //FIXME: IMPLEMENT DEFAULT CATCH
 
   private String myName;
   private final List<String> myMandatoryFields;
   private final List<String> myOptionalFields;
+  private final Integer maxVal;
 
   /**
    * Constructor for SimType, setting its name and fields
@@ -38,10 +41,11 @@ public enum SimType {
    * @param name   the type of Simulation
    * @param mandatoryFields the different Strings denoting acceptable Integer mandatoryFields for that simulation
    */
-  private SimType(String name, String[] mandatoryFields, String[] optionalFields) {
+  private SimType(String name, String[] mandatoryFields, String[] optionalFields, Integer val) {
     myName = name;
     myMandatoryFields = new ArrayList<>(Arrays.asList(mandatoryFields));
     myOptionalFields = new ArrayList<>(Arrays.asList(optionalFields));
+    maxVal = val;
   }
 
   /**
@@ -55,6 +59,13 @@ public enum SimType {
    * Returns the SimType's optional field names
    */
   public List<String> getOptionalFields() { return myOptionalFields; }
+
+  /**
+   * Returns the SimType's max cell value
+   */
+  public Integer getMaxVal() {
+    return maxVal;
+  }
 
   /**
    * Returns the appropriate SimType based off of its String name

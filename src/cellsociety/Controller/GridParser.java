@@ -28,21 +28,23 @@ public class GridParser {
     private int myWidth;
     private int myHeight;
     private int myShape;
+    private Integer maxVal;
 
     /**
      * Constructor for GridParser objects
      * @param docBuilder DocumentBuilder for all XML Parsing
      * @param dataFile File from which to read
-     * @param simulationSettings Map of Strings to Strings for specific configuration parameters
+     * @param sim Simulation storing relevant configuration information
      * @throws XMLException File missing or incorrect format or non-Integer width or height
      */
-    public GridParser(DocumentBuilder docBuilder, File dataFile, Map<String, String> simulationSettings) {
+    public GridParser(DocumentBuilder docBuilder, File dataFile, Simulation sim) {
+        maxVal = sim.getType().getMaxVal();
+        myWidth = sim.getValue(RESOURCES.getString("Width"));
+        myHeight = sim.getValue(RESOURCES.getString("Height"));
         try {
-            myWidth = Integer.parseInt(simulationSettings.get(RESOURCES.getString("Width")));
-            myHeight = Integer.parseInt(simulationSettings.get(RESOURCES.getString("Height")));
-            String shape = simulationSettings.get(RESOURCES.getString("Shape"));
-            if (shape != null && shape.length() > 0 && Integer.parseInt(shape) <= HEXAGON) {
-                myShape = Integer.parseInt(shape);
+            Integer shape = sim.getValue(RESOURCES.getString("Shape"));
+            if (shape != null && shape <= HEXAGON) {
+                myShape = shape;
             } else {
                 myShape = SQUARE;
             }
@@ -105,7 +107,7 @@ public class GridParser {
             String[] vals = row.split(" ");
             for (int k = 0; k < vals.length; k++) {
                 try {
-                    grid.put(new Point(j, k), Integer.parseInt(vals[k]));
+                    grid.put(new Point(j, k), Math.min(Integer.parseInt(vals[k]), maxVal));
                 } catch (NumberFormatException e) {
                     throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
                 }
@@ -134,7 +136,7 @@ public class GridParser {
             String[] vals = row.split(" ");
             for (int k = 0; k < vals.length && k < myWidth / 2 + 1; k++) {
                 try {
-                    Integer val = Integer.parseInt(vals[k]);
+                    Integer val = Math.min(Integer.parseInt(vals[k]), maxVal);
                     if (j % 2 == 0) {
                         grid.put(new Point(j *2, k), val);
                     } else {
@@ -169,7 +171,7 @@ public class GridParser {
                     intVals[k] = Integer.parseInt(vals[k]);
                 }
                 grid.put(new Point(Math.min(intVals[0], myHeight), Math.min(intVals[1], myWidth)),
-                        intVals[2]);
+                        Math.min(intVals[2], maxVal));
             } catch (NumberFormatException e) {
                 throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
             }

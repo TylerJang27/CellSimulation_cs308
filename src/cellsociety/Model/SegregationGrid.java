@@ -17,7 +17,7 @@ public class SegregationGrid extends Grid {
   private static final int DEFAULT_THRESHOLD = 30;
 
   private ResourceBundle RESOURCES = Main.myResources;
-  private static final int MAX_VAL = 2;
+  public static final int MAX_VAL = 2;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.

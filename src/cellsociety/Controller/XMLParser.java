@@ -59,8 +59,10 @@ public class XMLParser {
     Map<String, String> simulationSettings = readSettings(root);
     int gridType = Integer.parseInt(getTextValue(root, RESOURCES.getString("GridType"), true));
 
-    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, simulationSettings);
-    return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
+    Simulation mySim = new Simulation(simulationSettings);
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, mySim);
+    mySim.setGrid(myGridParser.getGrid(gridType));
+    return mySim;
   }
 
   /**

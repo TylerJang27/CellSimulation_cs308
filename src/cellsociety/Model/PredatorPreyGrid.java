@@ -26,7 +26,7 @@ public class PredatorPreyGrid extends Grid {
   private int FISH = 1;
   private int SHARK = 2;
   private int EMPTY = 0;
-  private int MAX_VAL = 2;
+  public static final int MAX_VAL = 2;
 
   /**
    * Uses gridMap to construct Wa-Tor grid and define specific thresholds for breeding and death and

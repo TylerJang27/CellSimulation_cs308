@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class GameOfLifeGrid extends Grid {
 
   private static ResourceBundle RESOURCES = Main.myResources;
-  private static int MAX_VAL = 1;
+  public static int MAX_VAL = 1;
 
   /**
    * Uses gridMap to construct GameOfLife and gridcell values to set cells at points.

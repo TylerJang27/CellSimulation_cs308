@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class PercolationGrid extends Grid {
 
   private static ResourceBundle RESOURCES = Main.myResources;
-  private static int MAX_VAL = 2;
+  public static int MAX_VAL = 2;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.
