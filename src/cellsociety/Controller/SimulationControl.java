@@ -124,7 +124,6 @@ public class SimulationControl {
         getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler());
   }
 
-
   /**
    * Sets the initial settings for SimulationControl
    *

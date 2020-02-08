@@ -128,9 +128,10 @@ public class Simulation {
       }
     }
     for (String field: myType.getOptionalFields()) {
-      if (field.length() > 0) {
+      String val = dataValues.get(field);
+      if (field.length() > 0 && val != null) {
         try {
-          myDataValues.put(field, Integer.parseInt(dataValues.get(field)));
+          myDataValues.put(field, Integer.parseInt(val));
         } catch (NumberFormatException e) {
           throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), field);
         }

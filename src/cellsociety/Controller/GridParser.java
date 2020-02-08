@@ -21,15 +21,44 @@ public class GridParser {
     public static final int RANDOM = 2;
     public static final int PARAMETRIZED_RANDOM = 3;
 
+    public static final int SQUARE = 0;
+    public static final int HEXAGON = 1;
+
+    public static final int EDGED = 0;
+    public static final int TOROIDAL = 1;
+    public static final int SCROLLING = 2;
+
     private Document myDoc;
     private int myWidth;
     private int myHeight;
+    private int myShape;
+    private int myGridShape;
 
     //TODO: add comments
-    public GridParser(DocumentBuilder docBuilder, File dataFile, String width, String height) { //TODO: MAKE ENUM IF NECESSARY FOR THE DIFFERENT TYPES
+
+    /**
+     * Constructor for GridParser objects
+     * @param docBuilder DocumentBuilder for all XML Parsing
+     * @param dataFile File from which to read
+     * @param simulationSettings Map of Strings to Strings for specific configuration parameters
+     * @throws XMLException File missing or incorrect format or non-Integer width or height
+     */
+    public GridParser(DocumentBuilder docBuilder, File dataFile, Map<String, String> simulationSettings) {
         try {
-            myWidth = Integer.parseInt(width);
-            myHeight = Integer.parseInt(height);
+            myWidth = Integer.parseInt(simulationSettings.get(RESOURCES.getString("Width")));
+            myHeight = Integer.parseInt(simulationSettings.get(RESOURCES.getString("Height")));
+            String shape = simulationSettings.get(RESOURCES.getString("Shape"));
+            String gridShape = simulationSettings.get(RESOURCES.getString("GridShape"));
+            if (shape != null && shape.length() > 0) {
+                myShape = Integer.parseInt(shape);
+            } else {
+                myShape = SQUARE;
+            }
+            if (gridShape != null && gridShape.length() > 0) {
+                myGridShape = Integer.parseInt(gridShape);
+            } else {
+                myShape = EDGED;
+            }
         } catch (NumberFormatException e) {
             throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("WidthHeight"));
         }
@@ -41,7 +70,6 @@ public class GridParser {
         } catch (IOException e) {
             throw new XMLException(String.format(RESOURCES.getString("FileMissing"), dataFile.getName()));
         }
-        //TODO: determine type of grid needed to read (both some, all, random) as well as shape
     }
 
     /**
@@ -51,7 +79,6 @@ public class GridParser {
      * @return a Map representing points and values in the grid
      */
     public Map<Point, Integer> getGrid(int gridType) {
-        //FIXME: This should all be in Grid Parser
         if (gridType == ALL) {
             return getAllGrid();
         } else if (gridType == SOME) {
@@ -66,9 +93,10 @@ public class GridParser {
      * points have been specified
      *
      * @return a Map representing points and values in the grid
+     * @throws XMLException non-Integer value stored in grid
      */
     private Map<Point, Integer> getAllGrid()  {
-        NodeList nodeList = myDoc.getElementsByTagName(Main.myResources.getString("Grid"));
+        NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
         Map<Point, Integer> grid = new HashMap<>();
         String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
 
@@ -76,7 +104,11 @@ public class GridParser {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
             for (int k = 0; k < vals.length; k++) {
-                grid.put(new Point(j, k), Integer.parseInt(vals[k]));
+                try {
+                    grid.put(new Point(j, k), Integer.parseInt(vals[k]));
+                } catch (NumberFormatException e) {
+                    throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
+                }
             }
         }
         return grid;
@@ -87,17 +119,22 @@ public class GridParser {
      * points have been correctly specified as x y val
      *
      * @return a Map representing points and values in the grid
+     * @throws XMLException non-Integer value stored in grid
      */
     private Map<Point, Integer> getSomeGrid() {
-        NodeList nodeList = myDoc.getElementsByTagName(Main.myResources.getString("Grid"));
+        NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
         Map<Point, Integer> grid = new HashMap<>();
         String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
 
         for (int j = 0; j < wholeGrid.length; j++) {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
-            grid.put(new Point(Integer.parseInt(vals[1]), Integer.parseInt(vals[0])),
-                    Integer.parseInt(vals[2]));
+            try {
+                grid.put(new Point(Integer.parseInt(vals[1]), Integer.parseInt(vals[0])),
+                        Integer.parseInt(vals[2]));
+            } catch (NumberFormatException e) {
+                throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
+            }
         }
         return grid;
     }
