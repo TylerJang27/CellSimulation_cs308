@@ -27,6 +27,8 @@ public class ColoredCellState extends CellState {
             myDisplay.setFill(Color.web(parameters.get(Main.myResources.getString("Color"))));
         } catch (NullPointerException e){
             myDisplay.setFill(Color.web("#FF0000"));
+        } catch (IllegalArgumentException e) {
+            myDisplay.setFill(Color.web("#FF0000"));
         }
 
     }

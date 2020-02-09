@@ -66,10 +66,10 @@ public class Style {
   }
 
   /**
-   * Builds a Map of style parameters used for CellStateConfiguration
+   * Builds a List of Maps of style parameters used for CellStateConfiguration
    */
-  public Map<String, String> getConfigParameters() {
-    Map<String, String> params = new HashMap<>();
+  public List<Map<String, String>> getConfigParameters() {
+    List<Map<String, String>> maps = new ArrayList<>();
     String fill;
     if (getValue(RESOURCES.getString("Display")).equals(RESOURCES.getString("Image"))) {
       fill = RESOURCES.getString("Image");
@@ -77,13 +77,15 @@ public class Style {
       fill = RESOURCES.getString("Color");
     }
     for (String s: getType().getStyleFields()) {
+      Map<String, String> params = new HashMap<>();
       String val = getValue(s);
       if ((val.contains("/") || val.contains("\\")) && fill.equals(RESOURCES.getString("Image"))) {
         params.put(fill, getValue(s));
       } else {
         params.put(RESOURCES.getString("Color"), getValue(s));
       }
+      maps.add(params);
     }
-    return params;
+    return maps;
   }
 }

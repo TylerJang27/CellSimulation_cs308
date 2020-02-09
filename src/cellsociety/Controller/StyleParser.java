@@ -44,8 +44,8 @@ public class StyleParser extends XMLParser {
 
     Element root = getRootElement(dataFile);
 
-    if (!isValidFile(root, Simulation.DATA_TYPE)) {
-      throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
+    if (!isValidFile(root, Style.DATA_TYPE)) {
+      throw new XMLException(ERROR_MESSAGE, Style.DATA_TYPE);
     }
 
     try {

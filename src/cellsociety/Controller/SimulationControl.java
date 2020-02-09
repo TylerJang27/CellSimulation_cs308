@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.*;
 
 import cellsociety.View.CellClickedEvent;
+import cellsociety.View.CellState;
 import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -26,6 +27,9 @@ public class SimulationControl {
   public static final int RATE_MAX = 10;
   private static final int IMAGE = 1;
 
+  private static final String STYLE_ADDRESS = "src/resources/Styling.xml";
+  private File styleFile;
+
   private Grid myGrid;
   private Simulation mySim;
   private ApplicationView myApplicationView;
@@ -41,6 +45,7 @@ public class SimulationControl {
    * @param primaryStage the stage for the animation
    */
   public SimulationControl(Stage primaryStage) {
+    styleFile = new File(STYLE_ADDRESS);
     paused = true;
     frameStep = 0;
     initializeView(primaryStage);
@@ -149,42 +154,25 @@ public class SimulationControl {
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
     //FIXME: Tyler: Make the CellState Configurations and pass the List
+
+    Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
+    Style style = styles.get(mySim.getType().toString());
     String shapeString;
-    String styleString;
-    //FIXME: EXTRACT METHOD FROM THIS, MOVE TO STYLE CONFIGURATION
-    //FIXME: Create and Call a Configuration Generator
-    int fill = mySim.getValue(RESOURCES.getString("Fill"));
+    String displayStyle = style.getValue(RESOURCES.getString("Display"));
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
     if (shape == GridParser.HEXAGON) {
       shapeString = RESOURCES.getString("Hexagon");
     } else {
       shapeString = RESOURCES.getString("Rectangle");
     }
-    if (fill == IMAGE) {
-      styleString = RESOURCES.getString("Image");
-    } else {
-      styleString = RESOURCES.getString("Color");
-    }
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
-
-    //TODO: REMOVE HARD CODE
-    Map<String, String> configMap1 = new HashMap<>();
-    Map<String, String> configMap2 = new HashMap<>();
-    Map<String, String> configMap3 = new HashMap<>();
-    configMap1.put("color", "#FFFF00");
-    configMap2.put("color", "#0004FF");
-    configMap3.put("color", "#00F422");
-    CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, configMap1);
-    CellStateConfiguration config2 = new CellStateConfiguration(shapeString, styleString, configMap2);
-    CellStateConfiguration config3 = new CellStateConfiguration(shapeString, styleString, configMap3);
-
-    cellViewConfiguration.add(config1);
-    cellViewConfiguration.add(config2);
-    cellViewConfiguration.add(config3);
+    for (Map<String, String> params: style.getConfigParameters()) {
+      cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
+    }
 
     //TODO: Tyler: configure in XML whether the Grid should be outlined or not, pass it in the isOutlined parameter below
     //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, 1.0, cellViewConfiguration);
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();

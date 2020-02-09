@@ -107,8 +107,8 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  //FIXME: outline vs isOutlined
-  public void initializeGrid(int numRows, int numColumns, double width, double length, double outline, List<CellStateConfiguration> cellStateConfigs) {
+  //FIXME: outline vs isOutlined and error handling
+  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
     myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
     myGridScroll.setContent(myGridView);
     root.setCenter((myGridScroll));
