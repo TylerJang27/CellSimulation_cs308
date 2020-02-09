@@ -34,13 +34,14 @@ public class CellView extends Pane {
     setUpDefaultConfiguration();
     for(CellStateConfiguration config : configuration){
       System.out.println(configuration);
-
     }
-
+    cellStateList = new ArrayList<>();
     for(int i = 0; i < configuration.size(); i++){
-      CellStateConfiguration currentConfiguration = configuration.get(0);
-      switch(currentConfiguration.getStyle()){
-
+      CellStateConfiguration currentConfiguration = configuration.get(i);
+      if(currentConfiguration.getStyle().equals("color")) {
+        cellStateList.add(new ColoredCellState(currentConfiguration.getParameters()));
+      }else if(currentConfiguration.getStyle().equals("image")){
+        cellStateList.add(new ImageCellState(currentConfiguration.getParameters()));
       }
     }
 
