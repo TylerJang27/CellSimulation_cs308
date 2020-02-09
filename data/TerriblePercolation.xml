@@ -5,7 +5,7 @@
     <description>A terrible Percolation XML file used to ensure bad inputs are caught. Prints errors to the console because this file contains irredeemable errors with double values.</description>
     <rate>5</rate>
     <width>10.0</width>
-    <height>10</height>
+    <height>10.1</height>
     <grid_type>0</grid_type>
     <grid>
         <row>0 0 0 1 0 2 0 1 0 1</row>

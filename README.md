@@ -70,6 +70,12 @@ Data files needed:
  * **Segregation3.xml**: a basic Segregation simulation with random values
  * **Segregation4.xml**: a basic Segregation simulation with parametrized random values
  
+In creating the XML configuration files, it is also important to know what not to include. The following XML files exhibit problems that may arise:
+ * **BadFire.xml**: The grid_type attribute is outside the normal bounds of 0-3. It defaults to 3. The rate is also much larger than the allowed 1-10, so it defaults to 5. Lastly, an extraneous field called "dummy" is included, but ignored in the configuration process.
+ * **BadGameOfLife.xml**: The grid is incomplete and also includes extraneous values. These are ignored, and any missing cells default to a value of 0.
+ * **BadPredatorPrey.xml**: The title attribute contains a misspelling, but is understood to be PredatorPrey. Additional extraneous fields are also ignored.
+ * **TerriblePercolation.xml**: The file contains irredeemable errors with double values across several attributes. This prompts the user to fix the error or choose a new configuration file.
+ 
 Features implemented:
 
 This project implements a basic user interface in which XML configuration files can be specified to control parameters of five different simulations:
