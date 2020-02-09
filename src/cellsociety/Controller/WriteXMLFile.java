@@ -9,15 +9,13 @@ import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Class for creating XML files based off of simulation configuration.
@@ -27,18 +25,32 @@ import java.util.ResourceBundle;
  */
 public class WriteXMLFile {
 
+    private static final int ALL_GRID = 0;
+    private static final String YES = "yes";
     private Simulation mySim;
     private Grid myGrid;
+    private int myRate;
     private static final ResourceBundle RESOURCES = Main.myResources;
 
-    //FIXME: ADD COMMENTS
-    public WriteXMLFile(Simulation sim, Grid grid) {
+    /**
+     * Constructor for WriteXMLFile, passing simulation information and the current Grid
+     * @param sim Simulation holding all configuration information
+     * @param grid Grid sub-class with all current grid states
+     * @param rate Current rate
+     */
+    public WriteXMLFile(Simulation sim, Grid grid, int rate) {
             mySim = sim;
             myGrid = grid;
+            myRate = rate;
     }
 
+    /**
+     * Write current configuration into an XML file that can be reloaded at a later time
+     * @return file name to which data was saved
+     * @throws XMLException for cases where file generators cannot be created
+     */
     public String writeSimulationXML() {
-        String fileAddress = "C:\\file.xml";
+        String fileAddress = generateFileName();
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
@@ -48,83 +60,101 @@ public class WriteXMLFile {
             throw new XMLException(RESOURCES.getString("XML_WRITE_CREATE"));
         }
 
-        // root elements
         Document doc = docBuilder.newDocument();
-        Element rootElement = doc.createElement(RESOURCES.getString("Data"));
-        Attr attr = doc.createAttribute(RESOURCES.getString("Type"));
-        attr.setValue(mySim.getType().toString());
-        rootElement.setAttributeNode(attr);
+        Element rootElement = createRoot(doc);
         doc.appendChild(rootElement);
 
-        // staff elements
-        Map<String, Integer> valueMap = mySim.getValueMap();
-        for (String field: valueMap.keySet()) {
-            Element e = doc.createElement(field);
-            e.appendChild(doc.createTextNode(valueMap.get(field).toString()));
-            rootElement.appendChild(e);
-        }
+        extractFields(doc, rootElement);
+        extractGrid(doc, rootElement);
 
-        //NEED TO ADD GRID AND ROWS
-
-        Element staff = doc.createElement("Staff");
-
-        rootElement.appendChild(staff);
-
-        // set attribute to staff element
-        attr = doc.createAttribute("id");
-        attr.setValue("1");
-        staff.setAttributeNode(attr);
-
-
-        // firstname elements
-        Element firstname = doc.createElement("firstname");
-        firstname.appendChild(doc.createTextNode("yong"));
-        staff.appendChild(firstname);
-
-        // lastname elements
-        Element lastname = doc.createElement("lastname");
-        lastname.appendChild(doc.createTextNode("mook kim"));
-        staff.appendChild(lastname);
-
-        // nickname elements
-        Element nickname = doc.createElement("nickname");
-        nickname.appendChild(doc.createTextNode("mkyong"));
-        staff.appendChild(nickname);
-
-        // salary elements
-        Element salary = doc.createElement("salary");
-        salary.appendChild(doc.createTextNode("100000"));
-        staff.appendChild(salary);
-
-        // write the content into xml file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
         try {
             transformer = transformerFactory.newTransformer();
         } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
+            throw new XMLException(RESOURCES.getString("XML_WRITE_CREATE"));
         }
         DOMSource source = new DOMSource(doc);
 
         StreamResult result = new StreamResult(new File(fileAddress));
-
-        // Output to console for testing
-        // StreamResult result = new StreamResult(System.out);
+        transformer.setOutputProperty(OutputKeys.INDENT, YES);
 
         try {
             transformer.transform(source, result);
         } catch (TransformerException e) {
-            e.printStackTrace();
+            throw new XMLException(RESOURCES.getString("XML_WRITE_CREATE"));
         }
 
-        System.out.println("File saved!");
         return fileAddress;
-        //} catch (
-        //        ParserConfigurationException pce) {
-        //    pce.printStackTrace();
-        //} catch (TransformerException tfe) {
-        //    tfe.printStackTrace();
-        //}
-        //return "";
+    }
+
+    /**
+     * Generates the root element, holding the Simulation characteristic
+     * @param doc Document with which to build XML hierarchy
+     * @return the rootElement of the doc
+     */
+    private Element createRoot(Document doc) {
+        Element rootElement = doc.createElement(RESOURCES.getString("Data"));
+        Attr attr = doc.createAttribute(RESOURCES.getString("Type"));
+        attr.setValue(RESOURCES.getString("Simulation"));
+        rootElement.setAttributeNode(attr);
+        Element title = doc.createElement(RESOURCES.getString("Title"));
+        title.appendChild(doc.createTextNode(mySim.getType().toString()));
+        rootElement.appendChild(title);
+        return rootElement;
+    }
+
+    /**
+     * Generates the file name to which the file shall be stored
+     * @return String representing the path to the file
+     */
+    private String generateFileName() {
+        DateFormat dateFormat = new SimpleDateFormat("MMdd_HHmm");
+        Date date = new Date();
+        return String.format(RESOURCES.getString("FileAddress"), mySim.getType().toString(), dateFormat.format(date));
+    }
+
+    /**
+     * Extracts current grid information from mySim to save to doc
+     * @param doc Document with which to build XML hierarchy
+     * @param rootElement Root element, consisting of the Simulation type, to nest information under
+     */
+    private void extractGrid(Document doc, Element rootElement) {
+        Element gridElement = doc.createElement(RESOURCES.getString("Grid"));
+        int width = mySim.getValue(RESOURCES.getString("Width"));
+        int height = mySim.getValue(RESOURCES.getString("Height"));
+
+        for (int j = 0; j < height; j++) {
+            Element row = doc.createElement(RESOURCES.getString("Row"));
+            StringBuilder rowString = new StringBuilder("");
+            //FIXME: NOT BUILDING CORRECTLY
+            for (int k = 0; k < width; k++) {
+                rowString.append(String.format("%d ", myGrid.getState(j, k)));
+            }
+            row.appendChild(doc.createTextNode(rowString.toString().trim()));
+            gridElement.appendChild(row);
+        }
+
+        rootElement.appendChild(gridElement);
+    }
+
+    /**
+     * Extracts fields and configuration information from mySim to add them to doc
+     * @param doc Document with which to build XML hierarchy
+     * @param rootElement Root element, consisting of the Simulation type, to nest information under
+     */
+    private void extractFields(Document doc, Element rootElement) {
+        Map<String, Integer> valueMap = mySim.getValueMap();
+        for (String field: valueMap.keySet()) {
+            Element e = doc.createElement(field);
+            if (field.equals(RESOURCES.getString("Rate"))) {
+                e.appendChild(doc.createTextNode(String.format("%d", myRate)));
+            } else if (field.equals(RESOURCES.getString("GridType"))) {
+                e.appendChild(doc.createTextNode(String.format("%d", ALL_GRID)));
+            } else {
+                e.appendChild(doc.createTextNode(valueMap.get(field).toString()));
+            }
+            rootElement.appendChild(e);
+        }
     }
 }

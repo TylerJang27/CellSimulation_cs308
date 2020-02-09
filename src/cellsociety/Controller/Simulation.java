@@ -146,13 +146,6 @@ public class Simulation {
   }
 
   /**
-   * Returns the gridType: 1-3
-   */
-  public String getGridType() {
-    return gridType;
-  }
-
-  /**
    * Returns simulation type based off of enum SimType
    */
   public SimType getType() {

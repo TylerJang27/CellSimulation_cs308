@@ -36,6 +36,8 @@ public class SimulationControl {
   private int numCols, numRows;
   private static final ResourceBundle RESOURCES = Main.myResources;
 
+  private boolean a = false;
+
   /**
    * Constructor for creating a SimulationControl instance
    *
@@ -94,7 +96,12 @@ public class SimulationControl {
   private void updateViewGrid() { //FIXME: HANDLE HEX?
     for (int j = 0; j < numCols; j++) {
       for (int k = 0; k < numRows; k++) {
-        myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+        int state = myGrid.getState(j, k);
+        try {
+          myApplicationView.updateCell(j, k, state);
+        } catch (NullPointerException e) {
+          //disregard, this allows all points to be pipelined to View, regardless of shape
+        }
       }
     }
   }
@@ -197,6 +204,14 @@ public class SimulationControl {
         stepSimulation();
       }
     };
+  }
+
+  /**
+   * Writes file to data/ and notes this in the console
+   */
+  private void saveFile() {
+    WriteXMLFile writer = new WriteXMLFile(mySim, myGrid, rate);
+    myApplicationView.logError(String.format(RESOURCES.getString("FileSaved"), writer.writeSimulationXML()));
   }
 
   /**
