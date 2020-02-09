@@ -1,12 +1,7 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.FireGrid;
-import cellsociety.Model.GameOfLifeGrid;
-import cellsociety.Model.Grid;
-import cellsociety.Model.PercolationGrid;
-import cellsociety.Model.PredatorPreyGrid;
-import cellsociety.Model.SegregationGrid;
+import cellsociety.Model.*;
 import cellsociety.View.ApplicationView;
 import java.io.File;
 import java.util.ArrayList;
@@ -199,6 +194,8 @@ public class SimulationControl {
       return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Fire"))) {
       return new FireGrid(mySim.getGrid(), mySim.getValueMap());
+    } else if (simType.equals(RESOURCES.getString("RockPaperScissors"))) {
+      return new RockPaperScissorsGrid(mySim.getGrid(), mySim.getValueMap());
     }
     return null;
   }

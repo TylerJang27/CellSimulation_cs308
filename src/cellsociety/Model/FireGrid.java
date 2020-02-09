@@ -68,14 +68,6 @@ public class FireGrid extends Grid {
   }
 
   /**
-   * Uses default nextFrame from grid superclass
-   */
-  @Override
-  public void nextFrame() {
-    basicNextFrame();
-  }
-
-  /**
    * Returns the maximum state allowed for a particular simulation
    */
   @Override

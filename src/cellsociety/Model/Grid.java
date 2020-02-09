@@ -32,7 +32,7 @@ public abstract class Grid {
   public Grid(Map<String, Integer> gridMap) {
     myWidth = gridMap.get(RESOURCES.getString("Width"));
     myHeight = gridMap.get(RESOURCES.getString("Height"));
-    pointCellMap = new LinkedHashMap<>();
+    pointCellMap = new HashMap<>();
     myFrame = 0;
   }
 
@@ -58,10 +58,12 @@ public abstract class Grid {
    * @return list of neighbor point cells for NSEW
    */
   protected List<Point> getNeighborPoints(Point p) {
-    Point left = new Point((int) p.getX() - 1, (int) p.getY());
-    Point up = new Point((int) p.getX(), (int) p.getY() + 1);
-    Point right = new Point((int) p.getX() + 1, (int) p.getY());
-    Point down = new Point((int) p.getX(), (int) p.getY() - 1);
+    int xPos = (int) p.getX();
+    int yPos = (int) p.getY();
+    Point left = xPos > 0 ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
+    Point up = yPos > 0 ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
+    Point right = xPos < myWidth - 1 ? new Point(xPos + 1, yPos) : new Point(0, yPos);
+    Point down = yPos < myHeight - 1 ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
 
     return Arrays.asList(left, up, right, down);
   }
@@ -81,8 +83,21 @@ public abstract class Grid {
 
     for (int x = -1; x <= 1; x++) {
       for (int y = -1; y <= 1; y++) {
-        Point potentialNeighbor = new Point(xPos + x, yPos + y);
-        if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
+        int xOffset = x;
+        int yOffset = y;
+        if (xPos + xOffset < 0)  {
+          xOffset = myWidth - 1;
+        } else if (xPos + xOffset > myWidth-1){
+          xOffset = -xPos;
+        }
+        if (yPos + yOffset < 0)  {
+          yOffset = myHeight - 1;
+        } else if (yPos + yOffset > myHeight - 1){
+          yOffset = -yPos;
+        }
+
+        Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
+        if (!potentialNeighbor.equals(p)) {
           pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
         }
       }
@@ -114,13 +129,10 @@ public abstract class Grid {
 
   //First calculates and stores new state of each cell
   //Then updates each cell's state
-  public abstract void nextFrame();
 
-  //FIXME: COMMENT PLEASE
-  protected void basicNextFrame() {
+  public void nextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
-    ArrayList<Cell> activeCells = new ArrayList<>();
     int index = 0;
     for (Cell c : pointCellMap.values()) {
       states[index] = c.calculateNextState();
