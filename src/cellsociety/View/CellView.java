@@ -1,11 +1,13 @@
 package cellsociety.View;
 
+import cellsociety.Main;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * A class to render the Appearance of a cell.
@@ -16,6 +18,7 @@ public class CellView extends Pane {
 
   private List<CellState> cellStateList;
   private CellState myCurrentState;
+  private static final ResourceBundle RESOURCES = Main.myResources;
 
 //List<CellState> cellStates
   public CellView(){
@@ -33,16 +36,18 @@ public class CellView extends Pane {
     super();
     setUpDefaultConfiguration();
     for(CellStateConfiguration config : configuration){
+      //FIXME: MORE THINGY HERE
       System.out.println(configuration);
     }
     cellStateList = new ArrayList<>();
     for(int i = 0; i < configuration.size(); i++){
       CellStateConfiguration currentConfiguration = configuration.get(i);
-      if(currentConfiguration.getStyle().equals("color")) {
+      if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
         cellStateList.add(new ColoredCellState(currentConfiguration.getParameters()));
-      }else if(currentConfiguration.getStyle().equals("image")){
+      }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
         cellStateList.add(new ImageCellState(currentConfiguration.getParameters()));
       }
+      //FIXME: ADD ADDITIONAL CONFIGURATION STUFF
       System.out.println("");
     }
 

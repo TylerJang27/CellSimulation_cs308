@@ -143,6 +143,7 @@ public class SimulationControl {
    * @param dataFile the File from which to read configuration instructions
    */
   public void initializeModel(File dataFile) {
+    //FIXME: TRY TO REFACTOR AND REORDER SO THAT THE VIEW STUFF STAYS IN VIEW
     mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -154,6 +155,7 @@ public class SimulationControl {
     String shapeString;
     String styleString;
 
+    //FIXME: EXTRACT METHOD FROM THIS, MOVE TO STYLE CONFIGURATION
     int fill = mySim.getValue(RESOURCES.getString("Fill"));
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
     if (shape == GridParser.HEXAGON) {
@@ -170,9 +172,9 @@ public class SimulationControl {
     CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, new HashMap<String, String>());
     cellViewConfiguration.add(config1);
 
-    //TODO: Tyler: configure in XML whether the Grid should be outlined or note, pass it in the isOutlined parameter below
-    //Alternatively instead of a boolean, you can store a double specifiyng outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, true, cellViewConfiguration);
+    //TODO: Tyler: configure in XML whether the Grid should be outlined or not, pass it in the isOutlined parameter below
+    //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, 1.0, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
