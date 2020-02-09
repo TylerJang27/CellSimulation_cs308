@@ -54,8 +54,8 @@ public class GridView extends GridPane {
       }
     }
 
-    setPrefHeight(height);
-    setPrefWidth(width);
+    setPrefHeight(height * 3);
+    setPrefWidth(width * 3);
 
   }
 
