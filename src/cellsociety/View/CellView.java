@@ -75,9 +75,6 @@ public class CellView extends Pane {
   public void changeState(int state) {
     getChildren().remove(myCurrentState);
     myCurrentState = cellStateList.get(state);
-    for (CellState c: cellStateList) {
-      System.out.println(c);
-    }
     getChildren().add(cellStateList.get(state));
   }
 

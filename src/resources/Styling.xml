@@ -2,50 +2,50 @@
 <data type="style">
     <GameOfLife>
         <outline>5</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <alive></alive>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <alive>#0000FF</alive>
     </GameOfLife>
     <Percolation>
         <outline>4</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <water></water>
-        <blocked></blocked>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <water>#0000FF</water>
+        <blocked>#000000</blocked>
     </Percolation>
     <Segregation>
         <outline>3</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <a></a>
-        <b></b>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <a>#FF0000</a>
+        <b>#00FF00</b>
     </Segregation>
     <PredatorPrey>
         <outline>10</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <shark></shark>
-        <fish></fish>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <shark>#FF0000</shark>
+        <fish>#00BBBB</fish>
     </PredatorPrey>
     <Fire>
         <outline>1</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <burning></burning>
-        <trees></trees>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <burning>#FF0000</burning>
+        <trees>#00FF00</trees>
     </Fire>
     <RockPaperScissors>
         <outline>0</outline>
-        <display></display>
-        <width></width>
-        <height></height>
-        <rock></rock>
-        <paper></paper>
-        <scissors></scissors>
+        <display>color</display>
+        <width>700</width>
+        <height>700</height>
+        <rock>#000000</rock>
+        <paper>#FFFFFF</paper>
+        <scissors>#AAAAAA</scissors>
     </RockPaperScissors>
 </data>

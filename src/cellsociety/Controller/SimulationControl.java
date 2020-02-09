@@ -151,8 +151,8 @@ public class SimulationControl {
     //FIXME: Tyler: Make the CellState Configurations and pass the List
     String shapeString;
     String styleString;
-
     //FIXME: EXTRACT METHOD FROM THIS, MOVE TO STYLE CONFIGURATION
+    //FIXME: Create and Call a Configuration Generator
     int fill = mySim.getValue(RESOURCES.getString("Fill"));
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
     if (shape == GridParser.HEXAGON) {
@@ -170,13 +170,17 @@ public class SimulationControl {
     //TODO: REMOVE HARD CODE
     Map<String, String> configMap1 = new HashMap<>();
     Map<String, String> configMap2 = new HashMap<>();
+    Map<String, String> configMap3 = new HashMap<>();
     configMap1.put("color", "#FFFF00");
     configMap2.put("color", "#0004FF");
+    configMap3.put("color", "#00F422");
     CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, configMap1);
     CellStateConfiguration config2 = new CellStateConfiguration(shapeString, styleString, configMap2);
+    CellStateConfiguration config3 = new CellStateConfiguration(shapeString, styleString, configMap3);
 
     cellViewConfiguration.add(config1);
     cellViewConfiguration.add(config2);
+    cellViewConfiguration.add(config3);
 
     //TODO: Tyler: configure in XML whether the Grid should be outlined or not, pass it in the isOutlined parameter below
     //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
