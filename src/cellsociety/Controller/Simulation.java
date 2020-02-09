@@ -36,8 +36,7 @@ public class Simulation {
           RESOURCES.getString("Rate"),
           RESOURCES.getString("GridType"),
           RESOURCES.getString("Shape"),
-          RESOURCES.getString("GridShape"), //FIXME: IMPLEMENT (I.E. TOROIDAL)
-          RESOURCES.getString("Fill")
+          RESOURCES.getString("GridShape") //FIXME: IMPLEMENT (I.E. TOROIDAL)
   );
 
   private Map<String, Integer> myDataValues;

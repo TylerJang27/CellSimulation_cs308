@@ -6,8 +6,8 @@
     <rate>5</rate>
     <width>30</width>
     <height>30</height>
-    <threshold>6</threshold>
-    <rock>30</rock>
-    <paper>50</paper>
+    <threshold>3</threshold>
+    <rock>33</rock>
+    <paper>34</paper>
     <grid_type>4</grid_type>
 </data>
