@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class FireGrid extends Grid {
 
   private ResourceBundle RESOURCES = Main.myResources;
-  public static final int MAX_VAL = 2;
+  private static final int MAX_VAL = 2;
   private static final int TREE_DEFAULT = 50;
   private static final int BURNING_DEFAULT = 15;
   private static final int  HEXAGONAL = 1;
@@ -69,5 +69,11 @@ public class FireGrid extends Grid {
     } else {
       pointCellMap.put(p, new FireCell(FireCell.EMPTY, chanceToBurn));
     }
+  }
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public static int getMaxState() {
+    return MAX_VAL;
   }
 }

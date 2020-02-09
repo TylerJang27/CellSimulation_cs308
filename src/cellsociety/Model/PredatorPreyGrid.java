@@ -23,7 +23,7 @@ public class PredatorPreyGrid extends Grid {
   private static final int EMPTY = PredatorPreyCell.EMPTY;
   private static final int FISH = PredatorPreyCell.FISH;
   private static final int SHARK = PredatorPreyCell.SHARK;
-  public static final int MAX_VAL = SHARK;
+  private static final int MAX_VAL = SHARK;
   private static final int  HEXAGONAL = 1;
 
   private ResourceBundle RESOURCES = Main.myResources;
@@ -179,5 +179,12 @@ public class PredatorPreyGrid extends Grid {
       }
     }
     return currentCell;
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public static int getMaxState() {
+    return MAX_VAL;
   }
 }

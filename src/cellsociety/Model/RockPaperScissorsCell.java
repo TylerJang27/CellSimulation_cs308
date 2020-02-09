@@ -3,9 +3,9 @@ package cellsociety.Model;
 import java.util.ArrayList;
 
 public class RockPaperScissorsCell extends Cell {
-  private static final int ROCK = 1;
-  private static final int SCISSORS = 2;
-  private static final int PAPER = 3;
+  public static final int ROCK = 1;
+  public static final int SCISSORS = 2;
+  public static final int PAPER = 3;
   private int loseThreshold;
   /**
    * Constructs cell with initial state and values to be evaluated per step
@@ -28,7 +28,7 @@ public class RockPaperScissorsCell extends Cell {
       }
     }
     if (loseCount > loseThreshold) {
-      newState = state < 3 ? state+1 : 1;
+      newState = state < PAPER ? state+1 : ROCK;
     }
     return newState;
   }

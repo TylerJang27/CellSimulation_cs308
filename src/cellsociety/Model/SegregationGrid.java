@@ -21,7 +21,7 @@ public class SegregationGrid extends Grid {
   private static final int HEXAGONAL = 1;
 
   private ResourceBundle RESOURCES = Main.myResources;
-  public static final int MAX_VAL = 2;
+  private static final int MAX_VAL = 2;
 
   /**
    * Uses gridMap to construct Segregation and gridcell values to set cells at points.
@@ -86,7 +86,6 @@ public class SegregationGrid extends Grid {
   public void nextFrame() {
     myFrame++;
     ArrayList<Point> unsatisfiedPoints = new ArrayList<>();
-    int index = 0;
     for (Point p : pointCellMap.keySet()) {
       Cell c = pointCellMap.get(p);
       if (c.calculateNextState() == UNSATISFIED) {
@@ -102,5 +101,12 @@ public class SegregationGrid extends Grid {
         }
       }
     }
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public static int getMaxState() {
+    return MAX_VAL;
   }
 }

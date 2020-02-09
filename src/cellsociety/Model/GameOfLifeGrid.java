@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class GameOfLifeGrid extends Grid {
 
   private static ResourceBundle RESOURCES = Main.myResources;
-  public static int MAX_VAL = 1;
+  private static int MAX_VAL = 1;
   private static final int COVERAGE_DEFAULT = 50;
   private static final int  HEXAGONAL = 1;
 
@@ -62,5 +62,12 @@ public class GameOfLifeGrid extends Grid {
     } else {
       pointCellMap.put(p, new GameOfLifeCell(GameOfLifeCell.DEAD));
     }
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public static int getMaxState() {
+    return MAX_VAL;
   }
 }

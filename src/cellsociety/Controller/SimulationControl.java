@@ -1,15 +1,11 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.FireGrid;
-import cellsociety.Model.GameOfLifeGrid;
-import cellsociety.Model.Grid;
-import cellsociety.Model.PercolationGrid;
-import cellsociety.Model.PredatorPreyGrid;
-import cellsociety.Model.SegregationGrid;
+import cellsociety.Model.*;
 import cellsociety.View.ApplicationView;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,6 +27,7 @@ public class SimulationControl {
   public static final int DEFAULT_RATE = 5;
   public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
+  private static final int IMAGE = 1;
 
   private Grid myGrid;
   private Simulation mySim;
@@ -40,8 +37,6 @@ public class SimulationControl {
   private int frameStep;
   private int numCols, numRows;
   private static final ResourceBundle RESOURCES = Main.myResources;
-
-  private boolean a = false;
 
   /**
    * Constructor for creating a SimulationControl instance
@@ -134,8 +129,12 @@ public class SimulationControl {
     EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    EventHandler<CellClickedEvent> cellClickedHandler = event -> {
+      int state = myGrid.cycleState(event.getRow(), event.getColumn());
+      myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
+    };
     myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
-            pauseHandler, stepHandler, sliderListener, getFileListener(), getCellClickedHandler());
+            pauseHandler, stepHandler, sliderListener, getFileListener(), cellClickedHandler);
   }
 
   /**
@@ -152,8 +151,28 @@ public class SimulationControl {
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
     //FIXME: Tyler: Make the CellState Configurations and pass the List
+    String shapeString;
+    String styleString;
+
+    int fill = mySim.getValue(RESOURCES.getString("Fill"));
+    int shape = mySim.getValue(RESOURCES.getString("Shape"));
+    if (shape == GridParser.HEXAGON) {
+      shapeString = RESOURCES.getString("Hexagon");
+    } else {
+      shapeString = RESOURCES.getString("Rectangle");
+    }
+    if (fill == IMAGE) {
+      styleString = RESOURCES.getString("Image");
+    } else {
+      styleString = RESOURCES.getString("Color");
+    }
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
+    CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, new HashMap<String, String>());
+    cellViewConfiguration.add(config1);
+
+    //TODO: Tyler: configure in XML whether the Grid should be outlined or note, pass it in the isOutlined parameter below
+    //Alternatively instead of a boolean, you can store a double specifiyng outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, true, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
@@ -177,6 +196,8 @@ public class SimulationControl {
       return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Fire"))) {
       return new FireGrid(mySim.getGrid(), mySim.getValueMap());
+    } else if (simType.equals(RESOURCES.getString("RockPaperScissors"))) {
+      return new RockPaperScissorsGrid(mySim.getGrid(), mySim.getValueMap());
     }
     return null;
   }
@@ -225,15 +246,6 @@ public class SimulationControl {
       public void changed(ObservableValue<? extends Number> observable, Number oldValue,
           Number newValue) {
         changeSimulationSpeed(observable.getValue());
-      }
-    };
-  }
-
-  private EventHandler<CellClickedEvent> getCellClickedHandler(){
-    return new EventHandler<CellClickedEvent>() {
-      @Override
-      public void handle(CellClickedEvent event) {
-        System.out.println("Cell Clicked at row " + event.getRow() + " and column " + event.getColumn());
       }
     };
   }

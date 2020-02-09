@@ -16,7 +16,7 @@ public class PercolationGrid extends Grid {
   private static final int BLOCKED_DEFAULT = 30;
   private static final int FILLED_DEFAULT = 20;
   private static ResourceBundle RESOURCES = Main.myResources;
-  public static int MAX_VAL = 2;
+  private static int MAX_VAL = 2;
   private static final int  HEXAGONAL = 1;
 
   /**
@@ -66,5 +66,12 @@ public class PercolationGrid extends Grid {
     } else {
       pointCellMap.put(p, new PercolationCell(PercolationCell.OPENED));
     }
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public static int getMaxState() {
+    return MAX_VAL;
   }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>RockPaperScissors</title>
+    <author>Team 15</author>
+    <description>A basic implementation of Rock Paper Scissors with parametrized random grid values.</description>
+    <rate>5</rate>
+    <width>30</width>
+    <height>30</height>
+    <threshold>6</threshold>
+    <rock>30</rock>
+    <paper>50</paper>
+    <grid_type>4</grid_type>
+</data>

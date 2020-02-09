@@ -35,8 +35,9 @@ public class Simulation {
   public static final List<String> OPTIONAL_DATA_FIELDS = List.of(
           RESOURCES.getString("Rate"),
           RESOURCES.getString("GridType"),
-          RESOURCES.getString("Shape"), //FIXME: IMPLEMENT
-          RESOURCES.getString("GridShape") //FIXME: IMPLEMENT
+          RESOURCES.getString("Shape"),
+          RESOURCES.getString("GridShape"), //FIXME: IMPLEMENT (I.E. TOROIDAL)
+          RESOURCES.getString("Fill")
   );
 
   private Map<String, Integer> myDataValues;
@@ -163,7 +164,7 @@ public class Simulation {
    * Returns Integer value matched to field key
    */
   public Integer getValue(String field) {
-    return myDataValues.get(field);
+    return myDataValues.getOrDefault(field, -1);
   }
 
   /**

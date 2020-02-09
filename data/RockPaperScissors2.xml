@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>RockPaperScissors</title>
+    <author>Team 15</author>
+    <description>A basic implementation of Rock Paper Scissors with some grid values specified.</description>
+    <rate>5</rate>
+    <width>20</width>
+    <height>20</height>
+    <grid_type>1</grid_type>
+    <grid>
+        <point>0 0 1</point>
+        <point>0 1 2</point>
+        <point>0 1 2</point>
+        <point>0 1 3</point>
+        <point>4 1 3</point>
+    </grid>
+</data>
