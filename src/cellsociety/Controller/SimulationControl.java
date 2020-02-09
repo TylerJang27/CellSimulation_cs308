@@ -10,7 +10,12 @@ import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import cellsociety.View.CellClickedEvent;
+import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -121,7 +126,7 @@ public class SimulationControl {
    */
   private void initializeView(Stage primaryStage) {
     myApplicationView = new ApplicationView(SIZE, primaryStage, getPlayHandler(),
-        getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler());
+        getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler(), getCellClickedHandler());
   }
 
 
@@ -138,7 +143,9 @@ public class SimulationControl {
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-    myApplicationView.initializeGrid(SIZE, numRows, numCols, SIZE, SIZE);
+    //FIXME: Tyler: Make the CellState Configurations and pass the List
+    List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
@@ -239,6 +246,15 @@ public class SimulationControl {
       public void changed(ObservableValue<? extends Number> observable, Number oldValue,
           Number newValue) {
         changeSimulationSpeed(observable.getValue());
+      }
+    };
+  }
+
+  private EventHandler<CellClickedEvent> getCellClickedHandler(){
+    return new EventHandler<CellClickedEvent>() {
+      @Override
+      public void handle(CellClickedEvent event) {
+        System.out.println("Cell Clicked at row " + event.getRow() + " and column " + event.getColumn());
       }
     };
   }
