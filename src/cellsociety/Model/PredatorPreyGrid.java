@@ -1,8 +1,8 @@
 package cellsociety.Model;
 
-import cellsociety.Controller.XMLParser;
+import cellsociety.Controller.GridParser;
 import cellsociety.Main;
-import java.awt.Point;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class PredatorPreyGrid extends Grid {
     for (int y = EMPTY; y < myHeight; y++) {
       for (int x = EMPTY; x < myWidth; x++) {
         Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(XMLParser.RANDOM)) {
+        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) { //TODO: SEARCH FOR GRIDPARSER AND CHANGE THIS?
           pointCellMap.put(p,
               new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
                   TURNS_TO_STARVE));
@@ -68,10 +68,7 @@ public class PredatorPreyGrid extends Grid {
   public void nextFrame() {
     basicNextFrame();
 
-    for (Cell c : pointCellMap.values()) {
-      PredatorPreyCell updateCell = (PredatorPreyCell) c;
-      updateCell.didMove = false;
-    }
+    resetMovement();
 
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell currentCell = (PredatorPreyCell) c;
@@ -80,6 +77,13 @@ public class PredatorPreyGrid extends Grid {
       currentCell = handleMovement(currentCell, state);
 
       handleBreeding(currentCell, state);
+    }
+  }
+
+  private void resetMovement() {
+    for (Cell c : pointCellMap.values()) {
+      PredatorPreyCell updateCell = (PredatorPreyCell) c;
+      updateCell.didMove = false;
     }
   }
 

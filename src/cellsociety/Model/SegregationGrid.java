@@ -1,8 +1,8 @@
 package cellsociety.Model;
 
-import cellsociety.Controller.XMLParser;
+import cellsociety.Controller.GridParser;
 import cellsociety.Main;
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -32,7 +32,7 @@ public class SegregationGrid extends Grid {
     for (int r = 0; r < myHeight; r++) {
       for (int c = 0; c < myWidth; c++) {
         Point p = new Point(c, r);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(XMLParser.RANDOM)) {
+        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
           pointCellMap.put(p,
               new SegregationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
                   (double) cellValues

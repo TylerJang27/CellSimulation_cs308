@@ -31,7 +31,7 @@ import org.xml.sax.SAXException;
 public class SimulationControl {
 
   public static final int DEFAULT_RATE = 5;
-  private static final double SIZE = 800;
+  private static final double SIZE = 700;
   public static final int RATE_MAX = 10;
 
   private Grid myGrid;
@@ -41,16 +41,14 @@ public class SimulationControl {
   private int rate = DEFAULT_RATE;
   private int frameStep;
   private int numCols, numRows;
-  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final ResourceBundle RESOURCES = Main.myResources;
 
   /**
    * Constructor for creating a SimulationControl instance
    *
    * @param primaryStage the stage for the animation
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public SimulationControl(Stage primaryStage) throws IOException, SAXException {
+  public SimulationControl(Stage primaryStage) {
     paused = true;
     frameStep = 0;
     initializeView(primaryStage);
@@ -91,9 +89,8 @@ public class SimulationControl {
         myGrid.nextFrame();
         updateViewGrid();
         myApplicationView.displayFrameNumber(myGrid.getFrame());
-        myApplicationView.updateCell(2, 3, (int) Math.random() * 3);
       }
-    } catch (Exception e) {
+    } catch (NullPointerException e) {
       myApplicationView.logError(RESOURCES.getString("BadStep"));
     }
   }
@@ -137,10 +134,8 @@ public class SimulationControl {
    * Sets the initial settings for SimulationControl
    *
    * @param dataFile the File from which to read configuration instructions
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public void initializeModel(File dataFile) throws IOException, SAXException {
+  public void initializeModel(File dataFile) {
     mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -148,13 +143,13 @@ public class SimulationControl {
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-
     //FIXME: Tyler: Make the CellState Configurations and pass the List
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
     myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
+    pauseSimulation();
   }
 
   /**
@@ -224,7 +219,9 @@ public class SimulationControl {
           File newValue) {
         try {
           initializeModel(newValue);
+          myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
         } catch (Exception e) {
+          //FIXME: TOO GENERAL EXCEPTION
           myApplicationView.logError(e.getMessage());
         }
       }

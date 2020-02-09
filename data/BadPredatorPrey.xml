@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>PredatorPreyy</title>
+    <dummy>Hello World</dummy>
+    <author>Team 15</author>
+    <description>A poor Predator-Prey XML file used to ensure bad inputs are caught.</description>
+    <rate>5</rate>
+    <width>5</width>
+    <height>30</height>
+    <fish_breed>2</fish_breed>
+    <shark_starve>4</shark_starve>
+    <shark_breed>7</shark_breed>
+    <grid_type>2</grid_type>
+</data>

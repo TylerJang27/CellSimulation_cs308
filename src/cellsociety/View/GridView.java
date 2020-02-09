@@ -16,7 +16,7 @@ import javafx.scene.paint.Color;
 public class GridView extends GridPane {
 
   private static final double GRID_PADDING = 10;
-  private static final double SIZE = 800;
+  private double mySize = 800;
 
   private Collection<CellView> myCells;
 
@@ -31,7 +31,7 @@ public class GridView extends GridPane {
   public GridView(int numRows, int numColumns, double width, double height, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
 
     super();
-
+    mySize = size;
     setId("grid");
 
     setHgap(GRID_PADDING);
@@ -55,8 +55,8 @@ public class GridView extends GridPane {
       }
     }
 
-    setPrefHeight(SIZE);
-    setPrefWidth(SIZE);
+    setPrefHeight(mySize);
+    setPrefWidth(mySize);
 
   }
 
