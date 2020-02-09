@@ -71,10 +71,11 @@ public class CellView extends Pane {
     myCurrentState = cellStateList.get(state);
   }
 
-  private void getCellConfiguration(CellStateConfiguration configuration){
+  private ImageCellState getCellConfiguration(CellStateConfiguration configuration){
     String style = configuration.getStyle();
     if(style.equals("IMAGE")){
-      return new ImageCellState(configuration.getParameters())
+      return new ImageCellState(configuration.getParameters());
     }
+    return null;
   }
 }

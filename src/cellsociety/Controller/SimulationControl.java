@@ -149,7 +149,7 @@ public class SimulationControl {
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
 
-    //TODO: Tyler: Make the CellState Configurations and pass the List
+    //FIXME: Tyler: Make the CellState Configurations and pass the List
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
     myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
     myGrid = createGrid();
