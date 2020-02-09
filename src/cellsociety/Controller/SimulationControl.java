@@ -170,7 +170,9 @@ public class SimulationControl {
     CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, new HashMap<String, String>());
     cellViewConfiguration.add(config1);
 
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
+    //TODO: Tyler: configure in XML whether the Grid should be outlined or note, pass it in the isOutlined parameter below
+    //Alternatively instead of a boolean, you can store a double specifiyng outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, true, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();

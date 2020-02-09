@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -24,6 +25,7 @@ public class ApplicationView {
   private Scene myScene;
   private BorderPane root;
   private GridView myGridView;
+  private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
 
@@ -49,6 +51,10 @@ public class ApplicationView {
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
     myGridView = new GridView();
+    myGridScroll = new ScrollPane();
+    myGridScroll.setContent(myGridView);
+    myGridScroll.setPrefViewportHeight(700);
+    myGridScroll.setPrefViewportWidth(700);
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
@@ -56,7 +62,7 @@ public class ApplicationView {
     root = new BorderPane();
 
     root.setBottom(myConsoleView);
-    root.setCenter(myGridView);
+    root.setCenter(myGridScroll);
     root.setLeft(myDashboardView);
 
     myScene = new Scene(root);
@@ -99,8 +105,9 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, List<CellStateConfiguration> cellStateConfigs) {
-    myGridView = new GridView(numRows, numColumns, width, length, myCellClickedHandler, cellStateConfigs);
-    root.setCenter((myGridView));
+  public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
+    myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+    myGridScroll.setContent(myGridView);
+    root.setCenter((myGridScroll));
   }
 }
