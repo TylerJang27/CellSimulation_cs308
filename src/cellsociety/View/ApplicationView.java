@@ -106,8 +106,12 @@ public class ApplicationView {
    * @param length     the length of the grid in pixels
    */
   public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
-    myRectangleGridView = new RectangleGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
-    //myRectangleGridView = new HexagonGridView(50);
+    CellStateConfiguration config = cellStateConfigs.get(0);
+    if(config.getShape().equals("rectangle")){
+      myRectangleGridView = new RectangleGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+    }else if(config.getShape().equals("hexagon")){
+      myRectangleGridView = new HexagonGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+    }
     myGridScroll.setContent(myRectangleGridView.getNode());
     root.setCenter((myGridScroll));
   }

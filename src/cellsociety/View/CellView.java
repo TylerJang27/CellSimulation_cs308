@@ -22,6 +22,8 @@ public class CellView extends Pane {
   private static final double gridLineWidth = 4;
 
 
+
+
   private List<CellState> cellStateList;
   private Node myCurrentState;
 
@@ -61,6 +63,8 @@ public class CellView extends Pane {
       double sideLength = Double.parseDouble(params.get("sideLength"));
       return makeHexagon(sideLength);
     }
+    System.out.println("error in cellview");
+    return null;
   }
 
 
@@ -75,14 +79,7 @@ public class CellView extends Pane {
     getChildren().add(myCurrentState);
   }
 
-  private ImageCellState getCellConfiguration(CellStateConfiguration configuration){
-    String style = configuration.getStyle();
-    if(style.equals("IMAGE")){
-      return new ImageCellState(configuration.getParameters());
-    }
-    System.out.println("whoops");
-    return null;
-  }
+
   private Shape makeHexagon(double sideLength){
     Polygon newPolygon = new Polygon();
     for(int angle = 0; angle < FULL_CIRCLE_DEGREES; angle += ANGLE_STEP){
@@ -92,6 +89,7 @@ public class CellView extends Pane {
     }
     newPolygon.setStroke(Color.GREEN);
     newPolygon.setStrokeWidth(gridLineWidth / 2);
+
     return newPolygon;
   }
 
