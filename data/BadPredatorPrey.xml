@@ -3,12 +3,18 @@
     <title>PredatorPreyy</title>
     <dummy>Hello World</dummy>
     <author>Team 15</author>
-    <description>A poor Predator-Prey XML file used to ensure bad inputs are caught.</description>
+    <description>A poor Predator-Prey XML file used to ensure bad inputs are caught. Includes errors in title attribute and extraneous fields.</description>
     <rate>5</rate>
-    <width>5</width>
+    <width>30</width>
     <height>30</height>
-    <fish_breed>2</fish_breed>
     <shark_starve>4</shark_starve>
     <shark_breed>7</shark_breed>
-    <grid_type>2</grid_type>
+    <grid_type>1</grid_type>
+    <grid>
+        <point>0 2 1</point>
+        <point>0 1 1</point>
+        <point>0 3 5</point>
+        <point>0 4 3</point>
+        <point>4 5 4</point>
+    </grid>
 </data>

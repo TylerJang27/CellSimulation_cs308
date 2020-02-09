@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class GameOfLifeCell extends Cell {
 
-  private static final int DEAD = 0;
-  private static final int ALIVE = 1;
+  public static final int DEAD = 0;
+  public static final int ALIVE = 1;
 
   /**
    * Constructs cell with initial state and values to be evaluated per step

@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public class PercolationCell extends Cell {
 
-  private static final int CLOSED = 0;
-  private static final int OPENED = 1;
-  private static final int FILLED = 2;
+  public static final int CLOSED = 0;
+  public static final int OPENED = 1;
+  public static final int FILLED = 2;
 
   /**
    * Constructs cell with initial state and values to be evaluated per step

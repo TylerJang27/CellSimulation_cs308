@@ -9,7 +9,6 @@ import cellsociety.Model.PredatorPreyGrid;
 import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,7 +20,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
 /**
  * Core class of the Controller part of the MVC Model Reads in data from the XML file and
@@ -31,7 +29,7 @@ import org.xml.sax.SAXException;
 public class SimulationControl {
 
   public static final int DEFAULT_RATE = 5;
-  private static final double SIZE = 700;
+  public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
 
   private Grid myGrid;
@@ -42,6 +40,8 @@ public class SimulationControl {
   private int frameStep;
   private int numCols, numRows;
   private static final ResourceBundle RESOURCES = Main.myResources;
+
+  private boolean a = false;
 
   /**
    * Constructor for creating a SimulationControl instance
@@ -98,10 +98,15 @@ public class SimulationControl {
   /**
    * Updates all the Cells in GridView based off of the values in myGrid
    */
-  private void updateViewGrid() {
+  private void updateViewGrid() { //FIXME: HANDLE HEX?
     for (int j = 0; j < numCols; j++) {
       for (int k = 0; k < numRows; k++) {
-        myApplicationView.updateCell(j, k, myGrid.getState(j, k));
+        int state = myGrid.getState(j, k);
+        try {
+          myApplicationView.updateCell(j, k, state);
+        } catch (NullPointerException e) {
+          //disregard, this allows all points to be pipelined to View, regardless of shape
+        }
       }
     }
   }
@@ -125,10 +130,13 @@ public class SimulationControl {
    * @param primaryStage the stage for the animation
    */
   private void initializeView(Stage primaryStage) {
-    myApplicationView = new ApplicationView(SIZE, primaryStage, getPlayHandler(),
-        getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler(), getCellClickedHandler());
+    EventHandler<MouseEvent> stepHandler = event -> stepSimulation();
+    EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
+    EventHandler<MouseEvent> playHandler = event -> playSimulation();
+    ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
+            pauseHandler, stepHandler, sliderListener, getFileListener(), getCellClickedHandler());
   }
-
 
   /**
    * Sets the initial settings for SimulationControl
@@ -138,7 +146,7 @@ public class SimulationControl {
   public void initializeModel(File dataFile) {
     mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
-    rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
+    rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
 
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
@@ -160,68 +168,39 @@ public class SimulationControl {
   private Grid createGrid() {
     String simType = mySim.getType().toString();
     if (simType.equals(RESOURCES.getString("GameOfLife"))) {
-      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueSet());
+      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Percolation"))) {
-      return new PercolationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PercolationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Segregation"))) {
-      return new SegregationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new SegregationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
-      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Fire"))) {
-      return new FireGrid(mySim.getGrid(), mySim.getValueSet());
+      return new FireGrid(mySim.getGrid(), mySim.getValueMap());
     }
     return null;
   }
 
   /**
-   * Returns a handler for playSimulation() to be sent to ApplicationView
+   * Writes file to data/ and notes this in the console
    */
-  private EventHandler<MouseEvent> getPlayHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        playSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for pauseSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getPauseListener() {
-    return new EventHandler<>() {
-      @Override
-      public void handle(MouseEvent event) {
-        pauseSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for stepSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getStepHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        stepSimulation();
-      }
-    };
+  private void saveFile() {
+    WriteXMLFile writer = new WriteXMLFile(mySim, myGrid, rate);
+    myApplicationView.logError(String.format(RESOURCES.getString("FileSaved"), writer.writeSimulationXML()));
   }
 
   /**
    * Returns a handler for selecting the file to reset configuration
    */
-  private ChangeListener<File> getFileHandler() {
+  private ChangeListener<File> getFileListener() {
     return new ChangeListener<File>() {
       @Override
       public void changed(ObservableValue<? extends File> observable, File oldValue,
-          File newValue) {
+                          File newValue) {
         try {
           initializeModel(newValue);
           myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
-        } catch (Exception e) {
-          //FIXME: TOO GENERAL EXCEPTION
+        } catch (XMLException e) {
           myApplicationView.logError(e.getMessage());
         }
       }

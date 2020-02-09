@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Class for parsing XML files to determine simulation configuration.
- * <p>
+ *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
@@ -59,8 +59,10 @@ public class XMLParser {
     Map<String, String> simulationSettings = readSettings(root);
     int gridType = Integer.parseInt(getTextValue(root, RESOURCES.getString("GridType"), true));
 
-    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, simulationSettings.get(RESOURCES.getString("Width")), simulationSettings.get(RESOURCES.getString("Height")));
-    return new Simulation(simulationSettings, myGridParser.getGrid(gridType));
+    Simulation mySim = new Simulation(simulationSettings);
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, mySim);
+    mySim.setGrid(myGridParser.getGrid(gridType));
+    return mySim;
   }
 
   /**
