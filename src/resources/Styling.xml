@@ -3,35 +3,47 @@
     <GameOfLife>
         <outline>5</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <alive></alive>
     </GameOfLife>
     <Percolation>
         <outline>4</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <water></water>
         <blocked></blocked>
     </Percolation>
     <Segregation>
         <outline>3</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <a></a>
         <b></b>
     </Segregation>
     <PredatorPrey>
         <outline>10</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <shark></shark>
         <fish></fish>
     </PredatorPrey>
     <Fire>
         <outline>1</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <burning></burning>
         <trees></trees>
     </Fire>
     <RockPaperScissors>
         <outline>0</outline>
         <display></display>
+        <width></width>
+        <height></height>
         <rock></rock>
         <paper></paper>
         <scissors></scissors>

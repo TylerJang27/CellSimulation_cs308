@@ -4,10 +4,7 @@ import cellsociety.Main;
 import cellsociety.Model.*;
 import cellsociety.View.ApplicationView;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import cellsociety.View.CellClickedEvent;
 import cellsociety.View.CellStateConfiguration;
@@ -144,7 +141,7 @@ public class SimulationControl {
    */
   public void initializeModel(File dataFile) {
     //FIXME: TRY TO REFACTOR AND REORDER SO THAT THE VIEW STUFF STAYS IN VIEW
-    mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
+    mySim = new ConfigParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
 
@@ -169,8 +166,17 @@ public class SimulationControl {
       styleString = RESOURCES.getString("Color");
     }
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
-    CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, new HashMap<String, String>());
+
+    //TODO: REMOVE HARD CODE
+    Map<String, String> configMap1 = new HashMap<>();
+    Map<String, String> configMap2 = new HashMap<>();
+    configMap1.put("color", "#FFFF00");
+    configMap2.put("color", "#0004FF");
+    CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, configMap1);
+    CellStateConfiguration config2 = new CellStateConfiguration(shapeString, styleString, configMap2);
+
     cellViewConfiguration.add(config1);
+    cellViewConfiguration.add(config2);
 
     //TODO: Tyler: configure in XML whether the Grid should be outlined or not, pass it in the isOutlined parameter below
     //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible

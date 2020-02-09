@@ -47,7 +47,7 @@ public class CellView extends Pane {
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
         cellStateList.add(new ImageCellState(currentConfiguration.getParameters()));
       }
-      //FIXME: ADD ADDITIONAL CONFIGURATION STUFF
+      //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
       System.out.println("");
     }
 
@@ -74,8 +74,11 @@ public class CellView extends Pane {
    */
   public void changeState(int state) {
     getChildren().remove(myCurrentState);
-    getChildren().add(cellStateList.get(state));
     myCurrentState = cellStateList.get(state);
+    for (CellState c: cellStateList) {
+      System.out.println(c);
+    }
+    getChildren().add(cellStateList.get(state));
   }
 
   private ImageCellState getCellConfiguration(CellStateConfiguration configuration){

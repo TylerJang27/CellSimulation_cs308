@@ -31,7 +31,9 @@ public enum SimStyle {
   private final List<String> myStyleFields;
   private final List<String> GENERIC_FIELDS = List.of(
         Main.myResources.getString("Outline"),
-        Main.myResources.getString("Display")
+        Main.myResources.getString("Display"),
+        Main.myResources.getString("Width"),
+        Main.myResources.getString("Height")
   );
 
   /**
