@@ -24,7 +24,7 @@ public class ApplicationView {
 
   private Scene myScene;
   private BorderPane root;
-  private GridView myRectangleGridView;
+  private GridView myGrid;
   private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
@@ -50,9 +50,9 @@ public class ApplicationView {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
-    myRectangleGridView = new RectangleGridView();
+    myGrid = new RectangleGridView();
     myGridScroll = new ScrollPane();
-    myGridScroll.setContent(myRectangleGridView.getNode());
+    myGridScroll.setContent(myGrid.getNode());
     myGridScroll.setPrefViewportHeight(700);
     myGridScroll.setPrefViewportWidth(700);
     myConsoleView = new ConsoleView();
@@ -94,7 +94,7 @@ public class ApplicationView {
   }
 
   public void updateCell(int row, int column, int state) {
-    myRectangleGridView.updateCell(row, column, state);
+    myGrid.updateCell(row, column, state);
   }
 
   /**
@@ -105,14 +105,15 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
+  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
     CellStateConfiguration config = cellStateConfigs.get(0);
     if(config.getShape().equals("rectangle")){
-      myRectangleGridView = new RectangleGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+      myGrid = new RectangleGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
     }else if(config.getShape().equals("hexagon")){
-      myRectangleGridView = new HexagonGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
     }
-    myGridScroll.setContent(myRectangleGridView.getNode());
+    myGridScroll.setContent(myGrid.getNode());
+  //FIXME: outline vs isOutlined and error handling
     root.setCenter((myGridScroll));
   }
 }

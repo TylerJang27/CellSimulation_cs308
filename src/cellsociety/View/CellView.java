@@ -1,6 +1,7 @@
 package cellsociety.View;
 
 import javafx.scene.Node;
+import cellsociety.Main;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -10,6 +11,7 @@ import javafx.scene.shape.Shape;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * A class to render the Appearance of a cell.
@@ -26,12 +28,14 @@ public class CellView extends Pane {
 
   private List<CellState> cellStateList;
   private Node myCurrentState;
+  private static final ResourceBundle RESOURCES = Main.myResources;
 
 
   public CellView(List<CellStateConfiguration> configuration){
     super();
 
     for(CellStateConfiguration config : configuration){
+      //FIXME: MORE THINGY HERE
       System.out.println(configuration);
     }
 
@@ -42,11 +46,12 @@ public class CellView extends Pane {
 
       Shape cellTemplate = createShape(currentConfiguration.getShape(), currentConfiguration.getParameters());
 
-      if(currentConfiguration.getStyle().equals("color")) {
+      if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
         cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
-      }else if(currentConfiguration.getStyle().equals("image")){
+      }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
         cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
+      //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
     }
 
     myCurrentState = cellStateList.get(0).getNode();
@@ -56,11 +61,23 @@ public class CellView extends Pane {
 
   private Shape createShape(String description, Map<String, String> params){
     if(description.equals("rectangle")){
-      double width = Double.parseDouble(params.get("width"));
-      double height = Double.parseDouble(params.get("height"));
+        System.out.println(params);
+        double width, height;
+        try {
+            width = Double.parseDouble(params.get("width"));
+            height = Double.parseDouble(params.get("height"));
+        } catch(Exception e){
+            width = 50;
+            height = 50;
+        }
       return new Rectangle(width, height);
     } else if(description.equals("hexagon")){
-      double sideLength = Double.parseDouble(params.get("sideLength"));
+        double sideLength;
+        try {
+            sideLength = Double.parseDouble(params.get("sideLength"));
+        } catch(Exception e){
+            sideLength = 50;
+        }
       return makeHexagon(sideLength);
     }
     System.out.println("error in cellview");

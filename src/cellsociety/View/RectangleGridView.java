@@ -29,15 +29,14 @@ public class RectangleGridView extends GridView {
    * @param width      the width of the grid
    * @param height     the height of the grid
    */
-  public RectangleGridView(int numRows, int numColumns, double width, double height, boolean isOutlined, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
+  public RectangleGridView(int numRows, int numColumns, double width, double height, String outlineWidth, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
     super();
     myGrid = new GridPane();
     myGrid.setId("grid");
-    if(isOutlined) {
-      myGrid.setHgap(GRID_PADDING);
-      myGrid.setVgap(GRID_PADDING);
-      myGrid.setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
-    }
+    double cellOutlineWidth = Double.parseDouble(outlineWidth);
+    myGrid.setHgap(cellOutlineWidth);
+    myGrid.setVgap(cellOutlineWidth);
+    myGrid.setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
     setConstraints(numRows, numColumns);
 
     myCells = new ArrayList<>();

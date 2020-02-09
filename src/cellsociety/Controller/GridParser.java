@@ -1,7 +1,5 @@
 package cellsociety.Controller;
 
-import cellsociety.Main;
-import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -11,16 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 /**
  * Class for parsing XML files to retrieve information about initial grid configuration
  *
  * @author Tyler Jang
  */
-public class GridParser {
+public class GridParser extends XMLParser{
 
-    private static final ResourceBundle RESOURCES = Main.myResources;
     public static final int ALL = 0;
     public static final int SOME = 1;
     public static final int RANDOM = 2;
@@ -29,7 +25,6 @@ public class GridParser {
     public static final int SQUARE = 0;
     public static final int HEXAGON = 1;
 
-    private Document myDoc;
     private int myWidth;
     private int myHeight;
     private int myShape;
@@ -43,6 +38,7 @@ public class GridParser {
      * @throws XMLException File missing or incorrect format or non-Integer width or height
      */
     public GridParser(DocumentBuilder docBuilder, File dataFile, Simulation sim) {
+        super("");
         maxVal = sim.getType().getMaxVal();
         myWidth = sim.getValue(RESOURCES.getString("Width"));
         myHeight = sim.getValue(RESOURCES.getString("Height"));
