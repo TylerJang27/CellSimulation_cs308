@@ -30,7 +30,6 @@ public class FireGrid extends Grid {
   public FireGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
     double chanceToBurn = (double) cellValues.getOrDefault(RESOURCES.getString("Fire"), 50) / 100;
-    String shape = RESOURCES.getString("CellShape");
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         Point p = new Point(x, y);
