@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import cellsociety.Controller.SimulationControl;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
@@ -16,7 +17,6 @@ import javafx.scene.paint.Color;
 public class GridView extends GridPane {
 
   private static final double GRID_PADDING = 10;
-  private static final double SIZE = 800;
 
   private Collection<CellView> myCells;
 
@@ -31,14 +31,12 @@ public class GridView extends GridPane {
   public GridView(int numRows, int numColumns, double width, double height, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
 
     super();
-
     setId("grid");
 
     setHgap(GRID_PADDING);
     setVgap(GRID_PADDING);
     setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
     setConstraints(numRows, numColumns);
-
 
     myCells = new ArrayList<>();
     for (int i = 0; i < numRows; i++) {
@@ -55,8 +53,8 @@ public class GridView extends GridPane {
       }
     }
 
-    setPrefHeight(SIZE);
-    setPrefWidth(SIZE);
+    setPrefHeight(height);
+    setPrefWidth(width);
 
   }
 
@@ -65,7 +63,7 @@ public class GridView extends GridPane {
    */
   //FIXME: This really should not be null
   public GridView(){
-    this(0,0,SIZE,SIZE, null, new ArrayList<CellStateConfiguration>());
+    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, null, new ArrayList<CellStateConfiguration>());
   }
 
   /**

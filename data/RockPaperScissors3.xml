@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="simulation">
-    <title>Segregation</title>
+    <title>RockPaperScissors</title>
     <author>Team 15</author>
-    <description>A basic test of Segregation with random grid values.</description>
+    <description>A basic implementation of Rock Paper Scissors with random grid values.</description>
+    <threshold>4</threshold>
     <rate>5</rate>
     <width>30</width>
     <height>30</height>
-    <similar>69</similar>
-    <red>50</red>
-    <empty>20</empty>
     <grid_type>2</grid_type>
 </data>

@@ -1,11 +1,11 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 /**
  * Class for parsing XML files to determine simulation configuration.
- * <p>
+ *
  * Class based mainly on XMLParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
@@ -24,16 +24,12 @@ import org.xml.sax.SAXException;
  */
 public class XMLParser {
 
-  private static final String ERROR_MESSAGE = Main.myResources.getString("XML_ERROR_MESSAGE");
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final String ERROR_MESSAGE = RESOURCES.getString("XML_ERROR_MESSAGE");
+  private static final String ERROR_FIELD_MESSAGE = RESOURCES.getString("XML_ERROR_FIELD_MESSAGE");
   private static final String XML_END = ".xml";
   private final String TYPE_ATTRIBUTE;
   private final DocumentBuilder DOCUMENT_BUILDER;
-
-  public static final int ALL = 0;
-  public static final int SOME = 1;
-  public static final int RANDOM = 2;
-  //TODO: Add new XML reading type
-
 
   /**
    * Create parser for XML files of given type.
@@ -48,10 +44,8 @@ public class XMLParser {
    *
    * @param dataFile file from which to read configuration
    * @return Returns a Simulation with all of its configuration information stored
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public Simulation getSimulation(File dataFile) throws IOException, SAXException {
+  public Simulation getSimulation(File dataFile) {
     if (!isXML(dataFile)) {
       throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
     }
@@ -63,10 +57,12 @@ public class XMLParser {
     }
 
     Map<String, String> simulationSettings = readSettings(root);
-    int gridType = Integer.parseInt(getTextValue(root, Main.myResources.getString("GridType")));
+    int gridType = Integer.parseInt(getTextValue(root, RESOURCES.getString("GridType"), true));
 
-    Map grid = getGrid(dataFile, gridType);
-    return new Simulation(simulationSettings, grid);
+    Simulation mySim = new Simulation(simulationSettings);
+    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile, mySim);
+    mySim.setGrid(myGridParser.getGrid(gridType));
+    return mySim;
   }
 
   /**
@@ -76,16 +72,35 @@ public class XMLParser {
    * @return a Map of Strings of configuration settings
    */
   private Map<String, String> readSettings(Element root) {
-    //FIXME: ACCOUNT FOR DIFFERENT DATA TYPES AND ALSO THROW EXCEPTIONS
     Map<String, String> simulationSettings = new HashMap<>();
-    for (String field : Simulation.DATA_FIELDS) {
-      simulationSettings.put(field, getTextValue(root, field));
+    for (String field : Simulation.MANDATORY_DATA_FIELDS) {
+      simulationSettings.put(field, getTextValue(root, field, true));
     }
-    for (String field : SimType.of(simulationSettings.get(Simulation.DATA_FIELDS.get(0)))
-        .getFields()) {
-      simulationSettings.put(field, getTextValue(root, field));
+    for (String field: Simulation.OPTIONAL_DATA_FIELDS) {
+      putOptional(root, simulationSettings, field);
+    }
+    for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
+        .getMandatoryFields()) {
+      simulationSettings.put(field, getTextValue(root, field, true));
+    }
+    for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
+            .getOptionalFields()) {
+      putOptional(root, simulationSettings, field);
     }
     return simulationSettings;
+  }
+
+  /**
+   * Adds value in field to simulationSettings if its value exists, throws no exception
+   * @param root document root
+   * @param simulationSettings Map of fields and data for Simulation
+   * @param field name of field in XML file
+   */
+  private void putOptional(Element root, Map<String, String> simulationSettings, String field) {
+    String val = getTextValue(root, field, false);
+    if (val.length() > 0) {
+      simulationSettings.put(field, val);
+    }
   }
 
   /**
@@ -104,6 +119,9 @@ public class XMLParser {
     }
   }
 
+  /**
+   * Checks whether or not a file is an XML file based on its name
+   */
   private boolean isXML(File dataFile) {
     return -1 != dataFile.getName().indexOf(XML_END);
   }
@@ -136,37 +154,16 @@ public class XMLParser {
    * @param e       the Element from which to retrieve the attribute
    * @param tagName the tag to search for in the XML file
    * @return the text for that tag
+   * @throws XMLException if field is mandatory and missing
    */
-  private String getTextValue(Element e, String tagName) {
+  private String getTextValue(Element e, String tagName, boolean mandatory) {
     NodeList nodeList = e.getElementsByTagName(tagName);
     if (nodeList != null && nodeList.getLength() > 0) {
       return nodeList.item(0).getTextContent();
-    } else {
-      throw new XMLException(ERROR_MESSAGE, Simulation.DATA_TYPE);
+    } else if (mandatory) {
+      throw new XMLException(ERROR_FIELD_MESSAGE, Simulation.DATA_TYPE, tagName);
     }
-  }
-
-  /**
-   * Returns a grid based off of the type of grid stored in the XML file
-   *
-   * @param dataFile the file from which to read
-   * @param gridType the type of grid (all, some, or random)
-   * @return a Map representing points and values in the grid
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
-   */
-  private Map<Point, Integer> getGrid(File dataFile, int gridType)
-      throws IOException, SAXException {
-    GridParser myGridParser = new GridParser(getDocumentBuilder(), dataFile);
-
-    //FIXME: This should all be in Grid Parser
-    if (gridType == ALL) {
-      return myGridParser.getAllGrid(dataFile);
-    } else if (gridType == SOME) {
-      return myGridParser.getSomeGrid(dataFile);
-    } else {
-      return new HashMap<>();
-    }
+    return "";
   }
 
   /**
