@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 public class SegregationGrid extends Grid {
 
   private static final int DEFAULT_THRESHOLD = 30;
+  private static final int UNSATISFIED = 2;
 
   private ResourceBundle RESOURCES = Main.myResources;
   private static final int MAX_VAL = 2;
@@ -59,7 +60,7 @@ public class SegregationGrid extends Grid {
     int index = 0;
     for (Point p : pointCellMap.keySet()) {
       Cell c = pointCellMap.get(p);
-      if (c.calculateNextState() == 2) {
+      if (c.calculateNextState() == UNSATISFIED) {
         unsatisfiedPoints.add(p);
       }
     }

@@ -27,8 +27,8 @@ public class RockPaperScissorsCell extends Cell {
         loseCount++;
       }
     }
-    if (loseCount < loseThreshold) {
-      newState = state < 3 ? state++ : 1;
+    if (loseCount > loseThreshold) {
+      newState = state < 3 ? state+1 : 1;
     }
     return newState;
   }

@@ -68,40 +68,67 @@ public abstract class Grid {
     return Arrays.asList(left, up, right, down);
   }
 
+
+  private void buildHexagonNeighbors() {
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
+
+      for (int x = -1; x <= 1; x++) {
+        for (int y = -2; y <= 2; y++) {
+          int xOffset = getXOffset(xPos, x);
+          int yOffset = getYOffset(yPos, y);
+
+          Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
+          if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
+            pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+          }
+        }
+      }
+    }
+  }
+
   /**
    * Checks all surrounding cells (diagonals included) of a specific cell and builds neighbors
    */
   protected void buildSquareNeighbors() {
     for (Point p : pointCellMap.keySet()) {
-      buildSquareSingleNeighbor(p);
-    }
-  }
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
 
-  private void buildSquareSingleNeighbor(Point p) {
-    int xPos = (int) p.getX();
-    int yPos = (int) p.getY();
+      for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+          int xOffset = getXOffset(xPos, x);
+          int yOffset = getYOffset(yPos, y);
 
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        int xOffset = x;
-        int yOffset = y;
-        if (xPos + xOffset < 0)  {
-          xOffset = myWidth - 1;
-        } else if (xPos + xOffset > myWidth-1){
-          xOffset = -xPos;
-        }
-        if (yPos + yOffset < 0)  {
-          yOffset = myHeight - 1;
-        } else if (yPos + yOffset > myHeight - 1){
-          yOffset = -yPos;
-        }
-
-        Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
-        if (!potentialNeighbor.equals(p)) {
-          pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+          Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
+          if (!potentialNeighbor.equals(p)) {
+            pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+          }
         }
       }
     }
+  }
+
+
+  private int getYOffset(int yPos, int yOffset) {
+    int newOffset = yOffset;
+    if (yPos + yOffset < 0)  {
+      newOffset = myHeight + yOffset;
+    } else if (yPos + yOffset > myHeight - 1){
+      newOffset = -myHeight + yOffset;
+    }
+    return newOffset;
+  }
+
+  private int getXOffset(int xPos, int xOffset) {
+    int newOffset = xOffset;
+    if (xPos + xOffset < 0)  {
+      newOffset = myWidth + 1;
+    } else if (xPos + xOffset > myWidth-1){
+      newOffset = -xPos;
+    }
+    return newOffset;
   }
 
   //First calculates and stores new state of each cell
