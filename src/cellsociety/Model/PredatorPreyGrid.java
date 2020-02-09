@@ -89,7 +89,7 @@ public class PredatorPreyGrid extends Grid {
    */
   @Override
   public void nextFrame() {
-    basicNextFrame();
+    super.nextFrame();
 
     resetMovement();
 
