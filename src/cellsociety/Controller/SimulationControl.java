@@ -233,7 +233,8 @@ public class SimulationControl {
     return new EventHandler<CellClickedEvent>() {
       @Override
       public void handle(CellClickedEvent event) {
-        System.out.println("Cell Clicked at row " + event.getRow() + " and column " + event.getColumn());
+        int state = myGrid.cycleState(event.getRow(), event.getColumn());
+        myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
       }
     };
   }

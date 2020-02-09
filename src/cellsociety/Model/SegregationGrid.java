@@ -97,4 +97,12 @@ public class SegregationGrid extends Grid {
       }
     }
   }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  @Override
+  public int getMaxState() {
+    return MAX_VAL;
+  }
 }

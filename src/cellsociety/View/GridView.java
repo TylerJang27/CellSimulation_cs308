@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 public class GridView extends GridPane {
 
   private static final double GRID_PADDING = 10;
-  private double mySize = 800;
 
   private Collection<CellView> myCells;
 

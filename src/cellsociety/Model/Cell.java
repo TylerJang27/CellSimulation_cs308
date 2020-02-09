@@ -65,4 +65,9 @@ public abstract class Cell {
   public int getState() {
     return state;
   }
+
+  /**
+   * Sets a cell's state
+   */
+  public void setState(int newState) { state = newState; }
 }

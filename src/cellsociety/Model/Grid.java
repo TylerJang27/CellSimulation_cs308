@@ -89,10 +89,34 @@ public abstract class Grid {
     }
   }
 
+  /**
+   * Cycle's a cell's state on click, denoted by its row and column
+   *
+   * @param row row location of the cell
+   * @param col column location of the cell
+   * @return the cell's new state, in order to update view
+   */
+  public int cycleState(int row, int col) {
+    Cell c = pointCellMap.get(new Point(row, col));
+    int currState = c.getState();
+    int newState = currState + 1;
+    if (currState >= getMaxState()) {
+      newState = 0;
+    }
+    c.setState(newState);
+    return newState;
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public abstract int getMaxState();
+
   //First calculates and stores new state of each cell
   //Then updates each cell's state
   public abstract void nextFrame();
 
+  //FIXME: COMMENT PLEASE
   protected void basicNextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
@@ -116,6 +140,7 @@ public abstract class Grid {
     return pointCellMap.get(p).getState();
   }
 
+  //FIXME: COMMENT PLEASE
   public int getFrame() {
     return myFrame;
   }

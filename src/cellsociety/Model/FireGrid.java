@@ -74,4 +74,12 @@ public class FireGrid extends Grid {
   public void nextFrame() {
     basicNextFrame();
   }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  @Override
+  public int getMaxState() {
+    return MAX_VAL;
+  }
 }
