@@ -24,6 +24,7 @@ public class PredatorPreyGrid extends Grid {
   private static final int FISH = PredatorPreyCell.FISH;
   private static final int SHARK = PredatorPreyCell.SHARK;
   public static final int MAX_VAL = SHARK;
+  private static final int  HEXAGONAL = 1;
 
   private ResourceBundle RESOURCES = Main.myResources;
   private int fishTurnsToBreed;
@@ -61,7 +62,11 @@ public class PredatorPreyGrid extends Grid {
         }
       }
     }
-    buildNSEWNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildNSEWNeighbors();
+    }
   }
 
   /**

@@ -18,6 +18,7 @@ public class SegregationGrid extends Grid {
   private static final int UNSATISFIED = 2;
   private static final int DEFAULT_RED = 50;
   private static final int DEFAULT_EMPTY = 25;
+  private static final int HEXAGONAL = 1;
 
   private ResourceBundle RESOURCES = Main.myResources;
   public static final int MAX_VAL = 2;
@@ -49,7 +50,11 @@ public class SegregationGrid extends Grid {
         }
       }
     }
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
     buildSquareNeighbors();
+    }
   }
 
   /**

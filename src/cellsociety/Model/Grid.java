@@ -2,10 +2,8 @@ package cellsociety.Model;
 
 import cellsociety.Main;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -17,11 +15,14 @@ import java.util.ResourceBundle;
  */
 public abstract class Grid {
 
+  private static final int TOROIDAL = 1;
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  private static ResourceBundle RESOURCES = Main.myResources;
   protected int myFrame;
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private int gridShape;
+  private int cellShape;
 
   /**
    * Creates basic layout of grid as well as initializes map to store cells
@@ -33,6 +34,8 @@ public abstract class Grid {
     myWidth = gridMap.get(RESOURCES.getString("Width"));
     myHeight = gridMap.get(RESOURCES.getString("Height"));
     pointCellMap = new HashMap<>();
+    gridShape = gridMap.getOrDefault(RESOURCES.getString("GridShape"), 0);
+    cellShape = gridMap.getOrDefault(RESOURCES.getString("Shape"), 0);
     myFrame = 0;
   }
 
@@ -60,24 +63,24 @@ public abstract class Grid {
   protected List<Point> getNeighborPoints(Point p) {
     int xPos = (int) p.getX();
     int yPos = (int) p.getY();
-    Point left = xPos > 0 ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
-    Point up = yPos > 0 ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
-    Point right = xPos < myWidth - 1 ? new Point(xPos + 1, yPos) : new Point(0, yPos);
-    Point down = yPos < myHeight - 1 ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
+    Point left = xPos > 0 || gridShape != TOROIDAL ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
+    Point up = yPos > 0 || gridShape != TOROIDAL ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
+    Point right = xPos < myWidth - 1 || gridShape != TOROIDAL ? new Point(xPos + 1, yPos) : new Point(0, yPos);
+    Point down = yPos < myHeight - 1 || gridShape != TOROIDAL ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
 
     return Arrays.asList(left, up, right, down);
   }
 
 
-  private void buildHexagonNeighbors() {
+  protected void buildHexagonNeighbors() {
     for (Point p : pointCellMap.keySet()) {
       int xPos = (int) p.getX();
       int yPos = (int) p.getY();
 
       for (int x = -1; x <= 1; x++) {
         for (int y = -2; y <= 2; y++) {
-          int xOffset = getXOffset(xPos, x);
-          int yOffset = getYOffset(yPos, y);
+          int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
+          int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
 
           Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
           if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
@@ -98,8 +101,8 @@ public abstract class Grid {
 
       for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
-          int xOffset = getXOffset(xPos, x);
-          int yOffset = getYOffset(yPos, y);
+          int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
+          int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
 
           Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
           if (!potentialNeighbor.equals(p)) {
@@ -153,6 +156,10 @@ public abstract class Grid {
   public int getState(int r, int c) {
     Point p = new Point(r, c);
     return pointCellMap.get(p).getState();
+  }
+
+  public int getCellShape() {
+    return cellShape;
   }
 
   public int getFrame() {

@@ -16,6 +16,7 @@ public class GameOfLifeGrid extends Grid {
   private static ResourceBundle RESOURCES = Main.myResources;
   public static int MAX_VAL = 1;
   private static final int COVERAGE_DEFAULT = 50;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct GameOfLife and gridcell values to set cells at points.
@@ -40,7 +41,11 @@ public class GameOfLifeGrid extends Grid {
         }
       }
     }
-    buildSquareNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildSquareNeighbors();
+    }
   }
 
   /**

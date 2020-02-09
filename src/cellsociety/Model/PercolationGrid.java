@@ -17,6 +17,7 @@ public class PercolationGrid extends Grid {
   private static final int FILLED_DEFAULT = 20;
   private static ResourceBundle RESOURCES = Main.myResources;
   public static int MAX_VAL = 2;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.
@@ -41,7 +42,11 @@ public class PercolationGrid extends Grid {
         }
       }
     }
-    buildSquareNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildSquareNeighbors();
+    }
   }
 
   /**

@@ -8,7 +8,8 @@ import java.util.*;
 public class RockPaperScissorsGrid extends Grid{
 
   private ResourceBundle RESOURCES = Main.myResources;
-  private static final int MAX_VAL = 3;
+  public static final int MAX_VAL = 3;
+  private static final int  HEXAGONAL = 1;
 
   public RockPaperScissorsGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
@@ -24,6 +25,10 @@ public class RockPaperScissorsGrid extends Grid{
         }
       }
     }
-    buildSquareNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildSquareNeighbors();
+    }
   }
 }

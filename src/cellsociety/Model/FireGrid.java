@@ -17,6 +17,7 @@ public class FireGrid extends Grid {
   public static final int MAX_VAL = 2;
   private static final int TREE_DEFAULT = 50;
   private static final int BURNING_DEFAULT = 15;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Fire grid and define fire chance percentage
@@ -44,7 +45,11 @@ public class FireGrid extends Grid {
         }
       }
     }
-    buildNSEWNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildNSEWNeighbors();
+    }
   }
 
   /**
