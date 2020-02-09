@@ -144,4 +144,24 @@ public abstract class Grid {
   public int getFrame() {
     return myFrame;
   }
+
+  /**
+   * Generates a list of points for a default hexagon setup
+   * @return list of points
+   */
+  protected List<Point> hexPointGenerator() {
+    List<Point> hexPoints = new ArrayList<Point>();
+    for (int j = 0; j < myHeight; j ++) {
+      if (j % 2 == 0) {
+        for (int k = 0; k < myWidth; k += 2) {
+          hexPoints.add(new Point(j, k));
+        }
+      } else {
+        for (int k = 1; k < myWidth; k += 2) {
+          hexPoints.add(new Point(j, k));
+        }
+      }
+    }
+    return hexPoints;
+  }
 }

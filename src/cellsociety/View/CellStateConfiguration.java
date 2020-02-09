@@ -8,6 +8,7 @@ public class CellStateConfiguration {
     private String myStyle;
     private Map<String, String> myParams;
 
+    //FIXME: ADD COMMENTS
     public CellStateConfiguration(String shape, String style, Map<String, String> params){
         myShape = shape;
         myStyle = style;
