@@ -17,7 +17,6 @@ public class CellView extends Pane {
   private List<CellState> cellStateList;
   private CellState myCurrentState;
 
-//List<CellState> cellStates
   public CellView(){
     super();
 
