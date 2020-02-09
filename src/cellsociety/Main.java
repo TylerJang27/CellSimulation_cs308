@@ -25,6 +25,7 @@ public class Main extends Application {
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   public static final ResourceBundle myResources = ResourceBundle
       .getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
+  public static final ResourceBundle myImageResources = ResourceBundle.getBundle(RESOURCES + "." + "ImageBundle");
 
   private static final String TITLE = myResources.getString("CellSimulator");
 

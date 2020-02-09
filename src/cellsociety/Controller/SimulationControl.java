@@ -9,7 +9,12 @@ import cellsociety.Model.PredatorPreyGrid;
 import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import cellsociety.View.CellClickedEvent;
+import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -24,7 +29,7 @@ import javafx.stage.Stage;
 public class SimulationControl {
 
   public static final int DEFAULT_RATE = 5;
-  private static final double SIZE = 700;
+  public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
 
   private Grid myGrid;
@@ -130,7 +135,7 @@ public class SimulationControl {
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
     myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
-            pauseHandler, stepHandler, sliderListener, getFileListener());
+            pauseHandler, stepHandler, sliderListener, getFileListener(), getCellClickedHandler());
   }
 
   /**
@@ -146,7 +151,9 @@ public class SimulationControl {
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-    myApplicationView.initializeGrid(SIZE, numRows, numCols, SIZE, SIZE);
+    //FIXME: Tyler: Make the CellState Configurations and pass the List
+    List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
@@ -207,5 +214,27 @@ public class SimulationControl {
    */
   private void changeSimulationSpeed(Number newValue) {
     rate = (RATE_MAX - newValue.intValue());
+  }
+
+  /**
+   * Returns a handler for changing the new simulation rate
+   */
+  private ChangeListener<? super Number> getSliderListener() {
+    return new ChangeListener<Number>() {
+      @Override
+      public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+          Number newValue) {
+        changeSimulationSpeed(observable.getValue());
+      }
+    };
+  }
+
+  private EventHandler<CellClickedEvent> getCellClickedHandler(){
+    return new EventHandler<CellClickedEvent>() {
+      @Override
+      public void handle(CellClickedEvent event) {
+        System.out.println("Cell Clicked at row " + event.getRow() + " and column " + event.getColumn());
+      }
+    };
   }
 }
