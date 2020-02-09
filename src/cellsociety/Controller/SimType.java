@@ -28,7 +28,8 @@ public enum SimType {
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"),
           Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, PredatorPreyGrid.MAX_VAL),
-  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL);
+  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL),
+  ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{}, new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("RPSThreshold")}, RockPaperScissorsGrid.MAX_VAL);
 
   private String myName;
   private final List<String> myMandatoryFields;

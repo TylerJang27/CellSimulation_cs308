@@ -104,8 +104,32 @@ public abstract class Grid {
     }
   }
 
+  /**
+   * Cycle's a cell's state on click, denoted by its row and column
+   *
+   * @param row row location of the cell
+   * @param col column location of the cell
+   * @return the cell's new state, in order to update view
+   */
+  public int cycleState(int row, int col) {
+    Cell c = pointCellMap.get(new Point(row, col));
+    int currState = c.getState();
+    int newState = currState + 1;
+    if (currState >= getMaxState()) {
+      newState = 0;
+    }
+    c.setState(newState);
+    return newState;
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public abstract int getMaxState();
+
   //First calculates and stores new state of each cell
   //Then updates each cell's state
+
   public void nextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
@@ -128,7 +152,28 @@ public abstract class Grid {
     return pointCellMap.get(p).getState();
   }
 
+  //FIXME: COMMENT PLEASE
   public int getFrame() {
     return myFrame;
+  }
+
+  /**
+   * Generates a list of points for a default hexagon setup
+   * @return list of points
+   */
+  protected List<Point> hexPointGenerator() {
+    List<Point> hexPoints = new ArrayList<Point>();
+    for (int j = 0; j < myHeight; j ++) {
+      if (j % 2 == 0) {
+        for (int k = 0; k < myWidth; k += 2) {
+          hexPoints.add(new Point(j, k));
+        }
+      } else {
+        for (int k = 1; k < myWidth; k += 2) {
+          hexPoints.add(new Point(j, k));
+        }
+      }
+    }
+    return hexPoints;
   }
 }

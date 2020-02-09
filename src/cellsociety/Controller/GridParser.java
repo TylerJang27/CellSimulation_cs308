@@ -69,7 +69,7 @@ public class GridParser {
     /**
      * Returns a grid based off of the type of grid stored in the XML file
      *
-     * @param gridType the type of grid (all, some, or random)
+     * @param gridType the type of grid (all, some, random or parametrized random)
      * @return a Map representing points and values in the grid
      */
     public Map<Point, Integer> getGrid(int gridType) {

@@ -64,10 +64,10 @@ public class PercolationGrid extends Grid {
   }
 
   /**
-   * Uses default nextFrame from grid superclass
+   * Returns the maximum state allowed for a particular simulation
    */
   @Override
-  public void nextFrame() {
-    basicNextFrame();
+  public int getMaxState() {
+    return MAX_VAL;
   }
 }
