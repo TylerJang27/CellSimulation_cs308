@@ -24,7 +24,7 @@ Thomas worked on developing the various different types of cells and Grids for t
 #### Mariusz
 Mariusz worked on rendering the various elements of the GUI for the View, and connecting them to the Controller via the use of EventHandlers and ChangeListeners. He constructed generic listeners in the Controller that could be added to the graphics elements once they were rendered. The appearance of the elements were styled with the use of css.
 ### Resources Used
-[Spike Simulation](https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation) for XML reading and enumerated types
+[Spike Simulation](https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation) for XML parsing and enumerated types
 
 [Game Of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life) for Conway's Game of Life specification
 
@@ -37,6 +37,8 @@ Mariusz worked on rendering the various elements of the GUI for the View, and co
 [Fire Spreading](https://www2.cs.duke.edu/courses/compsci308/current/assign/02_simulation/nifty/shiflet-fire/) for fire specification
 
 [Rock-Paper-Scissors](https://softologyblog.wordpress.com/2018/03/23/rock-paper-scissors-cellular-automata/) for Rock-Paper-Scissors algorithm
+
+[XML Parsing](https://www.javatpoint.com/how-to-read-xml-file-in-java) for XML parsing
 
 [XML Writing](https://mkyong.com/java/how-to-create-xml-file-in-java-dom/) for writing to XML files
 

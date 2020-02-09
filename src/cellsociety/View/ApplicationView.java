@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 public class ApplicationView {
 
   private static final String STYLESHEET = "cellsociety/View/style.css";
+  private static final boolean isOutlined = true;
+  //FIXME: REMOVE isOutlined
 
   private Scene myScene;
   private BorderPane root;
@@ -105,7 +107,8 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
+  //FIXME: outline vs isOutlined and error handling
+  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
     myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
     myGridScroll.setContent(myGridView);
     root.setCenter((myGridScroll));

@@ -1,5 +1,6 @@
 package cellsociety.View;
 
+import cellsociety.Main;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -23,8 +24,10 @@ public class ColoredCellState extends CellState {
     public ColoredCellState(Map<String, String> parameters){
         this();
         try{
-            myDisplay.setFill(Color.web(parameters.get("hex-fill")));
-        } catch (Exception e){
+            myDisplay.setFill(Color.web(parameters.get(Main.myResources.getString("Color"))));
+        } catch (NullPointerException e){
+            myDisplay.setFill(Color.web("#FF0000"));
+        } catch (IllegalArgumentException e) {
             myDisplay.setFill(Color.web("#FF0000"));
         }
 

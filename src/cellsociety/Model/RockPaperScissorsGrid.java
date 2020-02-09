@@ -16,6 +16,14 @@ public class RockPaperScissorsGrid extends Grid{
   private ResourceBundle RESOURCES = Main.myResources;
   public static final int MAX_VAL = 3;
 
+  /**
+   * Uses gridMap to construct RPS grid and define winning/losing threshold
+   *
+   * @param gridMap:    Map with KVP of a coordinate point to an int, which represents the state to
+   *                    construct cell with.
+   * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the
+   *                    parameter value
+   */
   public RockPaperScissorsGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
     int threshold = cellValues.getOrDefault(RESOURCES.getString("RPSThreshold"), DEFAULT_STREAK);
