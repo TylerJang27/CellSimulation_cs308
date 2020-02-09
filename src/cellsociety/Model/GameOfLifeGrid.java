@@ -58,12 +58,4 @@ public class GameOfLifeGrid extends Grid {
       pointCellMap.put(p, new GameOfLifeCell(GameOfLifeCell.DEAD));
     }
   }
-
-  /**
-   * Uses default nextFrame from grid superclass
-   */
-  @Override
-  public void nextFrame() {
-    basicNextFrame();
-  }
 }

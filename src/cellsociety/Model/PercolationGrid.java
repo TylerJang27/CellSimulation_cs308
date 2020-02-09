@@ -62,12 +62,4 @@ public class PercolationGrid extends Grid {
       pointCellMap.put(p, new PercolationCell(PercolationCell.OPENED));
     }
   }
-
-  /**
-   * Uses default nextFrame from grid superclass
-   */
-  @Override
-  public void nextFrame() {
-    basicNextFrame();
-  }
 }
