@@ -125,8 +125,12 @@ public class SimulationControl {
    * @param primaryStage the stage for the animation
    */
   private void initializeView(Stage primaryStage) {
-    myApplicationView = new ApplicationView(SIZE, primaryStage, getPlayHandler(),
-        getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler());
+    EventHandler<MouseEvent> stepHandler = event -> stepSimulation();
+    EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
+    EventHandler<MouseEvent> playHandler = event -> playSimulation();
+    ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
+            pauseHandler, stepHandler, sliderListener, getFileListener());
   }
 
   /**
@@ -171,42 +175,6 @@ public class SimulationControl {
   }
 
   /**
-   * Returns a handler for playSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getPlayHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        playSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for pauseSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getPauseListener() {
-    return new EventHandler<>() {
-      @Override
-      public void handle(MouseEvent event) {
-        pauseSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for stepSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getStepHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        stepSimulation();
-      }
-    };
-  }
-
-  /**
    * Writes file to data/ and notes this in the console
    */
   private void saveFile() {
@@ -217,11 +185,11 @@ public class SimulationControl {
   /**
    * Returns a handler for selecting the file to reset configuration
    */
-  private ChangeListener<File> getFileHandler() {
+  private ChangeListener<File> getFileListener() {
     return new ChangeListener<File>() {
       @Override
       public void changed(ObservableValue<? extends File> observable, File oldValue,
-          File newValue) {
+                          File newValue) {
         try {
           initializeModel(newValue);
           myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
@@ -239,18 +207,5 @@ public class SimulationControl {
    */
   private void changeSimulationSpeed(Number newValue) {
     rate = (RATE_MAX - newValue.intValue());
-  }
-
-  /**
-   * Returns a handler for changing the new simulation rate
-   */
-  private ChangeListener<? super Number> getSliderListener() {
-    return new ChangeListener<Number>() {
-      @Override
-      public void changed(ObservableValue<? extends Number> observable, Number oldValue,
-          Number newValue) {
-        changeSimulationSpeed(observable.getValue());
-      }
-    };
   }
 }
