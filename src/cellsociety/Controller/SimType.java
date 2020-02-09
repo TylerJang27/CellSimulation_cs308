@@ -1,6 +1,8 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
+import cellsociety.Model.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,35 +20,51 @@ import java.util.List;
  * @author Tyler Jang
  */
 public enum SimType {
-  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}),
-  SEGREGATION(Main.myResources.getString("Segregation"),
+  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{Main.myResources.getString("Coverage")}, GameOfLifeGrid.MAX_VAL),
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, PercolationGrid.MAX_VAL),
+  SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
-          Main.myResources.getString("Empty")}),
-  PREDATOR_PREY(Main.myResources.getString("PredatorPrey"),
+          Main.myResources.getString("Empty")}, SegregationGrid.MAX_VAL),
+  PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"),
-          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed")}),
-  FIRE("Fire", new String[]{Main.myResources.getString("Catch")});
+          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, PredatorPreyGrid.MAX_VAL),
+  FIRE("Fire", new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.MAX_VAL);
 
   private String myName;
-  private final List<String> myFields;
+  private final List<String> myMandatoryFields;
+  private final List<String> myOptionalFields;
+  private final Integer maxVal;
 
   /**
    * Constructor for SimType, setting its name and fields
    *
    * @param name   the type of Simulation
-   * @param fields the different Strings denoting acceptable Integer fields for that simulation
+   * @param mandatoryFields the different Strings denoting acceptable Integer mandatoryFields for that simulation
    */
-  private SimType(String name, String[] fields) {
+  private SimType(String name, String[] mandatoryFields, String[] optionalFields, Integer val) {
     myName = name;
-    myFields = new ArrayList<>(Arrays.asList(fields));
+    myMandatoryFields = new ArrayList<>(Arrays.asList(mandatoryFields));
+    myOptionalFields = new ArrayList<>(Arrays.asList(optionalFields));
+    maxVal = val;
   }
 
   /**
-   * Returns the SimType's field names
+   * Returns the SimType's mandatory field names
    */
-  public List<String> getFields() {
-    return myFields;
+  public List<String> getMandatoryFields() {
+    return myMandatoryFields;
+  }
+
+  /**
+   * Returns the SimType's optional field names
+   */
+  public List<String> getOptionalFields() { return myOptionalFields; }
+
+  /**
+   * Returns the SimType's max cell value
+   */
+  public Integer getMaxVal() {
+    return maxVal;
   }
 
   /**
@@ -54,7 +72,7 @@ public enum SimType {
    */
   public static SimType of(String code) {
     for (SimType r : SimType.values()) {
-      if (r.myName.equals(code)) {
+      if (code.contains(r.myName)) {
         return r;
       }
     }

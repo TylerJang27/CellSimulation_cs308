@@ -1,14 +1,16 @@
 package cellsociety;
 
 import cellsociety.Controller.SimulationControl;
-import java.io.IOException;
-import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.xml.sax.SAXException;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Feel free to completely change this code or delete it entirely.
@@ -23,6 +25,7 @@ public class Main extends Application {
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   public static final ResourceBundle myResources = ResourceBundle
       .getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
+  public static final ResourceBundle myImageResources = ResourceBundle.getBundle(RESOURCES + "." + "ImageBundle");
 
   private static final String TITLE = myResources.getString("CellSimulator");
 
