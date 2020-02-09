@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>Percolation</title>
+    <author>Team 15</author>
+    <description>A terrible Percolation XML file used to ensure bad inputs are caught. Prints errors to the console because this file contains irredeemable errors with double values.</description>
+    <rate>5</rate>
+    <width>10.0</width>
+    <height>10</height>
+    <grid_type>0</grid_type>
+    <grid>
+        <row>0 0 0 1 0 2 0 1 0 1</row>
+        <row>0 0 1 0 0 2 0 0 1 0 1</row>
+        <row>1 0 1 0 0 2 1 0 1 0 1</row>
+        <row>0 1 1 0 0 2 0 1 1 0 2</row>
+        <row>0 1 0 0 0 2 0 0 1 0 2</row>
+        <row>0 0 1 0 0 2 0 1 0 0 2</row>
+        <row>0 0 1 0 0 2 0 0 1 0</row>
+        <row>1 0 1 0 0 2 0 0 0 1</row>
+        <row>0 1 1 0 0 2 0 1 0 1</row>
+        <row>0 0 0 1 0 2 0 0 1 1</row>
+        <row>0 0 0 1 0 2 0 3 1</row>
+    </grid>
+</data>

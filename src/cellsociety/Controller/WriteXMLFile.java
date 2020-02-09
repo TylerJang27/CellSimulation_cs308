@@ -5,7 +5,6 @@ import cellsociety.Model.Grid;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,9 +21,10 @@ import java.util.*;
  *
  * Class based mainly on WriteXMLFile.java by mkyong
  * https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
+ *
+ * @author Tyler Jang
  */
 public class WriteXMLFile {
-
     private static final int ALL_GRID = 0;
     private static final String YES = "yes";
     private Simulation mySim;
@@ -127,7 +127,6 @@ public class WriteXMLFile {
         for (int j = 0; j < height; j++) {
             Element row = doc.createElement(RESOURCES.getString("Row"));
             StringBuilder rowString = new StringBuilder("");
-            //FIXME: NOT BUILDING CORRECTLY
             for (int k = 0; k < width; k++) {
                 rowString.append(String.format("%d ", myGrid.getState(j, k)));
             }

@@ -3,7 +3,7 @@
     <title>PredatorPreyy</title>
     <dummy>Hello World</dummy>
     <author>Team 15</author>
-    <description>A poor Predator-Prey XML file used to ensure bad inputs are caught.</description>
+    <description>A poor Predator-Prey XML file used to ensure bad inputs are caught. Includes errors in title attribute and extraneous fields.</description>
     <rate>5</rate>
     <width>30</width>
     <height>30</height>

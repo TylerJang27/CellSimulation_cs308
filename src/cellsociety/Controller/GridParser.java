@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * Class for parsing XML files to retrieve information about initial grid configuration
+ *
+ * @author Tyler Jang
+ */
 public class GridParser {
 
     private static final ResourceBundle RESOURCES = Main.myResources;
