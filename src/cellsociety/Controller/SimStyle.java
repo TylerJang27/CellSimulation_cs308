@@ -20,11 +20,11 @@ import java.util.List;
  * @author Tyler Jang
  */
 public enum SimStyle {
-  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{Main.myResources.getString("Alive")}),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{Main.myResources.getString("Water"), Main.myResources.getString("Blocked")}),
-  SEGREGATION(Main.myResources.getString("Segregation"), new String[]{Main.myResources.getString("A"), Main.myResources.getString("B")}),
-  PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{Main.myResources.getString("Shark"), Main.myResources.getString("Fish")}),
-  FIRE(Main.myResources.getString("Fire"), new String[]{Main.myResources.getString("Burning"), Main.myResources.getString("Trees")}),
+  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("Alive")}),
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Empty"), Main.myResources.getString("Water")}),
+  SEGREGATION(Main.myResources.getString("Segregation"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("A"), Main.myResources.getString("B")}),
+  PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("Fish"), Main.myResources.getString("Shark")}),
+  FIRE(Main.myResources.getString("Fire"), new String[]{Main.myResources.getString("Trees"), Main.myResources.getString("Burning")}),
   ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("Scissors")});
 
   private String myName;
@@ -69,14 +69,10 @@ public enum SimStyle {
   }
 
   /**
-   * Returns strings representing all of the SimStyle names
+   * Returns strings representing all of the generic fields
    */
-  public static final List<String> getSimulations() {
-    List<String> simulations = new ArrayList<>();
-    for (SimStyle s: SimStyle.values()) {
-      simulations.add(s.toString());
-    }
-    return simulations;
+  public List<String> getGenerics() {
+    return GENERIC_FIELDS;
   }
 
   /**

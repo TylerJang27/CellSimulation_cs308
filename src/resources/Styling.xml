@@ -5,6 +5,7 @@
         <display>color</display>
         <width>700</width>
         <height>700</height>
+        <empty>#FFFFFF</empty>
         <alive>#0000FF</alive>
     </GameOfLife>
     <Percolation>
@@ -12,14 +13,16 @@
         <display>color</display>
         <width>700</width>
         <height>700</height>
-        <water>#0000FF</water>
         <blocked>#000000</blocked>
+        <empty>#FFFFFF</empty>
+        <water>#0000FF</water>
     </Percolation>
     <Segregation>
         <outline>3</outline>
         <display>color</display>
         <width>700</width>
         <height>700</height>
+        <empty>#FFFFFF</empty>
         <a>#FF0000</a>
         <b>#00FF00</b>
     </Segregation>
@@ -28,16 +31,18 @@
         <display>color</display>
         <width>700</width>
         <height>700</height>
-        <shark>#FF0000</shark>
+        <empty>#0000FF</empty>
         <fish>#00BBBB</fish>
+        <shark>#FF0000</shark>
     </PredatorPrey>
     <Fire>
         <outline>1</outline>
         <display>color</display>
         <width>700</width>
         <height>700</height>
-        <burning>#FF0000</burning>
+        <empty>#FFFFFF</empty>
         <trees>#00FF00</trees>
+        <burning>#FF0000</burning>
     </Fire>
     <RockPaperScissors>
         <outline>0</outline>

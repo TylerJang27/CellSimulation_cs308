@@ -64,4 +64,26 @@ public class Style {
   public String getValue(String field) {
     return myDataValues.getOrDefault(field, "");
   }
+
+  /**
+   * Builds a Map of style parameters used for CellStateConfiguration
+   */
+  public Map<String, String> getConfigParameters() {
+    Map<String, String> params = new HashMap<>();
+    String fill;
+    if (getValue(RESOURCES.getString("Display")).equals(RESOURCES.getString("Image"))) {
+      fill = RESOURCES.getString("Image");
+    } else {
+      fill = RESOURCES.getString("Color");
+    }
+    for (String s: getType().getStyleFields()) {
+      String val = getValue(s);
+      if ((val.contains("/") || val.contains("\\")) && fill.equals(RESOURCES.getString("Image"))) {
+        params.put(fill, getValue(s));
+      } else {
+        params.put(RESOURCES.getString("Color"), getValue(s));
+      }
+    }
+    return params;
+  }
 }
