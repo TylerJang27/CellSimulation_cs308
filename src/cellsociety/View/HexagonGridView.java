@@ -9,9 +9,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
 public class HexagonGridView extends GridView{
-    private static final int FULL_CIRCLE_DEGREES = 360;
-    private static final int ANGLE_STEP = 60;
-    private static final double gridLineWidth = 4;
+
 
     private Pane myGrid;
     private double mySideLength;
@@ -68,15 +66,5 @@ public class HexagonGridView extends GridView{
         return myGrid;
     }
 
-    private Polygon makeHexagon(double sideLength){
-        Polygon newPolygon = new Polygon();
-        for(int angle = 0; angle < FULL_CIRCLE_DEGREES; angle += ANGLE_STEP){
-            double coordinateX = (sideLength + gridLineWidth) * Math.cos(Math.toRadians(angle));
-            double coordinateY = (sideLength + gridLineWidth)* Math.sin(Math.toRadians(angle));
-            newPolygon.getPoints().addAll(new Double[]{coordinateX, coordinateY});
-        }
-        newPolygon.setStroke(Color.GREEN);
-        newPolygon.setStrokeWidth(gridLineWidth / 2);
-        return newPolygon;
-    }
+
 }

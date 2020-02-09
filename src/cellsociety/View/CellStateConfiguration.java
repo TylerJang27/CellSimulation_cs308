@@ -19,6 +19,9 @@ public class CellStateConfiguration {
     public String toString(){
         return "Shape: " + myShape + " Style: " + myStyle + " Parameters: " + myParams;
     }
+    public String getShape() {
+        return myShape;
+    }
 
     public String getStyle(){
         return myStyle;
