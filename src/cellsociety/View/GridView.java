@@ -2,11 +2,16 @@ package cellsociety.View;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import cellsociety.Controller.SimulationControl;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 
 
 public class GridView extends GridPane {
@@ -24,9 +29,9 @@ public class GridView extends GridPane {
    * @param width      the width of the grid
    * @param height     the height of the grid
    */
-  public GridView(double size, int numRows, int numColumns, double width, double height) {
+  public GridView(int numRows, int numColumns, double width, double height, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
+
     super();
-    mySize = size;
     setId("grid");
 
     setHgap(GRID_PADDING);
@@ -34,25 +39,33 @@ public class GridView extends GridPane {
     setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
     setConstraints(numRows, numColumns);
 
+
     myCells = new ArrayList<>();
     for (int i = 0; i < numRows; i++) {
       for (int j = 0; j < numColumns; j++) {
-        CellView adding = new CellView();
+        CellView adding = new CellView(stateConfigs);
+        int finalI = i;
+        int finalJ = j;
+        adding.setOnMouseClicked(e -> {
+          adding.fireEvent(new CellClickedEvent(adding, finalI, finalJ));
+        });
+        adding.addEventHandler(CellClickedEvent.CUSTOM_EVENT_TYPE, cellClickedHandler);
         myCells.add(adding);
-        add(adding, i, j);
+        add(adding, j, i);
       }
     }
 
-    setPrefHeight(mySize);
-    setPrefWidth(mySize);
+    setPrefHeight(height);
+    setPrefWidth(width);
 
   }
 
   /**
    * Default constructor for a Grid View. has no rows and no columns by default
    */
-  public GridView(double size){
-    this(size, 0,0, size, size);
+  //FIXME: This really should not be null
+  public GridView(){
+    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, null, new ArrayList<CellStateConfiguration>());
   }
 
   /**

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="simulation">
+    <title>Fire</title>
+    <author>Team 15</author>
+    <description>A poor Fire XML file used to ensure bad inputs are caught. Includes errors in grid_type attribute, high rate, and extraneous fields.</description>
+    <rate>20</rate>
+    <width>20</width>
+    <height>20</height>
+    <catch>30</catch>
+    <trees>60</trees>
+    <burning>30</burning>
+    <grid_type>9</grid_type>
+</data>
