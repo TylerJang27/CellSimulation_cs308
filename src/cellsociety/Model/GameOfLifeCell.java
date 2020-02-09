@@ -33,7 +33,7 @@ public class GameOfLifeCell extends Cell {
    */
   @Override
   public int calculateNextState() {
-    int newState;
+    int newState = state;
     int aliveNeighbors = countAliveNeighbors();
     if (state == ALIVE && (aliveNeighbors == 2 || aliveNeighbors == 3)) {
       newState = 1;

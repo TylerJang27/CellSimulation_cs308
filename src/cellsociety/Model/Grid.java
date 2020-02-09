@@ -79,13 +79,7 @@ public abstract class Grid {
 
       for (int x = -1; x <= 1; x++) {
         for (int y = -2; y <= 2; y++) {
-          int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
-          int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
-
-          Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
-          if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
-            pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
-          }
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
     }
@@ -101,15 +95,19 @@ public abstract class Grid {
 
       for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
-          int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
-          int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
-
-          Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
-          if (!potentialNeighbor.equals(p)) {
-            pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
-          }
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
+    }
+  }
+
+  private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
+    int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
+    int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
+
+    Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
+    if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
+      pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
     }
   }
 
