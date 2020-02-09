@@ -43,6 +43,7 @@ public class CellView extends Pane {
       }else if(currentConfiguration.getStyle().equals("image")){
         cellStateList.add(new ImageCellState(currentConfiguration.getParameters()));
       }
+      System.out.println("");
     }
 
     myCurrentState = cellStateList.get(0);
@@ -77,6 +78,7 @@ public class CellView extends Pane {
     if(style.equals("IMAGE")){
       return new ImageCellState(configuration.getParameters());
     }
+    System.out.println("whoops");
     return null;
   }
 }

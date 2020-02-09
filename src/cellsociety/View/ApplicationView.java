@@ -99,8 +99,8 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, List<CellStateConfiguration> cellStateConfigs) {
-    myGridView = new GridView(numRows, numColumns, width, length, myCellClickedHandler, cellStateConfigs);
+  public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
+    myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
     root.setCenter((myGridView));
   }
 }

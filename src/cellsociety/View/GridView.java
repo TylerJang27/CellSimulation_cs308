@@ -28,14 +28,15 @@ public class GridView extends GridPane {
    * @param width      the width of the grid
    * @param height     the height of the grid
    */
-  public GridView(int numRows, int numColumns, double width, double height, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
+  public GridView(int numRows, int numColumns, double width, double height, boolean isOutlined, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
 
     super();
     setId("grid");
-
-    setHgap(GRID_PADDING);
-    setVgap(GRID_PADDING);
-    setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
+    if(isOutlined) {
+      setHgap(GRID_PADDING);
+      setVgap(GRID_PADDING);
+      setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
+    }
     setConstraints(numRows, numColumns);
 
     myCells = new ArrayList<>();
@@ -63,7 +64,7 @@ public class GridView extends GridPane {
    */
   //FIXME: This really should not be null
   public GridView(){
-    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, null, new ArrayList<CellStateConfiguration>());
+    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, false, null, new ArrayList<CellStateConfiguration>());
   }
 
   /**
