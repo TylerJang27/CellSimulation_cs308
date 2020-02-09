@@ -24,7 +24,7 @@ public class ApplicationView {
 
   private Scene myScene;
   private BorderPane root;
-  private GridView myGridView;
+  private GridView myRectangleGridView;
   private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
@@ -50,9 +50,9 @@ public class ApplicationView {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
-    myGridView = new GridView();
+    myRectangleGridView = new RectangleGridView();
     myGridScroll = new ScrollPane();
-    myGridScroll.setContent(myGridView);
+    myGridScroll.setContent(myRectangleGridView.getNode());
     myGridScroll.setPrefViewportHeight(700);
     myGridScroll.setPrefViewportWidth(700);
     myConsoleView = new ConsoleView();
@@ -94,7 +94,7 @@ public class ApplicationView {
   }
 
   public void updateCell(int row, int column, int state) {
-    myGridView.updateCell(row, column, state);
+    myRectangleGridView.updateCell(row, column, state);
   }
 
   /**
@@ -106,8 +106,9 @@ public class ApplicationView {
    * @param length     the length of the grid in pixels
    */
   public void initializeGrid(int numRows, int numColumns, double width, double length, boolean isOutlined, List<CellStateConfiguration> cellStateConfigs) {
-    myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
-    myGridScroll.setContent(myGridView);
+    //myRectangleGridView = new RectangleGridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
+    myRectangleGridView = new HexagonGridView(50);
+    myGridScroll.setContent(myRectangleGridView.getNode());
     root.setCenter((myGridScroll));
   }
 }
