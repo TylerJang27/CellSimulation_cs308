@@ -14,9 +14,10 @@ import java.util.ResourceBundle;
 public class FireGrid extends Grid {
 
   private ResourceBundle RESOURCES = Main.myResources;
-  public static final int MAX_VAL = 2;
+  private static final int MAX_VAL = 2;
   private static final int TREE_DEFAULT = 50;
   private static final int BURNING_DEFAULT = 15;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Fire grid and define fire chance percentage
@@ -28,8 +29,7 @@ public class FireGrid extends Grid {
    */
   public FireGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    double chanceToBurn = (double) gridMap.getOrDefault(RESOURCES.getString("Fire"), 50) / 100;
-
+    double chanceToBurn = (double) cellValues.getOrDefault(RESOURCES.getString("Fire"), 50) / 100;
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         Point p = new Point(x, y);
@@ -44,7 +44,11 @@ public class FireGrid extends Grid {
         }
       }
     }
-    buildNSEWNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildNSEWNeighbors();
+    }
   }
 
   /**
@@ -66,12 +70,10 @@ public class FireGrid extends Grid {
       pointCellMap.put(p, new FireCell(FireCell.EMPTY, chanceToBurn));
     }
   }
-
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  @Override
-  public int getMaxState() {
+  public static int getMaxState() {
     return MAX_VAL;
   }
 }

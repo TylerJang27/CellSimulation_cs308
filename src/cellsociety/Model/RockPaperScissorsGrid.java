@@ -10,11 +10,12 @@ import java.util.*;
 public class RockPaperScissorsGrid extends Grid{
 
   private static final int DEFAULT_VALUE = 1;
-  private static final int DEFAULT_STREAK = 3;
+  private static final int DEFAULT_STREAK = 2;
   private static final int ROCK_DEFAULT = 33;
-  private static final int PAPER_DEFAULT = 50;
+  private static final int PAPER_DEFAULT = 33;
   private ResourceBundle RESOURCES = Main.myResources;
-  public static final int MAX_VAL = 3;
+  private static final int MAX_VAL = 3;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct RPS grid and define winning/losing threshold
@@ -40,7 +41,11 @@ public class RockPaperScissorsGrid extends Grid{
         }
       }
     }
-    buildSquareNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildSquareNeighbors();
+    }
   }
 
   /**
@@ -66,8 +71,7 @@ public class RockPaperScissorsGrid extends Grid{
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  @Override
-  public int getMaxState() {
+  public static int getMaxState() {
     return MAX_VAL;
   }
 }

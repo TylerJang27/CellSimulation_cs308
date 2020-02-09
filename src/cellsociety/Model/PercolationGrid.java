@@ -16,7 +16,8 @@ public class PercolationGrid extends Grid {
   private static final int BLOCKED_DEFAULT = 30;
   private static final int FILLED_DEFAULT = 20;
   private static ResourceBundle RESOURCES = Main.myResources;
-  public static int MAX_VAL = 2;
+  private static int MAX_VAL = 2;
+  private static final int  HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.
@@ -41,7 +42,11 @@ public class PercolationGrid extends Grid {
         }
       }
     }
-    buildSquareNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildSquareNeighbors();
+    }
   }
 
   /**
@@ -66,8 +71,7 @@ public class PercolationGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  @Override
-  public int getMaxState() {
+  public static int getMaxState() {
     return MAX_VAL;
   }
 }

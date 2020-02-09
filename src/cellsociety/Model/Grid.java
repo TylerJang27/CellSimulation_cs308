@@ -2,13 +2,12 @@ package cellsociety.Model;
 
 import cellsociety.Main;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.ArrayList;
 
 /**
  * Class for an abstraction of grid types, defining some basic functions
@@ -17,11 +16,14 @@ import java.util.ResourceBundle;
  */
 public abstract class Grid {
 
+  private static final int TOROIDAL = 1;
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  private static ResourceBundle RESOURCES = Main.myResources;
   protected int myFrame;
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private int gridShape;
+  private int cellShape;
 
   /**
    * Creates basic layout of grid as well as initializes map to store cells
@@ -33,6 +35,8 @@ public abstract class Grid {
     myWidth = gridMap.get(RESOURCES.getString("Width"));
     myHeight = gridMap.get(RESOURCES.getString("Height"));
     pointCellMap = new HashMap<>();
+    gridShape = gridMap.getOrDefault(RESOURCES.getString("GridShape"), 0);
+    cellShape = gridMap.getOrDefault(RESOURCES.getString("Shape"), 0);
     myFrame = 0;
   }
 
@@ -60,12 +64,26 @@ public abstract class Grid {
   protected List<Point> getNeighborPoints(Point p) {
     int xPos = (int) p.getX();
     int yPos = (int) p.getY();
-    Point left = xPos > 0 ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
-    Point up = yPos > 0 ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
-    Point right = xPos < myWidth - 1 ? new Point(xPos + 1, yPos) : new Point(0, yPos);
-    Point down = yPos < myHeight - 1 ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
+    Point left = xPos > 0 || gridShape != TOROIDAL ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
+    Point up = yPos > 0 || gridShape != TOROIDAL ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
+    Point right = xPos < myWidth - 1 || gridShape != TOROIDAL ? new Point(xPos + 1, yPos) : new Point(0, yPos);
+    Point down = yPos < myHeight - 1 || gridShape != TOROIDAL ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
 
     return Arrays.asList(left, up, right, down);
+  }
+
+
+  protected void buildHexagonNeighbors() {
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
+
+      for (int x = -1; x <= 1; x++) {
+        for (int y = -2; y <= 2; y++) {
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
+        }
+      }
+    }
   }
 
   /**
@@ -73,35 +91,46 @@ public abstract class Grid {
    */
   protected void buildSquareNeighbors() {
     for (Point p : pointCellMap.keySet()) {
-      buildSquareSingleNeighbor(p);
-    }
-  }
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
 
-  private void buildSquareSingleNeighbor(Point p) {
-    int xPos = (int) p.getX();
-    int yPos = (int) p.getY();
-
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        int xOffset = x;
-        int yOffset = y;
-        if (xPos + xOffset < 0)  {
-          xOffset = myWidth - 1;
-        } else if (xPos + xOffset > myWidth-1){
-          xOffset = -xPos;
-        }
-        if (yPos + yOffset < 0)  {
-          yOffset = myHeight - 1;
-        } else if (yPos + yOffset > myHeight - 1){
-          yOffset = -yPos;
-        }
-
-        Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
-        if (!potentialNeighbor.equals(p)) {
-          pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+      for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
     }
+  }
+
+  private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
+    int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
+    int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
+
+    Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
+    if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
+      pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
+    }
+  }
+
+
+  private int getYOffset(int yPos, int yOffset) {
+    int newOffset = yOffset;
+    if (yPos + yOffset < 0)  {
+      newOffset = myHeight + yOffset;
+    } else if (yPos + yOffset > myHeight - 1){
+      newOffset = -myHeight + yOffset;
+    }
+    return newOffset;
+  }
+
+  private int getXOffset(int xPos, int xOffset) {
+    int newOffset = xOffset;
+    if (xPos + xOffset < 0)  {
+      newOffset = myWidth + 1;
+    } else if (xPos + xOffset > myWidth-1){
+      newOffset = -xPos;
+    }
+    return newOffset;
   }
 
   /**
@@ -125,7 +154,9 @@ public abstract class Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public abstract int getMaxState();
+  public static int getMaxState() {
+    return 0;
+  }
 
   //First calculates and stores new state of each cell
   //Then updates each cell's state
@@ -152,7 +183,16 @@ public abstract class Grid {
     return pointCellMap.get(p).getState();
   }
 
-  //FIXME: COMMENT PLEASE
+  /**
+   * @return cell shape
+   */
+  public int getCellShape() {
+    return cellShape;
+  }
+
+  /**
+   * @return frame counter
+   */
   public int getFrame() {
     return myFrame;
   }

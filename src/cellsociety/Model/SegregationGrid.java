@@ -15,14 +15,16 @@ import java.util.ResourceBundle;
 public class SegregationGrid extends Grid {
 
   private static final int DEFAULT_THRESHOLD = 30;
+  private static final int UNSATISFIED = 2;
   private static final int DEFAULT_RED = 50;
   private static final int DEFAULT_EMPTY = 25;
+  private static final int HEXAGONAL = 1;
 
   private ResourceBundle RESOURCES = Main.myResources;
-  public static final int MAX_VAL = 2;
+  private static final int MAX_VAL = 2;
 
   /**
-   * Uses gridMap to construct Percolation and gridcell values to set cells at points.
+   * Uses gridMap to construct Segregation and gridcell values to set cells at points.
    *
    * @param gridMap:    Map with KVP of a coordinate point to an int, which represents the state to
    *                    construct cell with.
@@ -48,7 +50,11 @@ public class SegregationGrid extends Grid {
         }
       }
     }
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
     buildSquareNeighbors();
+    }
   }
 
   /**
@@ -82,7 +88,7 @@ public class SegregationGrid extends Grid {
     ArrayList<Point> unsatisfiedPoints = new ArrayList<>();
     for (Point p : pointCellMap.keySet()) {
       Cell c = pointCellMap.get(p);
-      if (c.calculateNextState() == SegregationCell.UNSATISFIED) {
+      if (c.calculateNextState() == UNSATISFIED) {
         unsatisfiedPoints.add(p);
       }
     }
@@ -100,8 +106,7 @@ public class SegregationGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  @Override
-  public int getMaxState() {
+  public static int getMaxState() {
     return MAX_VAL;
   }
 }
