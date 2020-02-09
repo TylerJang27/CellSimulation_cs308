@@ -65,11 +65,14 @@ Data files needed:
  * **PredatorPrey2.xml**: a basic Predator-Prey simulation with some values specified
  * **PredatorPrey3.xml**: a basic Predator-Prey simulation with random values
  * **PredatorPrey4.xml**: a basic Predator-Prey simulation with parametrized random values
+ * **RockPaperScissors1.xml**: a basic Rock-Paper-Scissors simulation with all values specified
+ * **RockPaperScissors2.xml**: a basic Rock-Paper-Scissors simulation with some values specified
+ * **RockPaperScissors3.xml**: a basic Rock-Paper-Scissors simulation with random values
+ * **RockPaperScissors4.xml**: a basic Rock-Paper-Scissors simulation with parametrized random values
  * **Segregation1.xml**: a basic Segregation simulation with all values specified
  * **Segregation2.xml**: a basic Segregation simulation with some values specified
  * **Segregation3.xml**: a basic Segregation simulation with random values
  * **Segregation4.xml**: a basic Segregation simulation with parametrized random values
- 
 In creating the XML configuration files, it is also important to know what not to include. The following XML files exhibit problems that may arise:
  * **BadFire.xml**: The grid_type attribute is outside the normal bounds of 0-3. It defaults to 3. The rate is also much larger than the allowed 1-10, so it defaults to 5. Lastly, an extraneous field called "dummy" is included, but ignored in the configuration process.
  * **BadGameOfLife.xml**: The grid is incomplete and also includes extraneous values. These are ignored, and any missing cells default to a value of 0.
@@ -82,9 +85,9 @@ This project implements a basic user interface in which XML configuration files 
  * **Fire**: A cell may either be *empty*, *tree*, or *burning*. If a tree's neighbor is burning, it has a chance, *catch*, of catching fire. Burning cells turn to empty after one turn.
  * **Game Of Life**: A cell may either be *dead* or *alive*. If a live cell has 0-1 or 4-8 live neighbors, it dies. If a dead cell has three live neighbors, it will become alive.  
  * **Percolation**: A cell may either be *closed*, *opened*, or *filled*. If a cell is opened and has a filled neighbor, it will become filled on the next turn. 
- * **Predator-Prey**: A cell may either be *empty*, *fish*, or *shark*. If a shark has been alive *shark_starve* turns, it will die. If a shark has been alive *shark_breed* turns, it will spawn another shark. If a fish has been alive *fish_breed* turns, it will spawn another shark. If a shark is near a fish, it will move toward the fish. If a shark is neighboring a fish, the fish will die and become empty. 
+ * **Predator-Prey**: A cell may either be *empty*, *fish*, or *shark*. If a shark has been alive *shark_starve* turns, it will die. If a shark has been alive *shark_breed* turns, it will spawn another shark. If a fish has been alive *fish_breed* turns, it will spawn another shark. If a shark is near a fish, it will move toward the fish. If a shark is neighboring a fish, the fish will die and become empty.
+ * **Rock-Paper-Scissors**: A cell may either be *rock*, *paper*, or *scissors*. Per the traditional game, rock beats scissors, scissors beats paper, and paper beats rock in a transitive loop. If a cell loses multiple times in a row, it will be replaced by the type that defeated it. 
  * **Segregation**: A cell may either be *empty*, *A*, or *B*. If a cell is A or B, and less than *threshold* % of its neighbors are of the same type, it will move to a random empty space on the next turn.
- * **Rock-Paper-Scissors**: A cell may either be *rock*, *paper*, or *scissors*. Per the traditional game, rock beats scissors, scissors beats paper, and paper beats rock in a transitive loop. If a cell loses multiple times in a row, it will be replaced by the type that defeated it.
 
 XML files must adhere to the different simulation types' settings, but allow for "all", "some", "random," and "parametrized random" cell specifications.
 
