@@ -80,7 +80,6 @@ public class SegregationGrid extends Grid {
   public void nextFrame() {
     myFrame++;
     ArrayList<Point> unsatisfiedPoints = new ArrayList<>();
-    int index = 0;
     for (Point p : pointCellMap.keySet()) {
       Cell c = pointCellMap.get(p);
       if (c.calculateNextState() == SegregationCell.UNSATISFIED) {

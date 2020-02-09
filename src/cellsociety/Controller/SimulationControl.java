@@ -10,6 +10,7 @@ import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,6 +32,7 @@ public class SimulationControl {
   public static final int DEFAULT_RATE = 5;
   public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
+  private static final int IMAGE = 1;
 
   private Grid myGrid;
   private Simulation mySim;
@@ -40,8 +42,6 @@ public class SimulationControl {
   private int frameStep;
   private int numCols, numRows;
   private static final ResourceBundle RESOURCES = Main.myResources;
-
-  private boolean a = false;
 
   /**
    * Constructor for creating a SimulationControl instance
@@ -134,8 +134,12 @@ public class SimulationControl {
     EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    EventHandler<CellClickedEvent> cellClickedHandler = event -> {
+      int state = myGrid.cycleState(event.getRow(), event.getColumn());
+      myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
+    };
     myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
-            pauseHandler, stepHandler, sliderListener, getFileListener(), getCellClickedHandler());
+            pauseHandler, stepHandler, sliderListener, getFileListener(), cellClickedHandler);
   }
 
   /**
@@ -152,7 +156,25 @@ public class SimulationControl {
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
     //FIXME: Tyler: Make the CellState Configurations and pass the List
+    String shapeString;
+    String styleString;
+
+    int fill = mySim.getValue(RESOURCES.getString("Fill"));
+    int shape = mySim.getValue(RESOURCES.getString("Shape"));
+    if (shape == GridParser.HEXAGON) {
+      shapeString = RESOURCES.getString("Hexagon");
+    } else {
+      shapeString = RESOURCES.getString("Rectangle");
+    }
+    if (fill == IMAGE) {
+      styleString = RESOURCES.getString("Image");
+    } else {
+      styleString = RESOURCES.getString("Color");
+    }
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
+    CellStateConfiguration config1 = new CellStateConfiguration(shapeString, styleString, new HashMap<String, String>());
+    cellViewConfiguration.add(config1);
+
     myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, cellViewConfiguration);
     myGrid = createGrid();
 
@@ -225,16 +247,6 @@ public class SimulationControl {
       public void changed(ObservableValue<? extends Number> observable, Number oldValue,
           Number newValue) {
         changeSimulationSpeed(observable.getValue());
-      }
-    };
-  }
-
-  private EventHandler<CellClickedEvent> getCellClickedHandler(){
-    return new EventHandler<CellClickedEvent>() {
-      @Override
-      public void handle(CellClickedEvent event) {
-        int state = myGrid.cycleState(event.getRow(), event.getColumn());
-        myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
       }
     };
   }
