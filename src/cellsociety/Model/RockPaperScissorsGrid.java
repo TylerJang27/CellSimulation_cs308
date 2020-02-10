@@ -7,6 +7,12 @@ import cellsociety.Main;
 import java.awt.Point;
 import java.util.*;
 
+/**
+ * Class for Cells of the Percolation type
+ *
+ * @author Thomas Quintanilla
+ */
+
 public class RockPaperScissorsGrid extends Grid{
 
   private static final int DEFAULT_VALUE = 1;
