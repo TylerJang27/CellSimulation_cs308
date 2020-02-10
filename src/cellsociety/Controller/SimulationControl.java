@@ -104,6 +104,7 @@ public class SimulationControl {
       int state = myGrid.getState((int)p.getX(), (int)p.getY());
       myApplicationView.updateCell((int)p.getX(), (int)p.getY(), state);
     }
+    myApplicationView.updateCellCounts();
   }
 
   /**

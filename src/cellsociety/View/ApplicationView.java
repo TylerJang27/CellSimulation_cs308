@@ -2,6 +2,7 @@ package cellsociety.View;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -122,5 +123,9 @@ public class ApplicationView {
     }
     myGridScroll.setContent(myGrid.getNode());
     root.setCenter((myGridScroll));
+  }
+
+  public void updateCellCounts(){
+    Map<String, Integer> temp = myGrid.getCellCounts();
   }
 }

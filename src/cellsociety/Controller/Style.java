@@ -76,14 +76,17 @@ public class Style {
     } else {
       fill = RESOURCES.getString("Color");
     }
-    for (String s: getType().getStyleFields()) {
+    List<String> fields = getType().getStyleFields();
+    fields.removeAll(getType().getGenerics());
+    for (String s: fields) {
       Map<String, String> params = new HashMap<>();
       String val = getValue(s);
       if (val.contains("img") && fill.equals(RESOURCES.getString("Image"))) {
         params.put(fill, val);
       } else {
-        params.put(RESOURCES.getString("Color"), getValue(s));
+        params.put(RESOURCES.getString("Color"), val);
       }
+      params.put("id", s);
       maps.add(params);
     }
     return maps;
