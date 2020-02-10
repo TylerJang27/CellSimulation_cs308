@@ -31,6 +31,8 @@ public class ApplicationView {
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
   private double gridViewportHeight;
+  private DashboardView myDashboardView;
+  private int myFrameNumber;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -53,6 +55,7 @@ public class ApplicationView {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
+    myFrameNumber = 0;
 
     Pane emptyFillerPane = new Pane();
     emptyFillerPane.getStyleClass().add("grid");
@@ -65,7 +68,7 @@ public class ApplicationView {
     myGridScroll.setContent(emptyFillerPane);
 
     myConsoleView = new ConsoleView();
-    Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
+    myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
 
     root = new BorderPane();
@@ -89,7 +92,8 @@ public class ApplicationView {
    * @param frameNumber the frame number to be displayed
    */
   public void displayFrameNumber(int frameNumber) {
-    myConsoleView.showFrame(frameNumber);
+    myFrameNumber = frameNumber;
+    myConsoleView.showFrame(myFrameNumber);
   }
 
 
@@ -127,5 +131,8 @@ public class ApplicationView {
 
   public void updateCellCounts(){
     Map<String, Integer> temp = myGrid.getCellCounts();
+    for(String id : temp.keySet()){
+      myDashboardView.plotTimePoint(id, myFrameNumber, temp.get(id));
+    }
   }
 }
