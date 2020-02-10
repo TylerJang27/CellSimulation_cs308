@@ -165,7 +165,9 @@ public class SimulationControl {
     for (Map<String, String> params: style.getConfigParameters()) {
       String displayStyle = "color";
       for (String s: params.keySet()) {
-        displayStyle = s;
+        if (s.equals("color") || s.equals("image")) {
+          displayStyle = s;
+        }
       }
       cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
     }

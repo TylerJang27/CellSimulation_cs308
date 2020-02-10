@@ -36,14 +36,11 @@ public class CellView extends Pane {
 
     for(int i = 0; i < configuration.size(); i++){
       CellStateConfiguration currentConfiguration = configuration.get(i);
-
       Shape cellTemplate = createShape(currentConfiguration.getShape(), currentConfiguration.getParameters());
 
       if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
-          System.out.println("color" + i);
           cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
-          System.out.println("image" + i + ":" + currentConfiguration.getParameters());
           cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
       //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
