@@ -101,6 +101,7 @@ Additional features include:
  * **XMLWriting**: The user may save the current configuration and grid states to an XML file that can be loaded later.
  * **Hexagonal Cells**: The user may configure simulations with hexagonal cells.
  * **Cell Images**: The user may opt for cells to be filled with images instead of colors.
+ * **Scrolling**: The user may scroll to reach 
 ### Notes/Assumptions
 
 Assumptions or Simplifications:
