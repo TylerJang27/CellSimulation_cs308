@@ -1,6 +1,9 @@
 package cellsociety.View;
 
+import cellsociety.Main;
 import javafx.scene.Node;
+
+import java.util.ResourceBundle;
 
 /**
  * An abstract class representing the State of a single cell. Each cell can change between several CellStates according to the simulation
@@ -10,6 +13,9 @@ import javafx.scene.Node;
  * @author Mariusz Derezinski-Choo
  */
 public abstract class CellState{
+    private static final ResourceBundle RESOURCES = Main.myResources;
+    public static final String CELL_STATE_PARAMETER_KEY = RESOURCES.getString("id");
+
     protected String myID;
 
     /**
