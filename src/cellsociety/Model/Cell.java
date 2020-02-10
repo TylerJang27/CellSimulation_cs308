@@ -25,7 +25,9 @@ public abstract class Cell {
    * @param c A neighboring Cell
    */
   public void setNeighbor(Cell c) {
-    neighbors.add(c);
+    if (!this.equals(c)) {
+      neighbors.add(c);
+    }
   }
 
   /**
@@ -65,4 +67,9 @@ public abstract class Cell {
   public int getState() {
     return state;
   }
+
+  /**
+   * Sets a cell's state
+   */
+  public void setState(int newState) { state = newState; }
 }

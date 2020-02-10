@@ -1,9 +1,9 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
-import cellsociety.Controller.XMLParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
-import java.awt.Point;
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +16,22 @@ import java.util.ResourceBundle;
  */
 public class PredatorPreyGrid extends Grid {
 
+  private static ResourceBundle RESOURCES = Main.myResources;
+
   private static final int DEFAULT_FISH_BREED = 2;
   private static final int DEFAULT_SHARK_BREED = 7;
   private static final int DEFAULT_SHARK_STARVE = 4;
+  private static final int DEFAULT_EMPTY = 50;
+  private static final int DEFAULT_SHARK = 10;
+  private static final int EMPTY = PredatorPreyCell.EMPTY;
+  private static final int FISH = PredatorPreyCell.FISH;
+  private static final int SHARK = PredatorPreyCell.SHARK;
+  private static final int MAX_VAL = SimType.of(RESOURCES.getString("PredatorPrey")).getMaxVal();;
+  private static final int  HEXAGONAL = 1;
 
-  private ResourceBundle RESOURCES = Main.myResources;
-  private int FISH_TURNS_TO_BREED;
-  private int SHARK_TURNS_TO_BREED;
-  private int TURNS_TO_STARVE;
-  private int FISH = 1;
-  private int SHARK = 2;
-  private int EMPTY = 0;
-  private int MAX_VAL = 2;
+  private int fishTurnsToBreed;
+  private int sharkTurnsToBreed;
+  private int turnsToStarve;
 
   /**
    * Uses gridMap to construct Wa-Tor grid and define specific thresholds for breeding and death and
@@ -40,25 +44,48 @@ public class PredatorPreyGrid extends Grid {
    */
   public PredatorPreyGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    FISH_TURNS_TO_BREED = cellValues
+    fishTurnsToBreed = cellValues
         .getOrDefault(RESOURCES.getString("FishBreed"), DEFAULT_FISH_BREED);
-    SHARK_TURNS_TO_BREED = cellValues
+    sharkTurnsToBreed = cellValues
         .getOrDefault(RESOURCES.getString("SharkBreed"), DEFAULT_SHARK_BREED);
-    TURNS_TO_STARVE = cellValues
+    turnsToStarve = cellValues
         .getOrDefault(RESOURCES.getString("SharkStarve"), DEFAULT_SHARK_STARVE);
-    for (int y = EMPTY; y < myHeight; y++) {
-      for (int x = EMPTY; x < myWidth; x++) {
-        Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) { //TODO: SEARCH FOR GRIDPARSER AND CHANGE THIS?
-          pointCellMap.put(p,
-              new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
-                  TURNS_TO_STARVE));
-        } else {
-          pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0), TURNS_TO_STARVE));
-        }
+
+    for (Point p: getPointList()) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p,
+            new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
+                    turnsToStarve));
+      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, p);
+      } else {
+        pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0), turnsToStarve));
       }
     }
-    buildNSEWNeighbors();
+    if (getCellShape() == HEXAGONAL) {
+      buildHexagonNeighbors();
+    } else {
+      buildNSEWNeighbors();
+    }
+  }
+
+  /**
+   * Generates a cell based on defined parameters in cellValues
+   * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the
+   *                    parameter value
+   * @param p xy coordinates of generated cell
+   */
+  private void parametrizedRandomGenerator(Map<String, Integer> cellValues, Point p) {
+    double empty = cellValues.getOrDefault(RESOURCES.getString("Empty"), DEFAULT_EMPTY) / 100.0;
+    double sharks = cellValues.getOrDefault(RESOURCES.getString("Shark"), DEFAULT_SHARK) / 100.0;
+    double rand = Math.random();
+    if (rand < empty) {
+      pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.EMPTY, turnsToStarve));
+    } else if (rand - empty < (1-empty) * sharks) {
+      pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.SHARK, turnsToStarve));
+    } else {
+      pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.FISH, turnsToStarve));
+    }
   }
 
   /**
@@ -67,7 +94,7 @@ public class PredatorPreyGrid extends Grid {
    */
   @Override
   public void nextFrame() {
-    basicNextFrame();
+    super.nextFrame();
 
     resetMovement();
 
@@ -113,9 +140,9 @@ public class PredatorPreyGrid extends Grid {
   private void handleBreeding(PredatorPreyCell currentCell, int state) {
     int breedingTime = 0;
     if (state == FISH) {
-      breedingTime = FISH_TURNS_TO_BREED;
+      breedingTime = fishTurnsToBreed;
     } else if (state == SHARK) {
-      breedingTime = SHARK_TURNS_TO_BREED;
+      breedingTime = sharkTurnsToBreed;
     }
     if (currentCell.getStepsAlive() >= breedingTime) {
       for (Cell childCell : currentCell.getNeighbors()) {
@@ -152,5 +179,12 @@ public class PredatorPreyGrid extends Grid {
       }
     }
     return currentCell;
+  }
+
+  /**
+   * Returns the maximum state allowed for a particular simulation
+   */
+  public int getMaxState() {
+    return MAX_VAL;
   }
 }

@@ -10,11 +10,12 @@ import java.util.Collections;
  */
 public class PredatorPreyCell extends Cell {
 
-  private static final int EMPTY = 0;
-  private static final int FISH = 1;
-  private static final int SHARK = 2;
-  private static int timeToStarve;
+  public static final int EMPTY = 0;
+  public static final int FISH = 1;
+  public static final int SHARK = 2;
+  public static int timeToStarve;
 
+  //FIXME: WHY PROTECTED
   protected Boolean didKill;
   protected Boolean didMove;
   protected int timeSinceEaten;

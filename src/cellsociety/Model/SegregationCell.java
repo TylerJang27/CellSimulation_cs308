@@ -9,8 +9,12 @@ import java.util.ArrayList;
  */
 public class SegregationCell extends Cell {
 
-  private static final int SATISFIED = 1;
-  private static final int UNSATISFIED = 2;
+  public static final int EMPTY = 0;
+  public static final int RED = 1; //colors used here to denote group A
+  public static final int BLUE = 2; //colors used here to denote group B
+
+  public static final int SATISFIED = 1;
+  public static final int UNSATISFIED = 2;
 
   double myThreshold;
   private int isSatisfied;
@@ -23,7 +27,7 @@ public class SegregationCell extends Cell {
    */
   public SegregationCell(int beginState, double threshold) {
     myThreshold = threshold;
-    isSatisfied = 1;
+    isSatisfied = SATISFIED;
     state = beginState;
     neighbors = new ArrayList<>();
   }

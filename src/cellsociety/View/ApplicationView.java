@@ -1,12 +1,17 @@
 package cellsociety.View;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
+
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -21,8 +26,13 @@ public class ApplicationView {
 
   private Scene myScene;
   private BorderPane root;
-  private GridView myGridView;
+  private GridView myGrid;
+  private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
+  private EventHandler<CellClickedEvent> myCellClickedHandler;
+  private double gridViewportHeight;
+  private DashboardView myDashboardView;
+  private int myFrameNumber;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -43,16 +53,28 @@ public class ApplicationView {
       EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
-      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
-    myGridView = new GridView(size);
+      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
+    myCellClickedHandler = cellClickedHandler;
+    myFrameNumber = 0;
+
+    Pane emptyFillerPane = new Pane();
+    emptyFillerPane.getStyleClass().add("grid");
+    emptyFillerPane.setPrefSize(size,size);
+
+
+    myGridScroll = new ScrollPane();
+    myGridScroll.setPrefViewportHeight(size);
+    myGridScroll.setPrefViewportWidth(size);
+    myGridScroll.setContent(emptyFillerPane);
+
     myConsoleView = new ConsoleView();
-    Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
+    myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
 
     root = new BorderPane();
 
     root.setBottom(myConsoleView);
-    root.setCenter(myGridView);
+    root.setCenter(myGridScroll);
     root.setLeft(myDashboardView);
 
     myScene = new Scene(root);
@@ -70,7 +92,8 @@ public class ApplicationView {
    * @param frameNumber the frame number to be displayed
    */
   public void displayFrameNumber(int frameNumber) {
-    myConsoleView.showFrame(frameNumber);
+    myFrameNumber = frameNumber;
+    myConsoleView.showFrame(myFrameNumber);
   }
 
 
@@ -84,7 +107,7 @@ public class ApplicationView {
   }
 
   public void updateCell(int row, int column, int state) {
-    myGridView.updateCell(row, column, state);
+    myGrid.updateCell(row, column, state);
   }
 
   /**
@@ -95,8 +118,21 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(double size, int numRows, int numColumns, double width, double length) {
-    myGridView = new GridView(size, numRows, numColumns, width, length);
-    root.setCenter((myGridView));
+  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
+    CellStateConfiguration config = cellStateConfigs.get(0);
+    if(config.getShape().equals("rectangle")){
+      myGrid = new RectangleGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+    }else if(config.getShape().equals("hexagon")){
+      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+    }
+    myGridScroll.setContent(myGrid.getNode());
+    root.setCenter((myGridScroll));
+  }
+
+  public void updateCellCounts(){
+    Map<String, Integer> temp = myGrid.getCellCounts();
+    for(String id : temp.keySet()){
+      myDashboardView.plotTimePoint(id, myFrameNumber, temp.get(id));
+    }
   }
 }

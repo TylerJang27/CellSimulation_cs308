@@ -2,7 +2,7 @@
 <data type="simulation">
     <title>Segregation</title>
     <author>Team 15</author>
-    <description>A basic test of Segregation with some grid values specified.</description>
+    <description>A basic test of Segregation with random grid values.</description>
     <rate>5</rate>
     <width>30</width>
     <height>30</height>

@@ -1,22 +1,21 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.FireGrid;
-import cellsociety.Model.GameOfLifeGrid;
-import cellsociety.Model.Grid;
-import cellsociety.Model.PercolationGrid;
-import cellsociety.Model.PredatorPreyGrid;
-import cellsociety.Model.SegregationGrid;
+import cellsociety.Model.*;
 import cellsociety.View.ApplicationView;
+
+import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
+
+import cellsociety.View.CellClickedEvent;
+import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
 /**
  * Core class of the Controller part of the MVC Model Reads in data from the XML file and
@@ -26,8 +25,11 @@ import org.xml.sax.SAXException;
 public class SimulationControl {
 
   public static final int DEFAULT_RATE = 5;
-  private static final double SIZE = 700;
+  public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
+
+  private static final String STYLE_ADDRESS = "src/resources/Styling.xml";
+  private File styleFile;
 
   private Grid myGrid;
   private Simulation mySim;
@@ -44,6 +46,7 @@ public class SimulationControl {
    * @param primaryStage the stage for the animation
    */
   public SimulationControl(Stage primaryStage) {
+    styleFile = new File(STYLE_ADDRESS);
     paused = true;
     frameStep = 0;
     initializeView(primaryStage);
@@ -94,11 +97,12 @@ public class SimulationControl {
    * Updates all the Cells in GridView based off of the values in myGrid
    */
   private void updateViewGrid() {
-    for (int j = 0; j < numCols; j++) {
-      for (int k = 0; k < numRows; k++) {
-        myApplicationView.updateCell(j, k, myGrid.getState(j, k));
-      }
+    List<Point> points = myGrid.getPointList();
+    for (Point p: points) {
+      int state = myGrid.getState((int)p.getX(), (int)p.getY());
+      myApplicationView.updateCell((int)p.getX(), (int)p.getY(), state);
     }
+    myApplicationView.updateCellCounts();
   }
 
   /**
@@ -120,30 +124,75 @@ public class SimulationControl {
    * @param primaryStage the stage for the animation
    */
   private void initializeView(Stage primaryStage) {
-    myApplicationView = new ApplicationView(SIZE, primaryStage, getPlayHandler(),
-        getPauseListener(), getStepHandler(), getSliderListener(), getFileHandler());
+    EventHandler<MouseEvent> stepHandler = event -> stepSimulation();
+    EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
+    EventHandler<MouseEvent> playHandler = event -> playSimulation();
+    ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    EventHandler<CellClickedEvent> cellClickedHandler = event -> {
+      System.out.println("clicked");
+      int state = myGrid.cycleState(event.getRow(), event.getColumn());
+      myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
+    };
+    myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
+            pauseHandler, stepHandler, sliderListener, getFileListener(), cellClickedHandler);
   }
-
 
   /**
    * Sets the initial settings for SimulationControl
    *
    * @param dataFile the File from which to read configuration instructions
-   * @throws IOException  failed to read file
-   * @throws SAXException failed to read file
    */
-  public void initializeModel(File dataFile) throws IOException, SAXException {
-    mySim = new XMLParser(RESOURCES.getString("Type")).getSimulation(dataFile);
+  public void initializeModel(File dataFile) {
+    mySim = new ConfigParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
-    rate = mySim.getValueSet().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
+    rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
 
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-    myApplicationView.initializeGrid(SIZE, numRows, numCols, SIZE, SIZE);
+    Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
+    Style style = styles.get(mySim.getType().toString());
+    String shapeString = getShapeString();
+    List<CellStateConfiguration> cellViewConfiguration = getCellStateConfigurations(style, shapeString);
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
+    pauseSimulation();
+  }
+
+  /**
+   * Extracts ID, and fill (color or image) information from style
+   * @param style Style containing visualization information
+   * @param shapeString the shape of the cells, Hexagon or Rectangle
+   * @return
+   */
+  private List<CellStateConfiguration> getCellStateConfigurations(Style style, String shapeString) {
+    List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
+    for (Map<String, String> params: style.getConfigParameters()) {
+      String displayStyle = "color";
+      for (String s: params.keySet()) {
+        if (s.equals("color") || s.equals("image")) {
+          displayStyle = s;
+        }
+      }
+      cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
+    }
+    return cellViewConfiguration;
+  }
+
+  /**
+   * Extracts information from mySim to determine if shape is Hexagon or Rectangle
+   */
+  private String getShapeString() {
+    String shapeString;
+    int shape = mySim.getValue(RESOURCES.getString("Shape"));
+    if (shape == GridParser.HEXAGON) {
+      shapeString = RESOURCES.getString("Hexagon");
+    } else {
+      shapeString = RESOURCES.getString("Rectangle");
+    }
+    return shapeString;
   }
 
   /**
@@ -154,66 +203,41 @@ public class SimulationControl {
   private Grid createGrid() {
     String simType = mySim.getType().toString();
     if (simType.equals(RESOURCES.getString("GameOfLife"))) {
-      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueSet());
+      return new GameOfLifeGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Percolation"))) {
-      return new PercolationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PercolationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Segregation"))) {
-      return new SegregationGrid(mySim.getGrid(), mySim.getValueSet());
+      return new SegregationGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("PredatorPrey"))) {
-      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueSet());
+      return new PredatorPreyGrid(mySim.getGrid(), mySim.getValueMap());
     } else if (simType.equals(RESOURCES.getString("Fire"))) {
-      return new FireGrid(mySim.getGrid(), mySim.getValueSet());
+      return new FireGrid(mySim.getGrid(), mySim.getValueMap());
+    } else if (simType.equals(RESOURCES.getString("RockPaperScissors"))) {
+      return new RockPaperScissorsGrid(mySim.getGrid(), mySim.getValueMap());
     }
     return null;
   }
 
   /**
-   * Returns a handler for playSimulation() to be sent to ApplicationView
+   * Writes file to data/ and notes this in the console
    */
-  private EventHandler<MouseEvent> getPlayHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        playSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for pauseSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getPauseListener() {
-    return new EventHandler<>() {
-      @Override
-      public void handle(MouseEvent event) {
-        pauseSimulation();
-      }
-    };
-  }
-
-  /**
-   * Returns a handler for stepSimulation() to be sent to ApplicationView
-   */
-  private EventHandler<MouseEvent> getStepHandler() {
-    return new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-        stepSimulation();
-      }
-    };
+  private void saveFile() {
+    WriteXMLFile writer = new WriteXMLFile(mySim, myGrid, rate);
+    myApplicationView.logError(String.format(RESOURCES.getString("FileSaved"), writer.writeSimulationXML()));
   }
 
   /**
    * Returns a handler for selecting the file to reset configuration
    */
-  private ChangeListener<File> getFileHandler() {
+  private ChangeListener<File> getFileListener() {
     return new ChangeListener<File>() {
       @Override
       public void changed(ObservableValue<? extends File> observable, File oldValue,
-          File newValue) {
+                          File newValue) {
         try {
           initializeModel(newValue);
-        } catch (Exception e) {
+          myApplicationView.logError(RESOURCES.getString("ConsoleReady"));
+        } catch (XMLException e) {
           myApplicationView.logError(e.getMessage());
         }
       }
