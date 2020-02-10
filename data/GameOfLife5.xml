@@ -4,21 +4,19 @@
     <author>Team 15, Richard K. Guy</author>
     <description>A basic implementation of Richard K. Guy's Glider.</description>
     <rate>5</rate>
-    <width>10</width>
-    <height>10</height>
+    <width>8</width>
+    <height>8</height>
     <grid_shape>0</grid_shape>
-    <shape>0</shape>
+    <shape>1</shape>
     <grid_type>0</grid_type>
     <grid>
-        <row>0 0 0 0 0 0 0 0 0 0</row>
-        <row>0 0 1 0 0 0 0 0 1 0</row>
-        <row>1 0 1 0 0 0 1 0 1 0</row>
-        <row>0 1 1 0 0 0 0 1 1 0</row>
-        <row>0 0 0 0 0 0 0 0 0 0</row>
-        <row>0 0 0 0 0 0 0 0 0 0</row>
-        <row>0 0 1 0 0 0 0 0 0 0</row>
-        <row>1 0 1 0 0 0 0 0 0 1</row>
-        <row>0 1 1 0 0 0 0 1 0 1</row>
-        <row>0 0 0 0 0 0 0 0 1 1</row>
+        <row>0 0 0 0 1</row>
+        <row>0 0 1 0 </row>
+        <row>1 0 1 0 0</row>
+        <row>0 1 1 1 </row>
+        <row>0 0 0 0 0</row>
+        <row>0 0 0 0 </row>
+        <row>0 0 1 0 0 </row>
+        <row>1 0 1 0</row>
     </grid>
 </data>

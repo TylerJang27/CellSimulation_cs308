@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import jdk.jfr.Threshold;
 
@@ -13,8 +14,8 @@ public class RockPaperScissorsGrid extends Grid{
   private static final int DEFAULT_STREAK = 2;
   private static final int ROCK_DEFAULT = 33;
   private static final int PAPER_DEFAULT = 33;
-  private ResourceBundle RESOURCES = Main.myResources;
-  private static final int MAX_VAL = 3;
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final int MAX_VAL = SimType.of(RESOURCES.getString("RockPaperScissors")).getMaxVal();;
   private static final int  HEXAGONAL = 1;
 
   /**
@@ -71,7 +72,7 @@ public class RockPaperScissorsGrid extends Grid{
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }
