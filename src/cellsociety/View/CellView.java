@@ -61,7 +61,6 @@ public class CellView extends Pane {
   }
 
   private Shape createShape(String description, Map<String, String> params){
-      /*
     if(description.equals("rectangle")){
         System.out.println(params);
         double width, height;
@@ -74,8 +73,6 @@ public class CellView extends Pane {
         }
       return new Rectangle(width, height);
     } else if(description.equals("hexagon")){
-
-       */
         double sideLength;
         try {
             sideLength = Double.parseDouble(params.get("sideLength"));
@@ -83,9 +80,9 @@ public class CellView extends Pane {
             sideLength = DEFAULT_HEXAGON_SIDE_LENGTH;
         }
       return makeHexagon(sideLength);
-    //}
-    //System.out.println("error in cellview");
-    //return null;
+    }
+    System.out.println("error in cellview");
+    return null;
   }
 
 
