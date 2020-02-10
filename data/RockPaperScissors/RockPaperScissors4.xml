@@ -8,6 +8,6 @@
     <height>30</height>
     <threshold>3</threshold>
     <rock>33</rock>
-    <paper>34</paper>
+    <paper>50</paper>
     <grid_type>4</grid_type>
 </data>

@@ -114,7 +114,7 @@ public abstract class Grid {
   }
 
   /**
-   * Creates set of points under original point
+   * Creates set of points under original point for square cells
    */
   public void bottomSquareNeighborGenerator(){
     for (Point p : pointCellMap.keySet()) {
@@ -127,6 +127,9 @@ public abstract class Grid {
     }
   }
 
+  /**
+   * Creates set of points under original point for hex cells
+   */
   public void bottomHexNeighborGenerator() {
     for (Point p : pointCellMap.keySet()) {
       int xPos = (int) p.getX();
@@ -213,9 +216,10 @@ public abstract class Grid {
     return 0;
   }
 
-  //First calculates and stores new state of each cell
-  //Then updates each cell's state
-
+  /**
+   * First calculates the next state for every cell, then applies that new state to its respective
+   * cell
+   */
   public void nextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
@@ -286,9 +290,17 @@ public abstract class Grid {
     return hexPoints;
   }
 
+  /**
+   * used to iterate through for subclasses
+   * @return point list
+   */
   public List<Point> getPointList() {
     return pointList;
   }
+
+  /**
+   * Used when superclass nextFrame is overrided.
+   */
   public void addFrame() {
     myFrame++;
   }

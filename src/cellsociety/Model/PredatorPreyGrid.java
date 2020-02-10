@@ -108,6 +108,9 @@ public class PredatorPreyGrid extends Grid {
     }
   }
 
+  /**
+   * Allows all cells to be moved again
+   */
   private void resetMovement() {
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell updateCell = (PredatorPreyCell) c;
