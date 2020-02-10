@@ -6,6 +6,11 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Shape;
 
+/**
+ * A class that impements a CellState but with images as the background
+ *
+ * @author Mariusz Derezinski-Choo
+ */
 public class ImageCellState extends CellState {
 
   private static final Image FISH_IMAGE = new Image(
