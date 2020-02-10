@@ -66,6 +66,7 @@ public class DashboardView extends Pane {
   public DashboardView(EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
+      EventHandler<MouseEvent> saveButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
     super();
     setId("dashboard");
@@ -85,7 +86,7 @@ public class DashboardView extends Pane {
     mySpeedSlider.valueProperty().addListener(sliderListener);
 
     Pane playButtonsPane = getPlayButtonsPane(playButtonClickedHandler, pauseButtonClickedHandler,
-        stepButtonClickedHandler);
+        stepButtonClickedHandler, saveButtonClickedHandler);
 
     Region spacerRegion = new Region();
     VBox.setVgrow(spacerRegion, Priority.ALWAYS);
@@ -103,7 +104,7 @@ public class DashboardView extends Pane {
     myLineChart.setTitle("Cell Distribution over Time");
     //defining a series
 
-    myLineChart.setMaxWidth(200);
+    myLineChart.setMaxWidth(400);
 
 
 
@@ -126,7 +127,7 @@ public class DashboardView extends Pane {
 
   private Pane getPlayButtonsPane(EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
-      EventHandler<MouseEvent> stepButtonClickedHandler) {
+      EventHandler<MouseEvent> stepButtonClickedHandler, EventHandler<MouseEvent> saveButtonClickedHandler) {
     Pane playButtonsPane = new Pane();
 
     HBox playButtons = new HBox();
@@ -135,8 +136,9 @@ public class DashboardView extends Pane {
     Button playButton = getConsoleButton(PLAY, playButtonClickedHandler);
     Button pauseButton = getConsoleButton(PAUSE, pauseButtonClickedHandler);
     Button stepButton = getConsoleButton(STEP, stepButtonClickedHandler);
+    Button saveButton = getConsoleButton("Save", saveButtonClickedHandler);
 
-    playButtons.getChildren().addAll(playButton, pauseButton, stepButton);
+    playButtons.getChildren().addAll(playButton, pauseButton, stepButton, saveButton);
 
     playButtonsPane.getChildren().add(playButtons);
     return playButtonsPane;

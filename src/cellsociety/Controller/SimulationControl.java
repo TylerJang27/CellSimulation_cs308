@@ -127,6 +127,7 @@ public class SimulationControl {
     EventHandler<MouseEvent> stepHandler = event -> stepSimulation();
     EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
+    EventHandler<MouseEvent> saveHandler = event -> saveFile();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
     EventHandler<CellClickedEvent> cellClickedHandler = event -> {
       System.out.println("clicked");
@@ -134,7 +135,7 @@ public class SimulationControl {
       myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
     };
     myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
-            pauseHandler, stepHandler, sliderListener, getFileListener(), cellClickedHandler);
+            pauseHandler, stepHandler, saveHandler, sliderListener, getFileListener(), cellClickedHandler);
   }
 
   /**
