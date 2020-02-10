@@ -87,8 +87,11 @@ public class RectangleGridView extends GridView {
     Map<String, Integer> cellCounts = new HashMap<>();
 
     for(CellView cell : myCells){
-
+      String cellState = cell.getCellState();
+      cellCounts.putIfAbsent(cellState, 0);
+      cellCounts.put(cellState, cellCounts.get(cellState) + 1);
     }
+    System.out.println(cellCounts);
     return cellCounts;
   }
 

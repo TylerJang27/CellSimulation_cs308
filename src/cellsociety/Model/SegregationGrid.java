@@ -45,7 +45,7 @@ public class SegregationGrid extends Grid {
       } else {
         pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0),
             (double) cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)
-                / 100));
+                / 100.0));
       }
     }
     if (getCellShape() == HEXAGONAL) {

@@ -2,6 +2,7 @@ package cellsociety.View;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
@@ -30,6 +31,8 @@ public class ApplicationView {
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
   private double gridViewportHeight;
+  private DashboardView myDashboardView;
+  private int myFrameNumber;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -50,8 +53,10 @@ public class ApplicationView {
       EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
+      EventHandler<MouseEvent> saveButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
+    myFrameNumber = 0;
 
     Pane emptyFillerPane = new Pane();
     emptyFillerPane.getStyleClass().add("grid");
@@ -64,8 +69,8 @@ public class ApplicationView {
     myGridScroll.setContent(emptyFillerPane);
 
     myConsoleView = new ConsoleView();
-    Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
-        stepButtonClickedHandler, sliderListener, fileListener);
+    myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
+        stepButtonClickedHandler, saveButtonClickedHandler, sliderListener, fileListener);
 
     root = new BorderPane();
 
@@ -78,7 +83,7 @@ public class ApplicationView {
 
     primaryStage.setScene(myScene);
     primaryStage.show();
-    //primaryStage.setResizable(false);
+    primaryStage.setResizable(false);
 
   }
 
@@ -88,7 +93,8 @@ public class ApplicationView {
    * @param frameNumber the frame number to be displayed
    */
   public void displayFrameNumber(int frameNumber) {
-    myConsoleView.showFrame(frameNumber);
+    myFrameNumber = frameNumber;
+    myConsoleView.showFrame(myFrameNumber);
   }
 
 
@@ -122,5 +128,12 @@ public class ApplicationView {
     }
     myGridScroll.setContent(myGrid.getNode());
     root.setCenter((myGridScroll));
+  }
+
+  public void updateCellCounts(){
+    Map<String, Integer> temp = myGrid.getCellCounts();
+    for(String id : temp.keySet()){
+      myDashboardView.plotTimePoint(id, myFrameNumber, temp.get(id));
+    }
   }
 }

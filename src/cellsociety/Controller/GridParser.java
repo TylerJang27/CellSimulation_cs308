@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.DoubleToIntFunction;
 
 /**
  * Class for parsing XML files to retrieve information about initial grid configuration
@@ -86,24 +85,25 @@ public class GridParser extends XMLParser{
      * @return a Map representing points and values in the grid
      */
     private Map<Point, Integer> getAllGrid()  {
+        NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
+        Map<Point, Integer> grid = new HashMap<>();
+        String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
         if (myShape == SQUARE) {
-            return getAllSquares();
+            return getAllSquares(grid, wholeGrid);
         } else {
-            return getAllHex();
+            return getAllHex(grid, wholeGrid);
         }
     }
 
     /**
      * Returns a grid of the type where all points are specified for square cells
      *
+     * @param grid Map of Points and Integer to which new KVPs should be added
+     * @param wholeGrid an array of Strings representing rows in the grid
      * @return a Map representing points an values in the grid
      * @throws XMLException non-Integer value stored in grid
      */
-    private Map<Point, Integer> getAllSquares() {
-        NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
-        Map<Point, Integer> grid = new HashMap<>();
-        String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
-
+    private Map<Point, Integer> getAllSquares(Map<Point, Integer> grid, String[] wholeGrid) {
         for (int j = 0; j < wholeGrid.length; j++) {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");
@@ -121,14 +121,12 @@ public class GridParser extends XMLParser{
     /**
      * Returns a grid of the type where all points are specified for hexagon cells
      *
+     * @param grid Map of Points and Integer to which new KVPs should be added
+     * @param wholeGrid an array of Strings representing rows in the grid
      * @return a Map representing points an values in the grid
      * @throws XMLException non-Integer value stored in grid or bad shape
      */
-    private Map<Point, Integer> getAllHex() {
-        NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
-        Map<Point, Integer> grid = new HashMap<>();
-        String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
-
+    private Map<Point, Integer> getAllHex(Map<Point, Integer> grid, String[] wholeGrid) {
         if (wholeGrid.length <= 1) {
             throw new XMLException(RESOURCES.getString("BadShape"));
         }
@@ -140,9 +138,9 @@ public class GridParser extends XMLParser{
                 try {
                     Integer val = Math.min(Integer.parseInt(vals[k]), maxVal);
                     if (j % 2 == 0) {
-                        grid.put(new Point(j *2, k), val);
+                        grid.put(new Point(j, k *2), val);
                     } else {
-                        grid.put(new Point(j*2 - 1, k), val);
+                        grid.put(new Point(j, k*2 - 1), val);
                     }
                 } catch (NumberFormatException e) {
                     throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
@@ -163,7 +161,6 @@ public class GridParser extends XMLParser{
         NodeList nodeList = myDoc.getElementsByTagName(RESOURCES.getString("Grid"));
         Map<Point, Integer> grid = new HashMap<>();
         String[] wholeGrid = nodeList.item(0).getTextContent().trim().split("\n");
-
         for (int j = 0; j < wholeGrid.length; j++) {
             String row = wholeGrid[j].trim();
             String[] vals = row.split(" ");

@@ -22,7 +22,7 @@ public abstract class Grid {
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  private ArrayList<Point> pointList;
+  private List<Point> pointList;
   private int myFrame;
   private static ResourceBundle RESOURCES = Main.myResources;
   private int gridShape;
@@ -88,11 +88,12 @@ public abstract class Grid {
       int xPos = (int) p.getX();
       int yPos = (int) p.getY();
 
-      for (int x = -1; x <= 1; x++) {
-        for (int y = -2; y <= 2; y++) {
+      for (int x = -2; x <= 2; x++) {
+        for (int y = -1; y <= 1; y++) {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
+      System.out.println("HI" + pointCellMap.get(p).neighbors.size());
     }
   }
 
@@ -132,7 +133,7 @@ public abstract class Grid {
       int yPos = (int) p.getY();
 
       for (int y = -1; y <= 1; y++) {
-        for (int x = 1; x <= 2; x++) {
+        for (int x = -2; x <= -1; x++) {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
@@ -255,9 +256,8 @@ public abstract class Grid {
    * Generates a list of points for a default square setup
    * @return list of points
    */
-
-  public ArrayList<Point> squarePointGenerator() {
-    ArrayList<Point> squarePoints = new ArrayList<>();
+  public List<Point> squarePointGenerator() {
+    List<Point> squarePoints = new ArrayList<>();
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         squarePoints.add(new Point(x, y));
@@ -270,8 +270,8 @@ public abstract class Grid {
    * Generates a list of points for a default hexagon setup
    * @return list of points
    */
-  protected ArrayList<Point> hexPointGenerator() {
-    ArrayList<Point> hexPoints = new ArrayList<>();
+  protected List<Point> hexPointGenerator() {
+    List<Point> hexPoints = new ArrayList<>();
     for (int j = 0; j < myHeight; j ++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {
@@ -286,7 +286,7 @@ public abstract class Grid {
     return hexPoints;
   }
 
-  protected ArrayList<Point> getPointList() {
+  public List<Point> getPointList() {
     return pointList;
   }
   public void addFrame() {

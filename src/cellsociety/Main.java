@@ -7,9 +7,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**

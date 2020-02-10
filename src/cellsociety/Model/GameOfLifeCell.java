@@ -11,6 +11,8 @@ public class GameOfLifeCell extends Cell {
 
   public static final int DEAD = 0;
   public static final int ALIVE = 1;
+  private static final int ALIVE_REQ_2 = 2;
+  private static final int ALIVE_REQ_3 = 3;
 
   /**
    * Constructs cell with initial state and values to be evaluated per step
@@ -35,9 +37,9 @@ public class GameOfLifeCell extends Cell {
   public int calculateNextState() {
     int newState = state;
     int aliveNeighbors = countAliveNeighbors();
-    if (state == ALIVE && (aliveNeighbors == 2 || aliveNeighbors == 3)) {
+    if (state == ALIVE && (aliveNeighbors == ALIVE_REQ_2 || aliveNeighbors == ALIVE_REQ_3)) {
       newState = 1;
-    } else if (state == DEAD && aliveNeighbors == 3) {
+    } else if (state == DEAD && aliveNeighbors == ALIVE_REQ_3) {
       newState = 1;
     } else {
       newState = 0;

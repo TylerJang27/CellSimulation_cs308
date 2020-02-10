@@ -4,7 +4,6 @@ import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 

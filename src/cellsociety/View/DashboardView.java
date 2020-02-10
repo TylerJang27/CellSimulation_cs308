@@ -3,12 +3,17 @@ package cellsociety.View;
 import cellsociety.Controller.SimulationControl;
 import cellsociety.Main;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
@@ -35,11 +40,14 @@ public class DashboardView extends Pane {
   private static final String STEP = RESOURCES.getString("step");
   private static final String PAUSE = RESOURCES.getString("pause");
   private static final String PLAY = RESOURCES.getString("play");
+  private static final String SAVE = RESOURCES.getString("save");
   private static final String CHOOSE_CONFIG_FILE = RESOURCES.getString("ChooseConfigFile");
 
 
   private Slider mySpeedSlider;
   private ObjectProperty<File> myFileProperty;
+  private LineChart<Number,Number> myLineChart;
+  private Map<String, XYChart.Series> myCellPlots;
 
   /**
    * Construct a DashBoardView Object whose elements trigger the EventHandlers and Listeners
@@ -59,9 +67,11 @@ public class DashboardView extends Pane {
   public DashboardView(EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
+      EventHandler<MouseEvent> saveButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
     super();
     setId("dashboard");
+    myCellPlots = new HashMap<>();
 
     VBox myDashBoard = new VBox(SPACING);
     myDashBoard.prefHeightProperty().bind(this.heightProperty());
@@ -69,26 +79,56 @@ public class DashboardView extends Pane {
 
     setUpFileProperty(fileListener);
     Button fileChooserButton = getFileChooserButton();
+    Pane fileChooserButtonPane = new Pane();
+    fileChooserButtonPane.getChildren().add(fileChooserButton);
+    fileChooserButton.prefWidthProperty().bind(fileChooserButtonPane.widthProperty());
 
     mySpeedSlider = new Slider(1, SimulationControl.RATE_MAX, SimulationControl.DEFAULT_RATE);
     mySpeedSlider.valueProperty().addListener(sliderListener);
 
     Pane playButtonsPane = getPlayButtonsPane(playButtonClickedHandler, pauseButtonClickedHandler,
-        stepButtonClickedHandler);
+        stepButtonClickedHandler, saveButtonClickedHandler);
 
     Region spacerRegion = new Region();
     VBox.setVgrow(spacerRegion, Priority.ALWAYS);
 
+    //defining the axes
+    final NumberAxis xAxis = new NumberAxis();
+    final NumberAxis yAxis = new NumberAxis();
+    xAxis.setForceZeroInRange(false);
+    xAxis.setLabel("Frame");
+    yAxis.setLabel("Population");
+    //creating the chart
+    myLineChart =
+            new LineChart<Number,Number>(xAxis,yAxis);
+
+    myLineChart.setTitle("Cell Distribution over Time");
+    //defining a series
+
+    myLineChart.setMaxWidth(400);
+
+
+
     myDashBoard.getChildren()
-        .addAll(fileChooserButton, mySpeedSlider, spacerRegion, playButtonsPane);
+        .addAll(fileChooserButtonPane, mySpeedSlider, myLineChart, spacerRegion, playButtonsPane);
     getChildren().add(myDashBoard);
 
     setHeight(myDashBoard.getMinHeight());
   }
 
+  public void plotTimePoint(String id, double time, double population){
+    if(myCellPlots.get(id) == null){
+      XYChart.Series series = new XYChart.Series();
+      series.setName(id);
+      myLineChart.getData().add(series);
+      myCellPlots.put(id,series);
+    }
+    myCellPlots.get(id).getData().add(new XYChart.Data(time,population));
+  }
+
   private Pane getPlayButtonsPane(EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
-      EventHandler<MouseEvent> stepButtonClickedHandler) {
+      EventHandler<MouseEvent> stepButtonClickedHandler, EventHandler<MouseEvent> saveButtonClickedHandler) {
     Pane playButtonsPane = new Pane();
 
     HBox playButtons = new HBox();
@@ -97,8 +137,9 @@ public class DashboardView extends Pane {
     Button playButton = getConsoleButton(PLAY, playButtonClickedHandler);
     Button pauseButton = getConsoleButton(PAUSE, pauseButtonClickedHandler);
     Button stepButton = getConsoleButton(STEP, stepButtonClickedHandler);
+    Button saveButton = getConsoleButton(SAVE, saveButtonClickedHandler);
 
-    playButtons.getChildren().addAll(playButton, pauseButton, stepButton);
+    playButtons.getChildren().addAll(playButton, pauseButton, stepButton, saveButton);
 
     playButtonsPane.getChildren().add(playButtons);
     return playButtonsPane;

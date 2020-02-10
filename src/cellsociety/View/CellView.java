@@ -22,46 +22,37 @@ public class CellView extends Pane {
   private static final int FULL_CIRCLE_DEGREES = 360;
   private static final int ANGLE_STEP = 60;
   private static final double gridLineWidth = 4;
-
-
-
+  private static final double DEFAULT_HEXAGON_SIDE_LENGTH = HexagonGridView.DEFAULT_SIDE_LENGTH;
 
   private List<CellState> cellStateList;
-  private Node myCurrentState;
+  private CellState myCurrentState;
   private static final ResourceBundle RESOURCES = Main.myResources;
 
 
   public CellView(List<CellStateConfiguration> configuration){
     super();
 
-    for(CellStateConfiguration config : configuration){
-      //FIXME: MORE THINGY HERE
-      System.out.println(configuration);
-    }
-
     cellStateList = new ArrayList<>();
 
     for(int i = 0; i < configuration.size(); i++){
       CellStateConfiguration currentConfiguration = configuration.get(i);
-
       Shape cellTemplate = createShape(currentConfiguration.getShape(), currentConfiguration.getParameters());
 
       if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
-        cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
+          cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
-        cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
+          cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
       //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
     }
 
-    myCurrentState = cellStateList.get(0).getNode();
+    myCurrentState = cellStateList.get(0);
 
-    getChildren().add(myCurrentState);
+    getChildren().add(myCurrentState.getNode());
   }
 
   private Shape createShape(String description, Map<String, String> params){
     if(description.equals("rectangle")){
-        System.out.println(params);
         double width, height;
         try {
             width = Double.parseDouble(params.get("width"));
@@ -76,11 +67,10 @@ public class CellView extends Pane {
         try {
             sideLength = Double.parseDouble(params.get("sideLength"));
         } catch(Exception e){
-            sideLength = 50;
+            sideLength = DEFAULT_HEXAGON_SIDE_LENGTH;
         }
       return makeHexagon(sideLength);
     }
-    System.out.println("error in cellview");
     return null;
   }
 
@@ -91,9 +81,9 @@ public class CellView extends Pane {
    * @param state the next state of the cell
    */
   public void changeState(int state) {
-    getChildren().remove(myCurrentState);
-    myCurrentState = cellStateList.get(state).getNode();
-    getChildren().add(myCurrentState);
+    getChildren().remove(myCurrentState.getNode());
+    myCurrentState = cellStateList.get(state);
+    getChildren().add(myCurrentState.getNode());
   }
 
 
@@ -111,7 +101,7 @@ public class CellView extends Pane {
   }
 
   public String getCellState(){
-      return myCurrentState.getId();
+      return myCurrentState.getStateDescription();
   }
 
 }

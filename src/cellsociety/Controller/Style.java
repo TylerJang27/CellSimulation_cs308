@@ -18,7 +18,6 @@ public class Style {
 
   private static ResourceBundle RESOURCES = Main.myResources;
 
-  //name for the type of data file necessary to represent a simulation configuration file
   public static final String DATA_TYPE = RESOURCES.getString("Style");
 
   private SimStyle myStyle;
@@ -52,13 +51,6 @@ public class Style {
   }
 
   /**
-   * Returns Map with all String and String values for fields
-   */
-  public Map<String, String> getValueMap() {
-    return myDataValues;
-  }
-
-  /**
    * Returns Integer value matched to field key
    */
   public String getValue(String field) {
@@ -77,15 +69,28 @@ public class Style {
       fill = RESOURCES.getString("Color");
     }
     for (String s: getType().getStyleFields()) {
-      Map<String, String> params = new HashMap<>();
-      String val = getValue(s);
-      if ((val.contains("/") || val.contains("\\")) && fill.equals(RESOURCES.getString("Image"))) {
-        params.put(fill, getValue(s));
-      } else {
-        params.put(RESOURCES.getString("Color"), getValue(s));
+      if (!getType().getGenerics().contains(s)) {
+        buildParameters(maps, fill, s);
       }
-      maps.add(params);
     }
     return maps;
+  }
+
+  /**
+   * Builds parameters for CellStateConfiguration
+   * @param maps List of maps to add to CellStateConfiguration parameters
+   * @param fill image or color
+   * @param s field in Style fields
+   */
+  private void buildParameters(List<Map<String, String>> maps, String fill, String s) {
+    Map<String, String> params = new HashMap<>();
+    String val = getValue(s);
+    if (val.contains("img") && fill.equals(RESOURCES.getString("Image"))) {
+      params.put(fill, val);
+    } else {
+      params.put(RESOURCES.getString("Color"), val);
+    }
+    params.put("id", s);
+    maps.add(params);
   }
 }

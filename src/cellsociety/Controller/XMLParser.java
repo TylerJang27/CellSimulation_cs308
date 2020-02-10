@@ -76,7 +76,7 @@ public abstract class XMLParser {
     /**
      * Gets attribute of document based off of name
      *
-     * @param e             the Element to retrieve attribute
+     * @param e       the Element from which to retrieve the attribute
      * @param attributeName the attribute's label to retrieve
      * @return the retrieved Attribute
      */

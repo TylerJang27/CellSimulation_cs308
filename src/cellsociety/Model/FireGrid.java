@@ -4,7 +4,6 @@ import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -19,7 +18,8 @@ public class FireGrid extends Grid {
   private static final int MAX_VAL = SimType.of(RESOURCES.getString("Fire")).getMaxVal();
   private static final int TREE_DEFAULT = 50;
   private static final int BURNING_DEFAULT = 15;
-  private static final int  HEXAGONAL = 1;
+  private static final int CATCH_DEFAULT = 50;
+  private static final int HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Fire grid and define fire chance percentage
@@ -31,7 +31,7 @@ public class FireGrid extends Grid {
    */
   public FireGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    double chanceToBurn = (double) cellValues.getOrDefault(RESOURCES.getString("Fire"), 50) / 100;
+    double chanceToBurn = (double) cellValues.getOrDefault(RESOURCES.getString("Fire"), CATCH_DEFAULT) / 100.0;
     for (Point p: getPointList()) {
       if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
         pointCellMap.put(p,

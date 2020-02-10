@@ -13,7 +13,7 @@ public class PredatorPreyCell extends Cell {
   public static final int EMPTY = 0;
   public static final int FISH = 1;
   public static final int SHARK = 2;
-  public static int timeToStarve;
+  public int timeToStarve;
 
   private Boolean didKill;
   private Boolean didMove;
