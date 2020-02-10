@@ -2,7 +2,6 @@ package cellsociety.View;
 
 import java.util.*;
 
-import cellsociety.Controller.SimulationControl;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -11,7 +10,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
-
+/**
+ * An implementation of GridView that utilizes rectangles as the shape for all cells
+ *
+ * @author Mariusz Derezinski-Choo
+ */
 public class RectangleGridView extends GridView {
 
   private static final double GRID_PADDING = 10;
@@ -24,42 +27,18 @@ public class RectangleGridView extends GridView {
    *
    * @param numRows    the number of rows in the grid
    * @param numColumns the number of columns in the grid
-   * @param width      the width of the grid
-   * @param height     the height of the grid
    */
-  public RectangleGridView(int numRows, int numColumns, double width, double height, String outlineWidth, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
+  public RectangleGridView(int numRows, int numColumns, String outlineWidth, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
     super();
-    myGrid = new GridPane();
-    myGrid.setId("grid");
-    double cellOutlineWidth = Double.parseDouble(outlineWidth);
-    myGrid.setHgap(cellOutlineWidth);
-    myGrid.setVgap(cellOutlineWidth);
-    myGrid.setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
+    setUpGrid(outlineWidth);
     setConstraints(numRows, numColumns);
 
     myCells = new ArrayList<>();
     for (int i = 0; i < numRows; i++) {
       for (int j = 0; j < numColumns; j++) {
-        CellView adding = new CellView(stateConfigs);
-        int finalI = i;
-        int finalJ = j;
-        adding.setOnMouseClicked(e -> {
-          adding.fireEvent(new CellClickedEvent(adding, finalI, finalJ));
-        });
-        adding.addEventHandler(CellClickedEvent.CUSTOM_EVENT_TYPE, cellClickedHandler);
-        myCells.add(adding);
-        myGrid.add(adding, j, i);
+        initializeCellView(cellClickedHandler, stateConfigs, i, j);
       }
     }
-
-  }
-
-  /**
-   * Default constructor for a Grid View. has no rows and no columns by default
-   */
-  //FIXME: This really should not be null
-  public RectangleGridView(){
-    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, "0", null, new ArrayList<CellStateConfiguration>());
   }
 
   /**
@@ -91,7 +70,6 @@ public class RectangleGridView extends GridView {
       cellCounts.putIfAbsent(cellState, 0);
       cellCounts.put(cellState, cellCounts.get(cellState) + 1);
     }
-    System.out.println(cellCounts);
     return cellCounts;
   }
 
@@ -113,5 +91,26 @@ public class RectangleGridView extends GridView {
       rc.setVgrow(Priority.ALWAYS);
       myGrid.getRowConstraints().add(rc);
     }
+  }
+
+  private void initializeCellView(EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs, int i, int j) {
+    CellView adding = new CellView(stateConfigs);
+    int finalI = i;
+    int finalJ = j;
+    adding.setOnMouseClicked(e -> {
+      adding.fireEvent(new CellClickedEvent(adding, finalI, finalJ));
+    });
+    adding.addEventHandler(CellClickedEvent.CUSTOM_EVENT_TYPE, cellClickedHandler);
+    myCells.add(adding);
+    myGrid.add(adding, j, i);
+  }
+
+  private void setUpGrid(String outlineWidth) {
+    myGrid = new GridPane();
+    myGrid.getStyleClass().add(GridView.GRID_CSS_CLASS);
+    double cellOutlineWidth = Double.parseDouble(outlineWidth);
+    myGrid.setHgap(cellOutlineWidth);
+    myGrid.setVgap(cellOutlineWidth);
+    myGrid.setPadding(new Insets(GRID_PADDING, GRID_PADDING, GRID_PADDING, GRID_PADDING));
   }
 }
