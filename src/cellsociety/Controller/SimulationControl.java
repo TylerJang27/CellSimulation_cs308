@@ -163,8 +163,10 @@ public class SimulationControl {
     Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
     Style style = styles.get(mySim.getType().toString());
     String shapeString = getShapeString();
-    List<CellStateConfiguration> cellViewConfiguration = getCellStateConfigurations(style, shapeString);
-    myApplicationView.initializeGrid(numRows, numCols, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
+    List<CellStateConfiguration> cellViewConfiguration = getCellStateConfigurations(style,
+        shapeString);
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE,
+        style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
     myGrid = createGrid();
 
     updateViewGrid();
