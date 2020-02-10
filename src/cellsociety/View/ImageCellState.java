@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 public class ImageCellState extends CellState{
     private static final Image FISH_IMAGE = new Image(ImageCellState.class.getClassLoader().getResourceAsStream("fish.jpg"));
     private static final Image FIRE_IMAGE = new Image(ImageCellState.class.getClassLoader().getResourceAsStream("fire.jpg"));
-    private static final String IMAGE_KEY = "image-type";
+    private static final String IMAGE_KEY = "image";
     private static final ResourceBundle IMAGE_RESOURCES = Main.myImageResources;
     private ImageView myImageView;
     private Shape myDisplay;
@@ -37,9 +37,9 @@ public class ImageCellState extends CellState{
         super();
         myDisplay = template;
         String imageType = parameters.get(IMAGE_KEY);
-        if(imageType.equals("FIRE")){
+        if(imageType.equals("img:FIRE")){
             setBackgroundImage(FIRE_IMAGE);
-        } else if(imageType.equals("FISH")){
+        } else if(imageType.equals("img:FISH")){
             setBackgroundImage(FISH_IMAGE);
         }
     }

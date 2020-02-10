@@ -238,7 +238,7 @@ public abstract class Grid {
     return hexPoints;
   }
 
-  protected ArrayList<Point> getPointList() {
+  public ArrayList<Point> getPointList() {
     return pointList;
   }
   public void addFrame() {

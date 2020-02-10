@@ -140,9 +140,9 @@ public class GridParser extends XMLParser{
                 try {
                     Integer val = Math.min(Integer.parseInt(vals[k]), maxVal);
                     if (j % 2 == 0) {
-                        grid.put(new Point(j *2, k), val);
+                        grid.put(new Point(j, k *2), val);
                     } else {
-                        grid.put(new Point(j*2 - 1, k), val);
+                        grid.put(new Point(j, k*2 - 1), val);
                     }
                 } catch (NumberFormatException e) {
                     throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), RESOURCES.getString("Grid"));
