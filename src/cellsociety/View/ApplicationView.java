@@ -53,6 +53,7 @@ public class ApplicationView {
       EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
+      EventHandler<MouseEvent> saveButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
     myFrameNumber = 0;
@@ -69,7 +70,7 @@ public class ApplicationView {
 
     myConsoleView = new ConsoleView();
     myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
-        stepButtonClickedHandler, sliderListener, fileListener);
+        stepButtonClickedHandler, saveButtonClickedHandler, sliderListener, fileListener);
 
     root = new BorderPane();
 
