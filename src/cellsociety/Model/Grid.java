@@ -106,14 +106,12 @@ public abstract class Grid {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
-      System.out.println(pointCellMap.get(p).neighbors);
     }
   }
 
   private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
     int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
     int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
-    System.out.println("x: " + getXOffset(xPos, x) + " y: " + getYOffset(yPos, y) + "\n");
     Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
     if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
       pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
