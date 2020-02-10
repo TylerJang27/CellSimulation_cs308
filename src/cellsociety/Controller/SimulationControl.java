@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.List;
 
 import cellsociety.View.CellClickedEvent;
-import cellsociety.View.CellState;
 import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,7 +27,6 @@ public class SimulationControl {
   public static final int DEFAULT_RATE = 5;
   public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
-  private static final int IMAGE = 1;
 
   private static final String STYLE_ADDRESS = "src/resources/Styling.xml";
   private File styleFile;
@@ -98,7 +96,7 @@ public class SimulationControl {
   /**
    * Updates all the Cells in GridView based off of the values in myGrid
    */
-  private void updateViewGrid() { //FIXME: HANDLE HEX?
+  private void updateViewGrid() {
     List<Point> points = myGrid.getPointList();
     for (Point p: points) {
       int state = myGrid.getState((int)p.getX(), (int)p.getY());
@@ -131,6 +129,7 @@ public class SimulationControl {
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
     EventHandler<CellClickedEvent> cellClickedHandler = event -> {
+      System.out.println("clicked");
       int state = myGrid.cycleState(event.getRow(), event.getColumn());
       myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
     };
