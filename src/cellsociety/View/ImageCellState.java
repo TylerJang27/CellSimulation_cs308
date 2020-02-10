@@ -42,12 +42,9 @@ public class ImageCellState extends CellState{
         }
     }
 
-    myDisplay = template;
-    String imageType = parameters.get(IMAGE_KEY);
-    if (imageType.equals("img:FIRE")) {
-      setBackgroundImage(FIRE_IMAGE);
-    } else if (imageType.equals("img:FISH")) {
-      setBackgroundImage(FISH_IMAGE);
+    @Override
+    public Node getNode() {
+        return myDisplay;
     }
 
     private void setBackgroundImage(Image image){

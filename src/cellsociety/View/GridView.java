@@ -12,7 +12,8 @@ import javafx.scene.Node;
  * @author Mariusz Derezinski-Choo
  */
 public abstract class GridView {
-
+    private static final ResourceBundle RESOURCES = Main.myResources;
+    public static final String GRID_CSS_CLASS = RESOURCES.getString("grid-css-class");
     /**
      * update a cell at the specified index
      * @param row the row of the cell
