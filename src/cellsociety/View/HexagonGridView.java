@@ -13,7 +13,7 @@ import java.util.Map;
 public class HexagonGridView extends GridView{
 
 
-    public static final int DEFAULT_SIDE_LENGTH = 20;
+    public static final int DEFAULT_SIDE_LENGTH = 40;
     private Pane myGrid;
     private double mySideLength;
     private double myGridLineWidth;
