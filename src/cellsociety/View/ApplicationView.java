@@ -121,7 +121,7 @@ public class ApplicationView {
   public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
     CellStateConfiguration config = cellStateConfigs.get(0);
     if(config.getShape().equals(RECTANGLE)){
-      myGrid = new RectangleGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+      myGrid = new RectangleGridView(numRows, numColumns, outline, myCellClickedHandler, cellStateConfigs);
     }else if(config.getShape().equals(HEXAGON)){
       myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
     }

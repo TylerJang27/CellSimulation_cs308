@@ -1,14 +1,11 @@
 package cellsociety.View;
 
-import cellsociety.Main;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Shape;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class ImageCellState extends CellState{
     private static final Image FISH_IMAGE = new Image(ImageCellState.class.getClassLoader().getResourceAsStream("fish.jpg"));
