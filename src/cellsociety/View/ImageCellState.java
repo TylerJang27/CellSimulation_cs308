@@ -23,18 +23,9 @@ public class ImageCellState extends CellState {
   public ImageCellState(Map<String, String> parameters, Shape template) {
     super();
     myID = parameters.get("id");
-
-    myDisplay = template;
-    String imageType = parameters.get(IMAGE_KEY);
-    if (imageType.equals("img:FIRE")) {
-      setBackgroundImage(FIRE_IMAGE);
-    } else if (imageType.equals("img:FISH")) {
-      setBackgroundImage(FISH_IMAGE);
+  }
+    @Override
+    public Node getNode() {
+        return myDisplay;
     }
   }
-
-  @Override
-  public Node getNode() {
-    return myDisplay;
-  }
-}
