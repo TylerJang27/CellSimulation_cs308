@@ -73,7 +73,7 @@ public class FireGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }
