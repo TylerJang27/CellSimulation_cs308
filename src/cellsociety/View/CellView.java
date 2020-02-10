@@ -27,7 +27,7 @@ public class CellView extends Pane {
 
 
   private List<CellState> cellStateList;
-  private Node myCurrentState;
+  private CellState myCurrentState;
   private static final ResourceBundle RESOURCES = Main.myResources;
 
 
@@ -54,12 +54,13 @@ public class CellView extends Pane {
       //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
     }
 
-    myCurrentState = cellStateList.get(0).getNode();
+    myCurrentState = cellStateList.get(0);
 
-    getChildren().add(myCurrentState);
+    getChildren().add(myCurrentState.getNode());
   }
 
   private Shape createShape(String description, Map<String, String> params){
+      /*
     if(description.equals("rectangle")){
         System.out.println(params);
         double width, height;
@@ -72,16 +73,19 @@ public class CellView extends Pane {
         }
       return new Rectangle(width, height);
     } else if(description.equals("hexagon")){
+
+       */
         double sideLength;
         try {
             sideLength = Double.parseDouble(params.get("sideLength"));
         } catch(Exception e){
+            System.out.println("caught");
             sideLength = 50;
         }
       return makeHexagon(sideLength);
-    }
-    System.out.println("error in cellview");
-    return null;
+    //}
+    //System.out.println("error in cellview");
+    //return null;
   }
 
 
@@ -91,9 +95,9 @@ public class CellView extends Pane {
    * @param state the next state of the cell
    */
   public void changeState(int state) {
-    getChildren().remove(myCurrentState);
-    myCurrentState = cellStateList.get(state).getNode();
-    getChildren().add(myCurrentState);
+    getChildren().remove(myCurrentState.getNode());
+    myCurrentState = cellStateList.get(state);
+    getChildren().add(myCurrentState.getNode());
   }
 
 
@@ -111,7 +115,7 @@ public class CellView extends Pane {
   }
 
   public String getCellState(){
-      return myCurrentState.getId();
+      return myCurrentState.getStateDescription();
   }
 
 }
