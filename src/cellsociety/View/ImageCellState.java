@@ -29,8 +29,9 @@ public class ImageCellState extends CellState {
     super();
     myID = parameters.get("id");
   }
-    @Override
-    public Node getNode() {
-        return myDisplay;
-    }
+
+  @Override
+  public Node getNode() {
+    return myDisplay;
   }
+}
