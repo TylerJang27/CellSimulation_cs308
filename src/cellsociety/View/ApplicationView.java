@@ -78,7 +78,7 @@ public class ApplicationView {
 
     primaryStage.setScene(myScene);
     primaryStage.show();
-    //primaryStage.setResizable(false);
+    primaryStage.setResizable(false);
 
   }
 
