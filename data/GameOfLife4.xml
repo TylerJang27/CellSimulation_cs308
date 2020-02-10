@@ -7,5 +7,6 @@
     <width>30</width>
     <height>30</height>
     <coverage>60</coverage>
+    <grid_shape>1</grid_shape>
     <grid_type>4</grid_type>
 </data>

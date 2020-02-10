@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.DoubleToIntFunction;
 
 /**
  * Class for parsing XML files to retrieve information about initial grid configuration
@@ -44,7 +45,7 @@ public class GridParser extends XMLParser{
         myHeight = sim.getValue(RESOURCES.getString("Height"));
         try {
             Integer shape = sim.getValue(RESOURCES.getString("Shape"));
-            if (shape != null && shape <= HEXAGON) {
+            if (shape != null && shape >= HEXAGON) {
                 myShape = shape;
             } else {
                 myShape = SQUARE;

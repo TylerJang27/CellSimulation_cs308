@@ -153,8 +153,6 @@ public class SimulationControl {
     numCols = mySim.getValue(RESOURCES.getString("Width"));
     numRows = mySim.getValue(RESOURCES.getString("Height"));
 
-    //FIXME: Tyler: Make the CellState Configurations and pass the List
-
     Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
     Style style = styles.get(mySim.getType().toString());
     String shapeString;
