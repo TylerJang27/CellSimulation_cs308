@@ -58,7 +58,7 @@ public enum SimType {
   /**
    * Returns the SimType's optional field names
    */
-  public List<String> getOptionalFields() { return myOptionalFields; }
+  public List<String> getOptionalFields() { return List.copyOf(myOptionalFields); }
 
   /**
    * Returns the SimType's max cell value

@@ -36,13 +36,12 @@ public class Simulation {
           RESOURCES.getString("Rate"),
           RESOURCES.getString("GridType"),
           RESOURCES.getString("Shape"),
-          RESOURCES.getString("GridShape") //FIXME: IMPLEMENT (I.E. TOROIDAL)
+          RESOURCES.getString("GridShape")
   );
 
   private Map<String, Integer> myDataValues;
 
   private SimType myType;
-  private String gridType;
   private Map<Point, Integer> myGrid;
 
   /**
@@ -63,7 +62,6 @@ public class Simulation {
    */
   public Simulation(Map<String, String> dataValues) {
     this(dataValues.get(MANDATORY_DATA_FIELDS.get(0)));
-    gridType = dataValues.get(RESOURCES.getString("GridType"));
     this.setFields(dataValues);
   }
 

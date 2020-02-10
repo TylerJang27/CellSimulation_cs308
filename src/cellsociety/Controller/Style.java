@@ -68,10 +68,10 @@ public class Style {
     } else {
       fill = RESOURCES.getString("Color");
     }
-    List<String> fields = getType().getStyleFields();
-    fields.removeAll(getType().getGenerics());
-    for (String s: fields) {
-      buildParameters(maps, fill, s);
+    for (String s: getType().getStyleFields()) {
+      if (!getType().getGenerics().contains(s)) {
+        buildParameters(maps, fill, s);
+      }
     }
     return maps;
   }

@@ -3,7 +3,6 @@ package cellsociety.Model;
 import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
-import jdk.jfr.Threshold;
 
 import java.awt.Point;
 import java.util.*;

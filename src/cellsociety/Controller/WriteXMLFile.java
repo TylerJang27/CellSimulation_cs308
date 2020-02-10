@@ -52,8 +52,6 @@ public class WriteXMLFile {
      * @throws XMLException for cases where file generators cannot be created
      */
     public String writeSimulationXML() {
-        String fileAddress = generateFileName();
-
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         try {
@@ -63,6 +61,7 @@ public class WriteXMLFile {
         }
 
         Document doc = docBuilder.newDocument();
+        String fileAddress = generateFileName();
         writeContent(fileAddress, doc);
 
         return fileAddress;

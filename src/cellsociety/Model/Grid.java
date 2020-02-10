@@ -21,7 +21,7 @@ public abstract class Grid {
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  private ArrayList<Point> pointList;
+  private List<Point> pointList;
   private int myFrame;
   private static ResourceBundle RESOURCES = Main.myResources;
   private int gridShape;
@@ -209,8 +209,8 @@ public abstract class Grid {
    * Generates a list of points for a default square setup
    * @return list of points
    */
-  public ArrayList<Point> squarePointGenerator() {
-    ArrayList<Point> squarePoints = new ArrayList<Point>();
+  public List<Point> squarePointGenerator() {
+    List<Point> squarePoints = new ArrayList<>();
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         squarePoints.add(new Point(x, y));
@@ -223,8 +223,8 @@ public abstract class Grid {
    * Generates a list of points for a default hexagon setup
    * @return list of points
    */
-  protected ArrayList<Point> hexPointGenerator() {
-    ArrayList<Point> hexPoints = new ArrayList<Point>();
+  protected List<Point> hexPointGenerator() {
+    List<Point> hexPoints = new ArrayList<>();
     for (int j = 0; j < myHeight; j ++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {
@@ -239,7 +239,7 @@ public abstract class Grid {
     return hexPoints;
   }
 
-  public ArrayList<Point> getPointList() {
+  public List<Point> getPointList() {
     return pointList;
   }
   public void addFrame() {
