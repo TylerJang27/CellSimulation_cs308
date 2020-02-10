@@ -14,7 +14,7 @@ Start Date: 01/26/20
 
 Finish Date: 02/09/29
 
-Hours Spent: 70
+Hours Spent: 80
 
 ### Primary Roles
 #### Tyler
@@ -110,6 +110,7 @@ Additional features include:
  * **Cell Images**: The user may opt for cells to be filled with images instead of colors.
  * **Scrolling**: The user may scroll to reach cells outside the main viewing area.
  * **Live Graph**: The user is presented with a live graph showing the distributions of different states over the lifetime of the simulation.
+ * **Edges**: Based on the input XML files, the user can choose whether a simulation will have fixed, toroidal, or PacMan-style edges.
 ### Notes/Assumptions
 
 Assumptions or Simplifications:

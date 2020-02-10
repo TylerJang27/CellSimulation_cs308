@@ -43,7 +43,6 @@ public class CellView extends Pane {
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
           cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
-      //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
     }
 
     myCurrentState = cellStateList.get(0);
