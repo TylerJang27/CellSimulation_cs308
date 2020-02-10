@@ -1,7 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +58,7 @@ public enum SimType {
   /**
    * Returns the SimType's optional field names
    */
-  public List<String> getOptionalFields() { return myOptionalFields; }
+  public List<String> getOptionalFields() { return List.copyOf(myOptionalFields); }
 
   /**
    * Returns the SimType's max cell value
@@ -88,5 +87,4 @@ public enum SimType {
   public String toString() {
     return myName;
   }
-
 }

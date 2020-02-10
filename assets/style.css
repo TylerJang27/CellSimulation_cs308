@@ -13,7 +13,9 @@
 .grid {
   -fx-background-color: #b2aa62;
 }
-
-#dashboard {
+.console {
+  -fx-background-color: #baffe0
+}
+.dashboard {
   -fx-background-color: #6f6f72;
 }

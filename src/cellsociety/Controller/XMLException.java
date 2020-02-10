@@ -3,7 +3,7 @@ package cellsociety.Controller;
 /**
  * Class for formatting the types of exceptions that may occur when reading in XML files for
  * configuration.
- * <p>
+ *
  * Class based mainly on XMLException.java from spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLException.java
  *

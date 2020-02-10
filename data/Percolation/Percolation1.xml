@@ -7,6 +7,7 @@
     <width>10</width>
     <height>10</height>
     <grid_type>0</grid_type>
+    <shape>1</shape>
     <grid>
         <row>0 0 0 1 0 2 0 1 0 1</row>
         <row>0 0 1 0 0 2 0 0 1 0</row>
