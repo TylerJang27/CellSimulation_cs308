@@ -36,7 +36,7 @@
         <shark>#FF0000</shark>
     </PredatorPrey>
     <Fire>
-        <outline>1</outline>
+        <outline>1.7</outline>
         <display>color</display>
         <width>700</width>
         <height>700</height>

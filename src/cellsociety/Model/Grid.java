@@ -17,10 +17,12 @@ import java.util.ArrayList;
 public abstract class Grid {
 
   private static final int TOROIDAL = 1;
+  private static final int HEXAGONAL = 1;
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  protected int myFrame;
+  private ArrayList<Point> pointList;
+  private int myFrame;
   private static ResourceBundle RESOURCES = Main.myResources;
   private int gridShape;
   private int cellShape;
@@ -38,6 +40,11 @@ public abstract class Grid {
     gridShape = gridMap.getOrDefault(RESOURCES.getString("GridShape"), 0);
     cellShape = gridMap.getOrDefault(RESOURCES.getString("Shape"), 0);
     myFrame = 0;
+    if (cellShape == HEXAGONAL) {
+      pointList = hexPointGenerator();
+    } else {
+      pointList = squarePointGenerator();
+    }
   }
 
   /**
@@ -154,7 +161,7 @@ public abstract class Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return 0;
   }
 
@@ -198,11 +205,25 @@ public abstract class Grid {
   }
 
   /**
+   * Generates a list of points for a default square setup
+   * @return list of points
+   */
+  public ArrayList<Point> squarePointGenerator() {
+    ArrayList<Point> squarePoints = new ArrayList<Point>();
+    for (int y = 0; y < myHeight; y++) {
+      for (int x = 0; x < myWidth; x++) {
+        squarePoints.add(new Point(x, y));
+      }
+    }
+    return squarePoints;
+  }
+
+  /**
    * Generates a list of points for a default hexagon setup
    * @return list of points
    */
-  protected List<Point> hexPointGenerator() {
-    List<Point> hexPoints = new ArrayList<Point>();
+  protected ArrayList<Point> hexPointGenerator() {
+    ArrayList<Point> hexPoints = new ArrayList<Point>();
     for (int j = 0; j < myHeight; j ++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {
@@ -215,5 +236,12 @@ public abstract class Grid {
       }
     }
     return hexPoints;
+  }
+
+  protected ArrayList<Point> getPointList() {
+    return pointList;
+  }
+  public void addFrame() {
+    myFrame++;
   }
 }

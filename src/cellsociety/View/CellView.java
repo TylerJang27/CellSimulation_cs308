@@ -22,6 +22,7 @@ public class CellView extends Pane {
   private static final int FULL_CIRCLE_DEGREES = 360;
   private static final int ANGLE_STEP = 60;
   private static final double gridLineWidth = 4;
+  private static final double DEFAULT_HEXAGON_SIDE_LENGTH = HexagonGridView.DEFAULT_SIDE_LENGTH;
 
 
 
@@ -79,8 +80,7 @@ public class CellView extends Pane {
         try {
             sideLength = Double.parseDouble(params.get("sideLength"));
         } catch(Exception e){
-            System.out.println("caught");
-            sideLength = 50;
+            sideLength = DEFAULT_HEXAGON_SIDE_LENGTH;
         }
       return makeHexagon(sideLength);
     //}

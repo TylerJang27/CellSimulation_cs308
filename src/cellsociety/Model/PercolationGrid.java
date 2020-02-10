@@ -1,8 +1,10 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -16,8 +18,8 @@ public class PercolationGrid extends Grid {
   private static final int BLOCKED_DEFAULT = 30;
   private static final int FILLED_DEFAULT = 20;
   private static ResourceBundle RESOURCES = Main.myResources;
-  private static int MAX_VAL = 2;
-  private static final int  HEXAGONAL = 1;
+  private static int MAX_VAL = SimType.of(RESOURCES.getString("Percolation")).getMaxVal();;
+  private static final int HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.
@@ -29,17 +31,14 @@ public class PercolationGrid extends Grid {
    */
   public PercolationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    for (int y = 0; y < myHeight; y++) {
-      for (int x = 0; x < myWidth; x++) {
-        Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
-          pointCellMap.put(p,
-                  new PercolationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL)))));
-        } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
-          parametrizedRandomGenerator(cellValues, p);
-        } else {
-          pointCellMap.put(p, new PercolationCell(gridMap.getOrDefault(p, 0)));
-        }
+    for (Point p: getPointList()) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p,
+                new PercolationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL)))));
+      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, p);
+      } else {
+        pointCellMap.put(p, new PercolationCell(gridMap.getOrDefault(p, 0)));
       }
     }
     if (getCellShape() == HEXAGONAL) {
@@ -71,7 +70,7 @@ public class PercolationGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }
