@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public abstract class Grid {
 
   private static final int TOROIDAL = 1;
+  private static final int PACMAN = 2;
   private static final int HEXAGONAL = 1;
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
@@ -79,7 +80,9 @@ public abstract class Grid {
     return Arrays.asList(left, up, right, down);
   }
 
-
+  /**
+   * adds hexagonal adjacent cells in each cell's neighbor list
+   */
   protected void buildHexagonNeighbors() {
     for (Point p : pointCellMap.keySet()) {
       int xPos = (int) p.getX();
@@ -94,7 +97,7 @@ public abstract class Grid {
   }
 
   /**
-   * Checks all surrounding cells (diagonals included) of a specific cell and builds neighbors
+   * adds square adjacent cells in each cell's neighbor list
    */
   protected void buildSquareNeighbors() {
     for (Point p : pointCellMap.keySet()) {
@@ -109,8 +112,42 @@ public abstract class Grid {
     }
   }
 
+  /**
+   * Creates set of points under original point
+   */
+  public void bottomSquareNeighborGenerator(){
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
+
+      for (int y = -1; y <= 1; y++) {
+        checkAndSetNeighbor(p, xPos, yPos, -1, y);
+      }
+    }
+  }
+
+  public void bottomHexNeighborGenerator() {
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
+
+      for (int y = -1; y <= 1; y++) {
+        for (int x = 1; x <= 2; x++) {
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
+        }
+      }
+    }
+  }
+  /**
+   * Creates a point out of the given offsets and checks to see if toroidal properties need apply to it.
+   * @param p original point
+   * @param xPos x point
+   * @param yPos y point
+   * @param x original x offset
+   * @param y original y offset
+   */
   private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
-    int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
+    int xOffset = gridShape == TOROIDAL || gridShape == PACMAN ? getXOffset(xPos, x) : x;
     int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
     Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
     if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
@@ -218,6 +255,7 @@ public abstract class Grid {
    * Generates a list of points for a default square setup
    * @return list of points
    */
+
   public ArrayList<Point> squarePointGenerator() {
     ArrayList<Point> squarePoints = new ArrayList<>();
     for (int y = 0; y < myHeight; y++) {
