@@ -1,6 +1,10 @@
 package cellsociety.View;
 
 import cellsociety.Main;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,11 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 /**
  * Core class for the Simulation's GUI, instantiates all the elements of the GUI (Dashboard, Grid,
  * Console, etc), and places them appropriately in a Border Pane.
@@ -22,6 +21,7 @@ import java.util.ResourceBundle;
  * @author Mariusz Derezinski-Choo
  */
 public class ApplicationView {
+
   private static final ResourceBundle RESOURCES = Main.myResources;
   private static final String STYLESHEET = "style.css";
   private static final String RECTANGLE = RESOURCES.getString("rectangle");
@@ -48,7 +48,8 @@ public class ApplicationView {
    *                                  clicked
    * @param stepButtonClickedHandler  an EventHandler to be triggered when the step button is
    *                                  clicked
-   * @param saveButtonClickedHandler  The EventHandler to be triggered when the "Save" button is clicked
+   * @param saveButtonClickedHandler  The EventHandler to be triggered when the "Save" button is
+   *                                  clicked
    * @param sliderListener            a ChangeListener to be triggered when the slider is toggled
    * @param fileListener              a ChangeListener to be triggered when the file is chosen
    * @param cellClickedHandler        The EventHandler to be triggered when a cell is clicked
@@ -58,7 +59,8 @@ public class ApplicationView {
       EventHandler<MouseEvent> pauseButtonClickedHandler,
       EventHandler<MouseEvent> stepButtonClickedHandler,
       EventHandler<MouseEvent> saveButtonClickedHandler,
-      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
+      ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener,
+      EventHandler<CellClickedEvent> cellClickedHandler) {
 
     myCellClickedHandler = cellClickedHandler;
     myFrameNumber = 0;
@@ -76,7 +78,8 @@ public class ApplicationView {
     root.setLeft(myDashboardView);
 
     myScene = new Scene(root);
-    myScene.getStylesheets().add(this.getClass().getClassLoader().getResource(STYLESHEET).toExternalForm());
+    myScene.getStylesheets()
+        .add(this.getClass().getClassLoader().getResource(STYLESHEET).toExternalForm());
 
     displayScene(primaryStage);
   }
@@ -102,9 +105,10 @@ public class ApplicationView {
 
   /**
    * update the cell at the specified row and column. change the state to the speci
-   * @param row the row to be updated
+   *
+   * @param row    the row to be updated
    * @param column the column to be updated
-   * @param state the state that the cell should be modified to
+   * @param state  the state that the cell should be modified to
    */
   public void updateCell(int row, int column, int state) {
     myGrid.updateCell(row, column, state);
@@ -118,28 +122,30 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
+  public void initializeGrid(int numRows, int numColumns, double width, double length,
+      String outline, List<CellStateConfiguration> cellStateConfigs) {
     CellStateConfiguration config = cellStateConfigs.get(0);
-    if(config.getShape().equals(RECTANGLE)){
-      myGrid = new RectangleGridView(numRows, numColumns, outline, myCellClickedHandler, cellStateConfigs);
-    }else if(config.getShape().equals(HEXAGON)){
-      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+    if (config.getShape().equals(RECTANGLE)) {
+      myGrid = new RectangleGridView(numRows, numColumns, outline, myCellClickedHandler,
+          cellStateConfigs);
+    } else if (config.getShape().equals(HEXAGON)) {
+      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline,
+          myCellClickedHandler, cellStateConfigs);
     }
     myGridScroll.setContent(myGrid.getNode());
     root.setCenter((myGridScroll));
   }
 
   /**
-   * Updates the plot of the different cells by adding a single time point for each cell type to the plot in the View
+   * Updates the plot of the different cells by adding a single time point for each cell type to the
+   * plot in the View
    */
-  public void updateCellCounts(){
+  public void updateCellCounts() {
     Map<String, Integer> temp = myGrid.getCellCounts();
-    for(String id : temp.keySet()){
+    for (String id : temp.keySet()) {
       myDashboardView.plotTimePoint(id, myFrameNumber, temp.get(id));
     }
   }
-
-
 
 
   private void displayScene(Stage primaryStage) {
@@ -158,7 +164,7 @@ public class ApplicationView {
   private Pane getEmptyGrid(double size) {
     Pane emptyFillerPane = new Pane();
     emptyFillerPane.getStyleClass().add(GridView.GRID_CSS_CLASS);
-    emptyFillerPane.setPrefSize(size,size);
+    emptyFillerPane.setPrefSize(size, size);
     return emptyFillerPane;
   }
 }
