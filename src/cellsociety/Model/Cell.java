@@ -25,7 +25,9 @@ public abstract class Cell {
    * @param c A neighboring Cell
    */
   public void setNeighbor(Cell c) {
-    neighbors.add(c);
+    if (!this.equals(c)) {
+      neighbors.add(c);
+    }
   }
 
   /**

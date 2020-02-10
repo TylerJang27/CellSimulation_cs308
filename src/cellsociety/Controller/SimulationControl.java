@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.List;
 
 import cellsociety.View.CellClickedEvent;
-import cellsociety.View.CellState;
 import cellsociety.View.CellStateConfiguration;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,7 +27,6 @@ public class SimulationControl {
   public static final int DEFAULT_RATE = 5;
   public static final double SIZE = 700;
   public static final int RATE_MAX = 10;
-  private static final int IMAGE = 1;
 
   private static final String STYLE_ADDRESS = "src/resources/Styling.xml";
   private File styleFile;
@@ -98,7 +96,7 @@ public class SimulationControl {
   /**
    * Updates all the Cells in GridView based off of the values in myGrid
    */
-  private void updateViewGrid() { //FIXME: HANDLE HEX?
+  private void updateViewGrid() {
     List<Point> points = myGrid.getPointList();
     for (Point p: points) {
       int state = myGrid.getState((int)p.getX(), (int)p.getY());
@@ -145,7 +143,6 @@ public class SimulationControl {
    * @param dataFile the File from which to read configuration instructions
    */
   public void initializeModel(File dataFile) {
-    //FIXME: TRY TO REFACTOR AND REORDER SO THAT THE VIEW STUFF STAYS IN VIEW
     mySim = new ConfigParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -155,6 +152,39 @@ public class SimulationControl {
 
     Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
     Style style = styles.get(mySim.getType().toString());
+    String shapeString = getShapeString();
+    List<CellStateConfiguration> cellViewConfiguration = getCellStateConfigurations(style, shapeString);
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
+    myGrid = createGrid();
+
+    updateViewGrid();
+    pauseSimulation();
+  }
+
+  /**
+   * Extracts ID, and fill (color or image) information from style
+   * @param style Style containing visualization information
+   * @param shapeString the shape of the cells, Hexagon or Rectangle
+   * @return
+   */
+  private List<CellStateConfiguration> getCellStateConfigurations(Style style, String shapeString) {
+    List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
+    for (Map<String, String> params: style.getConfigParameters()) {
+      String displayStyle = "color";
+      for (String s: params.keySet()) {
+        if (s.equals("color") || s.equals("image")) {
+          displayStyle = s;
+        }
+      }
+      cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
+    }
+    return cellViewConfiguration;
+  }
+
+  /**
+   * Extracts information from mySim to determine if shape is Hexagon or Rectangle
+   */
+  private String getShapeString() {
     String shapeString;
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
     if (shape == GridParser.HEXAGON) {
@@ -162,21 +192,7 @@ public class SimulationControl {
     } else {
       shapeString = RESOURCES.getString("Rectangle");
     }
-    List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
-    for (Map<String, String> params: style.getConfigParameters()) {
-      String displayStyle = "color";
-      for (String s: params.keySet()) {
-        displayStyle = s;
-      }
-      cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
-    }
-
-    //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
-    myGrid = createGrid();
-
-    updateViewGrid();
-    pauseSimulation();
+    return shapeString;
   }
 
   /**

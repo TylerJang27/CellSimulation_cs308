@@ -24,9 +24,6 @@ public class CellView extends Pane {
   private static final double gridLineWidth = 4;
   private static final double DEFAULT_HEXAGON_SIDE_LENGTH = HexagonGridView.DEFAULT_SIDE_LENGTH;
 
-
-
-
   private List<CellState> cellStateList;
   private CellState myCurrentState;
   private static final ResourceBundle RESOURCES = Main.myResources;
@@ -39,14 +36,11 @@ public class CellView extends Pane {
 
     for(int i = 0; i < configuration.size(); i++){
       CellStateConfiguration currentConfiguration = configuration.get(i);
-
       Shape cellTemplate = createShape(currentConfiguration.getShape(), currentConfiguration.getParameters());
 
       if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
-          System.out.println("color" + i);
           cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
-          System.out.println("image" + i + ":" + currentConfiguration.getParameters());
           cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
       //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
@@ -77,7 +71,6 @@ public class CellView extends Pane {
         }
       return makeHexagon(sideLength);
     }
-    System.out.println("error in cellview");
     return null;
   }
 
