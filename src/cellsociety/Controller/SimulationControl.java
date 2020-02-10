@@ -3,8 +3,11 @@ package cellsociety.Controller;
 import cellsociety.Main;
 import cellsociety.Model.*;
 import cellsociety.View.ApplicationView;
+
+import java.awt.*;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 
 import cellsociety.View.CellClickedEvent;
 import cellsociety.View.CellState;
@@ -96,15 +99,10 @@ public class SimulationControl {
    * Updates all the Cells in GridView based off of the values in myGrid
    */
   private void updateViewGrid() { //FIXME: HANDLE HEX?
-    for (int j = 0; j < numCols; j++) {
-      for (int k = 0; k < numRows; k++) {
-        int state = myGrid.getState(j, k);
-        try {
-          myApplicationView.updateCell(j, k, state);
-        } catch (NullPointerException e) {
-          //disregard, this allows all points to be pipelined to View, regardless of shape
-        }
-      }
+    List<Point> points = myGrid.getPointList();
+    for (Point p: points) {
+      int state = myGrid.getState((int)p.getX(), (int)p.getY());
+      myApplicationView.updateCell((int)p.getX(), (int)p.getY(), state);
     }
   }
 
