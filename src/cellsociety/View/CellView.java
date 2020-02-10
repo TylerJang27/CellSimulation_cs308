@@ -73,7 +73,14 @@ public class CellView extends Pane {
             sideLength = DEFAULT_HEXAGON_SIDE_LENGTH;
         }
       return makeHexagon(sideLength);
+<<<<<<< HEAD
     }
+=======
+    //}
+    //System.out.println("error in cellview");
+    //return null;
+  }
+>>>>>>> ef3eaf4f46f50b3678f41fd25c993096d8422619
 
 
   /**
