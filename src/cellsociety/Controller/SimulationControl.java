@@ -158,6 +158,7 @@ public class SimulationControl {
     String shapeString;
     String displayStyle = style.getValue(RESOURCES.getString("Display"));
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
+    System.out.println(shape);
     if (shape == GridParser.HEXAGON) {
       shapeString = RESOURCES.getString("Hexagon");
     } else {
@@ -168,7 +169,6 @@ public class SimulationControl {
       cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
     }
 
-    //TODO: Tyler: configure in XML whether the Grid should be outlined or not, pass it in the isOutlined parameter below
     //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
     myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
     myGrid = createGrid();

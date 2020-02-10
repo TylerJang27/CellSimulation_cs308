@@ -20,16 +20,16 @@ import java.util.List;
  * @author Tyler Jang
  */
 public enum SimType {
-  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{Main.myResources.getString("Coverage")}, GameOfLifeGrid.getMaxState()),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, PercolationGrid.getMaxState()),
+  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{Main.myResources.getString("Coverage")}, 1),
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, 2),
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
-          Main.myResources.getString("Empty")}, SegregationGrid.getMaxState()),
+          Main.myResources.getString("Empty")}, 2),
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"),
-          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, PredatorPreyGrid.getMaxState()),
-  FIRE(Main.myResources.getString("Fire"), new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, FireGrid.getMaxState()),
-  ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{}, new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("RPSThreshold")}, RockPaperScissorsGrid.getMaxState());
+          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, 2),
+  FIRE(Main.myResources.getString("Fire"), new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, 2),
+  ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{}, new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("RPSThreshold")}, 3);
 
   private String myName;
   private final List<String> myMandatoryFields;

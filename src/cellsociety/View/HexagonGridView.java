@@ -11,6 +11,7 @@ import java.util.Map;
 public class HexagonGridView extends GridView{
 
 
+    private static final int DEFAULT_SIDE_LENGTH = 10;
     private Pane myGrid;
     private double mySideLength;
     private double myGridLineWidth;
@@ -20,7 +21,11 @@ public class HexagonGridView extends GridView{
         super();
         myGrid = new Pane();
         myGridLineWidth = Double.parseDouble(outlineWidth);
-        mySideLength = Double.parseDouble(cellStateConfigs.get(0).getParameters().get("sideLength"));
+        try {
+            mySideLength = Double.parseDouble(cellStateConfigs.get(0).getParameters().get("sideLength"));
+        } catch (NullPointerException e) {
+            mySideLength = DEFAULT_SIDE_LENGTH;
+        }
 
         VBox evenElements = new VBox(0);
 

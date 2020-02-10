@@ -121,7 +121,6 @@ public class ApplicationView {
       myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
     }
     myGridScroll.setContent(myGrid.getNode());
-  //FIXME: outline vs isOutlined and error handling
     root.setCenter((myGridScroll));
   }
 }
