@@ -17,7 +17,7 @@ import javafx.scene.layout.Region;
 public class ConsoleView extends Pane {
 
   public static final ResourceBundle RESOURCES = Main.myResources;
-  public static final String CONSOLE_STYLING = "-fx-background-color: #baffe0";
+  public static final String CONSOLE_STYLE_CLASS = RESOURCES.getString("console-style-class");
   public static final String FRAME_NUMBER_TEXT = RESOURCES.getString("FrameNumber");
   public static final String SIMULATION_NO_ERRORS = RESOURCES.getString("ConsoleNoErrors");
   public static final double MARGINS = 10;
@@ -32,7 +32,7 @@ public class ConsoleView extends Pane {
    */
   public ConsoleView() {
     super();
-    this.setStyle(CONSOLE_STYLING);
+    this.getStyleClass().add(CONSOLE_STYLE_CLASS);
     myFrame = 0;
 
     HBox myConsoleView = new HBox();
@@ -43,16 +43,10 @@ public class ConsoleView extends Pane {
 
     Region region1 = new Region();
     HBox.setHgrow(region1, Priority.ALWAYS);
+
     myConsoleView.getChildren().addAll(myErrorLabel, region1, myFrameTextLabel, myFrameNumberLabel);
 
     getChildren().add(myConsoleView);
-
-  }
-
-  private void constructLabels() {
-    myFrameTextLabel = new Label(FRAME_NUMBER_TEXT);
-    myErrorLabel = new Label(SIMULATION_NO_ERRORS);
-    myFrameNumberLabel = new Label(String.valueOf(myFrame));
   }
 
   /**
@@ -71,5 +65,11 @@ public class ConsoleView extends Pane {
    */
   public void showFrame(int frameNumber) {
     myFrameNumberLabel.setText(String.valueOf(frameNumber));
+  }
+
+  private void constructLabels() {
+    myFrameTextLabel = new Label(FRAME_NUMBER_TEXT);
+    myErrorLabel = new Label(SIMULATION_NO_ERRORS);
+    myFrameNumberLabel = new Label(String.valueOf(myFrame));
   }
 }
