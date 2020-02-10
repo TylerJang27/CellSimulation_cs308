@@ -21,7 +21,7 @@ public class HexagonGridView extends GridView{
     int numItems;
 
 
-    public HexagonGridView(int numRows, int numColumns, double width, double length, String outlineWidth, EventHandler<CellClickedEvent> myCellClickedHandler, List<CellStateConfiguration> cellStateConfigs) {
+    public HexagonGridView(int numRows, int numColumns, double width, double length, String outlineWidth, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> cellStateConfigs) {
         super();
         myGrid = new Pane();
         myGridLineWidth = Double.parseDouble(outlineWidth);
@@ -52,6 +52,7 @@ public class HexagonGridView extends GridView{
                 addingCell.setOnMouseClicked(e -> {
                     addingCell.fireEvent(new CellClickedEvent(addingCell, finalI, finalJ));
                 });
+                addingCell.addEventHandler(CellClickedEvent.CUSTOM_EVENT_TYPE, cellClickedHandler);
                 Pane addingPane = new Pane();
                 addingPane.getChildren().add(addingCell);
                 firstRow.getChildren().add(addingPane);
@@ -81,6 +82,8 @@ public class HexagonGridView extends GridView{
                 addingCell.setOnMouseClicked(e -> {
                     addingCell.fireEvent(new CellClickedEvent(addingCell, finalI, finalJ));
                 });
+                addingCell.addEventHandler(CellClickedEvent.CUSTOM_EVENT_TYPE, cellClickedHandler);
+
                 Pane addingPane = new Pane();
                 addingPane.getChildren().add(addingCell);
                 firstRow.getChildren().add(addingPane);

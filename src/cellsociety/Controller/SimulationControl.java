@@ -131,6 +131,7 @@ public class SimulationControl {
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
     EventHandler<CellClickedEvent> cellClickedHandler = event -> {
+      System.out.println("clicked");
       int state = myGrid.cycleState(event.getRow(), event.getColumn());
       myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
     };
