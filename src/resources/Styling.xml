@@ -49,8 +49,8 @@
         <display>color</display>
         <width>700</width>
         <height>700</height>
-        <rock>#000000</rock>
-        <paper>#FFFFFF</paper>
-        <scissors>#AAAAAA</scissors>
+        <rock>#FF0000</rock>
+        <paper>#00FF00</paper>
+        <scissors>#0000FF</scissors>
     </RockPaperScissors>
 </data>

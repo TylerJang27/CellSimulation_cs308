@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.DoubleToIntFunction;
 
 /**
  * Class for parsing XML files to retrieve information about initial grid configuration

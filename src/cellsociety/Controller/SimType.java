@@ -1,7 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,5 +87,4 @@ public enum SimType {
   public String toString() {
     return myName;
   }
-
 }

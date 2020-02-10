@@ -163,6 +163,7 @@ public class SimulationControl {
 
   /**
    * Extracts ID, and fill (color or image) information from style
+   *
    * @param style Style containing visualization information
    * @param shapeString the shape of the cells, Hexagon or Rectangle
    * @return
