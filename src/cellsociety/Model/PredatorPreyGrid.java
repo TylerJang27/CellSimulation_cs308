@@ -111,7 +111,7 @@ public class PredatorPreyGrid extends Grid {
   private void resetMovement() {
     for (Cell c : pointCellMap.values()) {
       PredatorPreyCell updateCell = (PredatorPreyCell) c;
-      updateCell.didMove = false;
+      updateCell.setDidMove(false);
     }
   }
 
@@ -123,11 +123,37 @@ public class PredatorPreyGrid extends Grid {
    */
   private PredatorPreyCell handleMovement(PredatorPreyCell currentCell, int state) {
     int activeNeighbors = currentCell.countAliveNeighbors();
-    if (state != EMPTY && !currentCell.didMove) {
-      if (!currentCell.didKill && activeNeighbors < MOVEMENT_CAPABLE_NEIGHBORS) {
+    if (state != EMPTY && !currentCell.getDidMove()) {
+      if (!currentCell.getDidKill() && activeNeighbors < MOVEMENT_CAPABLE_NEIGHBORS) {
         currentCell = moveCell(currentCell);
       }
       currentCell.setStepsAlive(currentCell.getStepsAlive() + 1);
+    }
+    return currentCell;
+  }
+
+  /**
+   * Transfers values to any adjacent empty cell to represent a move
+   *
+   * @param currentCell Cell being moved
+   * @return cell that received transferred data
+   */
+  private PredatorPreyCell moveCell(PredatorPreyCell currentCell) {
+    List<Cell> neighborPoints = currentCell.getNeighbors();
+
+    Collections.shuffle(neighborPoints);
+
+    for (Cell neighbor : neighborPoints) {
+      PredatorPreyCell predatorPreyNeighbor = (PredatorPreyCell) neighbor;
+      if (predatorPreyNeighbor.getState() == EMPTY) {
+        predatorPreyNeighbor.updateState(currentCell.getState());
+        predatorPreyNeighbor.setStepsAlive(currentCell.getStepsAlive());
+        currentCell.updateState(EMPTY);
+        currentCell.setStepsAlive(0);
+        currentCell = predatorPreyNeighbor;
+        currentCell.setDidMove(true);
+        break;
+      }
     }
     return currentCell;
   }
@@ -153,32 +179,6 @@ public class PredatorPreyGrid extends Grid {
         }
       }
     }
-  }
-
-  /**
-   * Transfers values to any adjacent empty cell to represent a move
-   *
-   * @param currentCell Cell being moved
-   * @return cell that received transferred data
-   */
-  private PredatorPreyCell moveCell(PredatorPreyCell currentCell) {
-    List<Cell> neighborPoints = currentCell.getNeighbors();
-
-    Collections.shuffle(neighborPoints);
-
-    for (Cell neighbor : neighborPoints) {
-      PredatorPreyCell predatorPreyNeighbor = (PredatorPreyCell) neighbor;
-      if (predatorPreyNeighbor.getState() == EMPTY) {
-        predatorPreyNeighbor.updateState(currentCell.getState());
-        predatorPreyNeighbor.setStepsAlive(currentCell.getStepsAlive());
-        currentCell.updateState(EMPTY);
-        currentCell.setStepsAlive(0);
-        currentCell = predatorPreyNeighbor;
-        currentCell.didMove = true;
-        break;
-      }
-    }
-    return currentCell;
   }
 
   /**

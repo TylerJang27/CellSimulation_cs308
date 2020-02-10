@@ -41,9 +41,9 @@ public class PercolationGrid extends Grid {
       }
     }
     if (getCellShape() == HEXAGONAL) {
-      buildHexagonNeighbors();
+      bottomHexNeighborGenerator();
     } else {
-      buildSquareNeighbors();
+      bottomSquareNeighborGenerator();
     }
   }
 
