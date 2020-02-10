@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -21,15 +22,14 @@ import javafx.stage.Stage;
 public class ApplicationView {
 
   private static final String STYLESHEET = "cellsociety/View/style.css";
-  private static final boolean isOutlined = true;
-  //FIXME: REMOVE isOutlined
 
   private Scene myScene;
   private BorderPane root;
-  private GridView myGridView;
+  private GridView myGrid;
   private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
+  private double gridViewportHeight;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -52,11 +52,17 @@ public class ApplicationView {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
-    myGridView = new GridView();
+
+    Pane emptyFillerPane = new Pane();
+    emptyFillerPane.getStyleClass().add("grid");
+    emptyFillerPane.setPrefSize(size,size);
+
+
     myGridScroll = new ScrollPane();
-    myGridScroll.setContent(myGridView);
-    myGridScroll.setPrefViewportHeight(700);
-    myGridScroll.setPrefViewportWidth(700);
+    myGridScroll.setPrefViewportHeight(size);
+    myGridScroll.setPrefViewportWidth(size);
+    myGridScroll.setContent(emptyFillerPane);
+
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
@@ -72,7 +78,7 @@ public class ApplicationView {
 
     primaryStage.setScene(myScene);
     primaryStage.show();
-    primaryStage.setResizable(false);
+    //primaryStage.setResizable(false);
 
   }
 
@@ -96,7 +102,7 @@ public class ApplicationView {
   }
 
   public void updateCell(int row, int column, int state) {
-    myGridView.updateCell(row, column, state);
+    myGrid.updateCell(row, column, state);
   }
 
   /**
@@ -107,10 +113,15 @@ public class ApplicationView {
    * @param width      the width of the grid in pixels
    * @param length     the length of the grid in pixels
    */
-  //FIXME: outline vs isOutlined and error handling
   public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
-    myGridView = new GridView(numRows, numColumns, width, length, isOutlined, myCellClickedHandler, cellStateConfigs);
-    myGridScroll.setContent(myGridView);
+    CellStateConfiguration config = cellStateConfigs.get(0);
+    if(config.getShape().equals("rectangle")){
+      myGrid = new RectangleGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+    }else if(config.getShape().equals("hexagon")){
+      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+    }
+    myGridScroll.setContent(myGrid.getNode());
+  //FIXME: outline vs isOutlined and error handling
     root.setCenter((myGridScroll));
   }
 }
