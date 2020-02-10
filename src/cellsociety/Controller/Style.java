@@ -1,14 +1,15 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Class for storing the data needed to configure Simulation View Styling
- *
+ * <p>
  * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
  *
@@ -68,7 +69,7 @@ public class Style {
     } else {
       fill = RESOURCES.getString("Color");
     }
-    for (String s: getType().getStyleFields()) {
+    for (String s : getType().getStyleFields()) {
       if (!getType().getGenerics().contains(s)) {
         buildParameters(maps, fill, s);
       }
@@ -78,9 +79,10 @@ public class Style {
 
   /**
    * Builds parameters for CellStateConfiguration
+   *
    * @param maps List of maps to add to CellStateConfiguration parameters
    * @param fill image or color
-   * @param s field in Style fields
+   * @param s    field in Style fields
    */
   private void buildParameters(List<Map<String, String>> maps, String fill, String s) {
     Map<String, String> params = new HashMap<>();

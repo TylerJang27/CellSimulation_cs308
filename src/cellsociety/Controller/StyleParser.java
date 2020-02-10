@@ -1,17 +1,19 @@
 package cellsociety.Controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
 /**
  * Class for parsing XML files to determine simulation styling.
- *
+ * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
@@ -52,7 +54,7 @@ public class StyleParser extends XMLParser {
     }
 
     Map<String, Style> styleMap = new HashMap<>();
-    for (Style s: readStyles(root)) {
+    for (Style s : readStyles(root)) {
       styleMap.put(s.getType().toString(), s);
     }
     return styleMap;
@@ -77,8 +79,9 @@ public class StyleParser extends XMLParser {
 
   /**
    * Extracts information about one style and adds it to styleFields
-   * @param s the Simulation type for this style
-   * @param nodeList a List of Nodes referring to the children of the Element
+   *
+   * @param s           the Simulation type for this style
+   * @param nodeList    a List of Nodes referring to the children of the Element
    * @param styleFields Map to which the style information should be added
    */
   private void extractOneStyle(SimStyle s, NodeList nodeList, Map<String, String> styleFields) {

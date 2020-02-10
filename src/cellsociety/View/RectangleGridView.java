@@ -1,7 +1,10 @@
 package cellsociety.View;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -28,7 +31,9 @@ public class RectangleGridView extends GridView {
    * @param numRows    the number of rows in the grid
    * @param numColumns the number of columns in the grid
    */
-  public RectangleGridView(int numRows, int numColumns, String outlineWidth, EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs) {
+  public RectangleGridView(int numRows, int numColumns, String outlineWidth,
+      EventHandler<CellClickedEvent> cellClickedHandler,
+      List<CellStateConfiguration> stateConfigs) {
     super();
     setUpGrid(outlineWidth);
     setConstraints(numRows, numColumns);
@@ -65,7 +70,7 @@ public class RectangleGridView extends GridView {
   public Map<String, Integer> getCellCounts() {
     Map<String, Integer> cellCounts = new HashMap<>();
 
-    for(CellView cell : myCells){
+    for (CellView cell : myCells) {
       String cellState = cell.getCellState();
       cellCounts.putIfAbsent(cellState, 0);
       cellCounts.put(cellState, cellCounts.get(cellState) + 1);
@@ -93,7 +98,8 @@ public class RectangleGridView extends GridView {
     }
   }
 
-  private void initializeCellView(EventHandler<CellClickedEvent> cellClickedHandler, List<CellStateConfiguration> stateConfigs, int i, int j) {
+  private void initializeCellView(EventHandler<CellClickedEvent> cellClickedHandler,
+      List<CellStateConfiguration> stateConfigs, int i, int j) {
     CellView adding = new CellView(stateConfigs);
     int finalI = i;
     int finalJ = j;

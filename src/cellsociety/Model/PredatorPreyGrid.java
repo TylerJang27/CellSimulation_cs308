@@ -3,7 +3,7 @@ package cellsociety.Model;
 import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
-import java.awt.*;
+import java.awt.Point;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
  * @author Thomas Quintanilla
  */
 public class PredatorPreyGrid extends Grid {
+
   private static ResourceBundle RESOURCES = Main.myResources;
 
   private static final int MOVEMENT_CAPABLE_NEIGHBORS = 4;
@@ -26,8 +27,9 @@ public class PredatorPreyGrid extends Grid {
   private static final int EMPTY = PredatorPreyCell.EMPTY;
   private static final int FISH = PredatorPreyCell.FISH;
   private static final int SHARK = PredatorPreyCell.SHARK;
-  private static final int MAX_VAL = SimType.of(RESOURCES.getString("PredatorPrey")).getMaxVal();;
-  private static final int  HEXAGONAL = 1;
+  private static final int MAX_VAL = SimType.of(RESOURCES.getString("PredatorPrey")).getMaxVal();
+  ;
+  private static final int HEXAGONAL = 1;
 
   private int fishTurnsToBreed;
   private int sharkTurnsToBreed;
@@ -51,12 +53,14 @@ public class PredatorPreyGrid extends Grid {
     turnsToStarve = cellValues
         .getOrDefault(RESOURCES.getString("SharkStarve"), DEFAULT_SHARK_STARVE);
 
-    for (Point p: getPointList()) {
+    for (Point p : getPointList()) {
       if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
         pointCellMap.put(p,
             new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
-                    turnsToStarve));
-      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+                turnsToStarve));
+      } else if (
+          cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM)
+              >= 0) {
         parametrizedRandomGenerator(cellValues, p);
       } else {
         pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0), turnsToStarve));
@@ -71,9 +75,10 @@ public class PredatorPreyGrid extends Grid {
 
   /**
    * Generates a cell based on defined parameters in cellValues
+   *
    * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the
    *                    parameter value
-   * @param p xy coordinates of generated cell
+   * @param p           xy coordinates of generated cell
    */
   private void parametrizedRandomGenerator(Map<String, Integer> cellValues, Point p) {
     double empty = cellValues.getOrDefault(RESOURCES.getString("Empty"), DEFAULT_EMPTY) / 100.0;
@@ -81,7 +86,7 @@ public class PredatorPreyGrid extends Grid {
     double rand = Math.random();
     if (rand < empty) {
       pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.EMPTY, turnsToStarve));
-    } else if (rand - empty < (1-empty) * sharks) {
+    } else if (rand - empty < (1 - empty) * sharks) {
       pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.SHARK, turnsToStarve));
     } else {
       pointCellMap.put(p, new PredatorPreyCell(PredatorPreyCell.FISH, turnsToStarve));
@@ -120,8 +125,9 @@ public class PredatorPreyGrid extends Grid {
 
   /**
    * Checks if current cell is capable of moving and calls method to move cell if so
+   *
    * @param currentCell Current cell being looked at
-   * @param state state of that current cell
+   * @param state       state of that current cell
    * @return the nwe cell that the fish/shark moved, or the original if it didn't move
    */
   private PredatorPreyCell handleMovement(PredatorPreyCell currentCell, int state) {
@@ -163,8 +169,9 @@ public class PredatorPreyGrid extends Grid {
 
   /**
    * Checks if cell should breed or not
+   *
    * @param currentCell Current cell being looked at
-   * @param state state of that current cell
+   * @param state       state of that current cell
    */
   private void handleBreeding(PredatorPreyCell currentCell, int state) {
     int breedingTime = 0;

@@ -1,13 +1,12 @@
 package cellsociety;
 
 import cellsociety.Controller.SimulationControl;
+import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.ResourceBundle;
 
 /**
  * Feel free to completely change this code or delete it entirely.
@@ -22,7 +21,8 @@ public class Main extends Application {
   private static final String DEFAULT_RESOURCE_PACKAGE = RESOURCES + ".";
   public static final ResourceBundle myResources = ResourceBundle
       .getBundle(DEFAULT_RESOURCE_PACKAGE + LANGUAGE);
-  public static final ResourceBundle myImageResources = ResourceBundle.getBundle(RESOURCES + "." + "ImageBundle");
+  public static final ResourceBundle myImageResources = ResourceBundle
+      .getBundle(RESOURCES + "." + "ImageBundle");
 
   private static final String TITLE = myResources.getString("CellSimulator");
 
@@ -51,7 +51,8 @@ public class Main extends Application {
   /**
    * Steps the simulation for each frame
    */
-  private void step(SimulationControl sim) { sim.next(false);
+  private void step(SimulationControl sim) {
+    sim.next(false);
   }
 
   /**
