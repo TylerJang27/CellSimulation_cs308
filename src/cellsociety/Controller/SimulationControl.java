@@ -1,16 +1,22 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.*;
+import cellsociety.Model.FireGrid;
+import cellsociety.Model.GameOfLifeGrid;
+import cellsociety.Model.Grid;
+import cellsociety.Model.PercolationGrid;
+import cellsociety.Model.PredatorPreyGrid;
+import cellsociety.Model.RockPaperScissorsGrid;
+import cellsociety.Model.SegregationGrid;
 import cellsociety.View.ApplicationView;
-
-import java.awt.*;
-import java.io.File;
-import java.util.*;
-import java.util.List;
-
 import cellsociety.View.CellClickedEvent;
 import cellsociety.View.CellStateConfiguration;
+import java.awt.Point;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -98,9 +104,9 @@ public class SimulationControl {
    */
   private void updateViewGrid() {
     List<Point> points = myGrid.getPointList();
-    for (Point p: points) {
-      int state = myGrid.getState((int)p.getX(), (int)p.getY());
-      myApplicationView.updateCell((int)p.getX(), (int)p.getY(), state);
+    for (Point p : points) {
+      int state = myGrid.getState((int) p.getX(), (int) p.getY());
+      myApplicationView.updateCell((int) p.getX(), (int) p.getY(), state);
     }
     myApplicationView.updateCellCounts();
   }
@@ -128,14 +134,17 @@ public class SimulationControl {
     EventHandler<MouseEvent> pauseHandler = event -> pauseSimulation();
     EventHandler<MouseEvent> playHandler = event -> playSimulation();
     EventHandler<MouseEvent> saveHandler = event -> saveFile();
-    ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {changeSimulationSpeed(observable.getValue());};
+    ChangeListener<? super Number> sliderListener = (observable, oldValue, newValue) -> {
+      changeSimulationSpeed(observable.getValue());
+    };
     EventHandler<CellClickedEvent> cellClickedHandler = event -> {
       System.out.println("clicked");
       int state = myGrid.cycleState(event.getRow(), event.getColumn());
       myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
     };
     myApplicationView = new ApplicationView(SIZE, primaryStage, playHandler,
-            pauseHandler, stepHandler, saveHandler, sliderListener, getFileListener(), cellClickedHandler);
+        pauseHandler, stepHandler, saveHandler, sliderListener, getFileListener(),
+        cellClickedHandler);
   }
 
   /**
@@ -164,15 +173,16 @@ public class SimulationControl {
 
   /**
    * Extracts ID, and fill (color or image) information from style
-   * @param style Style containing visualization information
+   *
+   * @param style       Style containing visualization information
    * @param shapeString the shape of the cells, Hexagon or Rectangle
    * @return
    */
   private List<CellStateConfiguration> getCellStateConfigurations(Style style, String shapeString) {
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
-    for (Map<String, String> params: style.getConfigParameters()) {
+    for (Map<String, String> params : style.getConfigParameters()) {
       String displayStyle = "color";
-      for (String s: params.keySet()) {
+      for (String s : params.keySet()) {
         if (s.equals("color") || s.equals("image")) {
           displayStyle = s;
         }
@@ -224,7 +234,8 @@ public class SimulationControl {
    */
   private void saveFile() {
     WriteXMLFile writer = new WriteXMLFile(mySim, myGrid, rate);
-    myApplicationView.logError(String.format(RESOURCES.getString("FileSaved"), writer.writeSimulationXML()));
+    myApplicationView
+        .logError(String.format(RESOURCES.getString("FileSaved"), writer.writeSimulationXML()));
   }
 
   /**
@@ -234,7 +245,7 @@ public class SimulationControl {
     return new ChangeListener<File>() {
       @Override
       public void changed(ObservableValue<? extends File> observable, File oldValue,
-                          File newValue) {
+          File newValue) {
         try {
           initializeModel(newValue);
           myApplicationView.logError(RESOURCES.getString("ConsoleReady"));

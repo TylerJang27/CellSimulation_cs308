@@ -40,6 +40,7 @@ public class DashboardView extends Pane {
   private static final String STEP = RESOURCES.getString("step");
   private static final String PAUSE = RESOURCES.getString("pause");
   private static final String PLAY = RESOURCES.getString("play");
+  private static final String SAVE = RESOURCES.getString("save");
   private static final String CHOOSE_CONFIG_FILE = RESOURCES.getString("ChooseConfigFile");
   private static final String STYLE_CLASS = RESOURCES.getString("dashboard-css-class");
   private static final String GRAPH_TITLE = RESOURCES.getString("cell-graph-title");
@@ -50,7 +51,7 @@ public class DashboardView extends Pane {
 
   private Slider mySpeedSlider;
   private ObjectProperty<File> myFileProperty;
-  private LineChart<Number,Number> myLineChart;
+  private LineChart<Number, Number> myLineChart;
   private Map<String, XYChart.Series> myCellPlots;
 
   /**
@@ -63,7 +64,8 @@ public class DashboardView extends Pane {
    *                                  clicked
    * @param stepButtonClickedHandler  the EventHandler that is triggered when the step button is
    *                                  clicked
-   * @param saveButtonClickedHandler  the EventHandler that is triggered when the save button is clicked
+   * @param saveButtonClickedHandler  the EventHandler that is triggered when the save button is
+   *                                  clicked
    * @param sliderListener            the ChangeListener that is triggered when the slider is
    *                                  toggled
    * @param fileListener              the ChangeListener that is tiggered when a new file is
@@ -86,7 +88,8 @@ public class DashboardView extends Pane {
 
     Pane fileChooserButtonPane = getFileChooserPane();
 
-    mySpeedSlider = new Slider(MIN_SIM_RATE, SimulationControl.RATE_MAX, SimulationControl.DEFAULT_RATE);
+    mySpeedSlider = new Slider(MIN_SIM_RATE, SimulationControl.RATE_MAX,
+        SimulationControl.DEFAULT_RATE);
     mySpeedSlider.valueProperty().addListener(sliderListener);
 
     Pane playButtonsPane = getPlayButtonsPane(playButtonClickedHandler, pauseButtonClickedHandler,
@@ -105,24 +108,27 @@ public class DashboardView extends Pane {
   }
 
   /**
-   * Plot a time point onto the graph for the given id, specifying the type of cell, and a given time and population
-   * @param id the id that specifies what the cell state is
-   * @param time the time (independent variable) of the time point
+   * Plot a time point onto the graph for the given id, specifying the type of cell, and a given
+   * time and population
+   *
+   * @param id         the id that specifies what the cell state is
+   * @param time       the time (independent variable) of the time point
    * @param population the population (dependent variable) of the given id at the specified time
    */
-  public void plotTimePoint(String id, double time, double population){
-    if(myCellPlots.get(id) == null){
+  public void plotTimePoint(String id, double time, double population) {
+    if (myCellPlots.get(id) == null) {
       XYChart.Series series = new XYChart.Series();
       series.setName(id);
       myLineChart.getData().add(series);
-      myCellPlots.put(id,series);
+      myCellPlots.put(id, series);
     }
-    myCellPlots.get(id).getData().add(new XYChart.Data(time,population));
+    myCellPlots.get(id).getData().add(new XYChart.Data(time, population));
   }
 
   private Pane getPlayButtonsPane(EventHandler<MouseEvent> playButtonClickedHandler,
       EventHandler<MouseEvent> pauseButtonClickedHandler,
-      EventHandler<MouseEvent> stepButtonClickedHandler, EventHandler<MouseEvent> saveButtonClickedHandler) {
+      EventHandler<MouseEvent> stepButtonClickedHandler,
+      EventHandler<MouseEvent> saveButtonClickedHandler) {
     Pane playButtonsPane = new Pane();
 
     HBox playButtons = new HBox();
@@ -131,7 +137,7 @@ public class DashboardView extends Pane {
     Button playButton = getConsoleButton(PLAY, playButtonClickedHandler);
     Button pauseButton = getConsoleButton(PAUSE, pauseButtonClickedHandler);
     Button stepButton = getConsoleButton(STEP, stepButtonClickedHandler);
-    Button saveButton = getConsoleButton("Save", saveButtonClickedHandler);
+    Button saveButton = getConsoleButton(SAVE, saveButtonClickedHandler);
 
     playButtons.getChildren().addAll(playButton, pauseButton, stepButton, saveButton);
 
@@ -173,7 +179,7 @@ public class DashboardView extends Pane {
     xAxis.setForceZeroInRange(false);
     xAxis.setLabel(FRAME);
     yAxis.setLabel(POPULATION);
-    myLineChart = new LineChart<>(xAxis,yAxis);
+    myLineChart = new LineChart<>(xAxis, yAxis);
     myLineChart.setTitle(GRAPH_TITLE);
     myLineChart.setMaxWidth(CHART_MAX_WIDTH);
   }

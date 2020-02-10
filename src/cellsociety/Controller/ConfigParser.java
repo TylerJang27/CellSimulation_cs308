@@ -1,28 +1,20 @@
 package cellsociety.Controller;
 
-import cellsociety.Main;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+
 
 /**
  * Class for parsing XML files to determine simulation configuration.
- *
+ * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
  * @author Tyler Jang
  */
-public class ConfigParser extends XMLParser{
+public class ConfigParser extends XMLParser {
 
   /**
    * Create parser for XML files of given type.
@@ -68,7 +60,7 @@ public class ConfigParser extends XMLParser{
     for (String field : Simulation.MANDATORY_DATA_FIELDS) {
       simulationSettings.put(field, getTextValue(root, field, true));
     }
-    for (String field: Simulation.OPTIONAL_DATA_FIELDS) {
+    for (String field : Simulation.OPTIONAL_DATA_FIELDS) {
       putOptional(root, simulationSettings, field);
     }
     for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
@@ -76,7 +68,7 @@ public class ConfigParser extends XMLParser{
       simulationSettings.put(field, getTextValue(root, field, true));
     }
     for (String field : SimType.of(simulationSettings.get(Simulation.MANDATORY_DATA_FIELDS.get(0)))
-            .getOptionalFields()) {
+        .getOptionalFields()) {
       putOptional(root, simulationSettings, field);
     }
     return simulationSettings;
@@ -84,9 +76,10 @@ public class ConfigParser extends XMLParser{
 
   /**
    * Adds value in field to simulationSettings if its value exists, throws no exception
-   * @param root document root
+   *
+   * @param root               document root
    * @param simulationSettings Map of fields and data for Simulation
-   * @param field name of field in XML file
+   * @param field              name of field in XML file
    */
   private void putOptional(Element root, Map<String, String> simulationSettings, String field) {
     String val = getTextValue(root, field, false);

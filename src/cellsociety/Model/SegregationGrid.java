@@ -3,7 +3,7 @@ package cellsociety.Model;
 import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
-import java.awt.*;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -34,18 +34,20 @@ public class SegregationGrid extends Grid {
    */
   public SegregationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    for (Point p: getPointList()) {
+    for (Point p : getPointList()) {
       if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
         pointCellMap.put(p,
-                new SegregationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
-                        (double) cellValues
-                                .getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0));
-      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+            new SegregationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
+                (double) cellValues
+                    .getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0));
+      } else if (
+          cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM)
+              >= 0) {
         parametrizedRandomGenerator(cellValues, p);
       } else {
         pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0),
             (double) cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)
-                / 100));
+                / 100.0));
       }
     }
     if (getCellShape() == HEXAGONAL) {
@@ -57,19 +59,21 @@ public class SegregationGrid extends Grid {
 
   /**
    * Generates a cell based on defined parameters in cellValues
+   *
    * @param cellValues: Map with KVP of a string referencing a parameter to construct a grid to the
    *                    parameter value
-   * @param p xy coordinates of generated cell
+   * @param p           xy coordinates of generated cell
    */
   private void parametrizedRandomGenerator(Map<String, Integer> cellValues, Point p) {
-    double threshold = cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0;
+    double threshold =
+        cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0;
     double red_portion = cellValues.getOrDefault(RESOURCES.getString("Red"), DEFAULT_RED) / 100.0;
     double empty = cellValues.getOrDefault(RESOURCES.getString("Empty"), DEFAULT_EMPTY) / 100.0;
 
     double rand = Math.random();
     if (rand < empty) {
       pointCellMap.put(p, new SegregationCell(SegregationCell.EMPTY, threshold));
-    } else if (rand - empty < (1-empty) * red_portion) {
+    } else if (rand - empty < (1 - empty) * red_portion) {
       pointCellMap.put(p, new SegregationCell(SegregationCell.RED, threshold));
     } else {
       pointCellMap.put(p, new SegregationCell(SegregationCell.BLUE, threshold));

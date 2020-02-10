@@ -1,22 +1,19 @@
 package cellsociety.Controller;
 
-import cellsociety.Main;
-import org.w3c.dom.Document;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
 /**
  * Class for parsing XML files to determine simulation styling.
- *
+ * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
@@ -57,7 +54,7 @@ public class StyleParser extends XMLParser {
     }
 
     Map<String, Style> styleMap = new HashMap<>();
-    for (Style s: readStyles(root)) {
+    for (Style s : readStyles(root)) {
       styleMap.put(s.getType().toString(), s);
     }
     return styleMap;
@@ -74,17 +71,28 @@ public class StyleParser extends XMLParser {
     for (SimStyle s : SimStyle.values()) {
       NodeList nodeList = myDoc.getElementsByTagName(s.toString());
       Map<String, String> styleFields = new HashMap<>();
-      for (int k = 0; k < nodeList.getLength(); k++) {
-        Node node = nodeList.item(k);
-        if (node.getNodeType() == Node.ELEMENT_NODE) {
-          Element e = (Element) node;
-          for (String field : s.getStyleFields()) {
-            styleFields.put(field, e.getElementsByTagName(field).item(0).getTextContent());
-          }
-        }
-      }
+      extractOneStyle(s, nodeList, styleFields);
       styles.add(new Style(s.toString(), styleFields));
     }
     return styles;
+  }
+
+  /**
+   * Extracts information about one style and adds it to styleFields
+   *
+   * @param s           the Simulation type for this style
+   * @param nodeList    a List of Nodes referring to the children of the Element
+   * @param styleFields Map to which the style information should be added
+   */
+  private void extractOneStyle(SimStyle s, NodeList nodeList, Map<String, String> styleFields) {
+    for (int k = 0; k < nodeList.getLength(); k++) {
+      Node node = nodeList.item(k);
+      if (node.getNodeType() == Node.ELEMENT_NODE) {
+        Element e = (Element) node;
+        for (String field : s.getStyleFields()) {
+          styleFields.put(field, e.getElementsByTagName(field).item(0).getTextContent());
+        }
+      }
+    }
   }
 }

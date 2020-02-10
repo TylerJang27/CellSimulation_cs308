@@ -1,8 +1,6 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-import cellsociety.Model.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,16 +18,22 @@ import java.util.List;
  * @author Tyler Jang
  */
 public enum SimType {
-  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{}, new String[]{Main.myResources.getString("Coverage")}, 1),
-  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{}, new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, 2),
+  GAME_OF_LIFE(Main.myResources.getString("GameOfLife"), new String[]{},
+      new String[]{Main.myResources.getString("Coverage")}, 1),
+  PERCOLATION(Main.myResources.getString("Percolation"), new String[]{},
+      new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Filled")}, 2),
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{},
       new String[]{Main.myResources.getString("Similar"), Main.myResources.getString("Red"),
           Main.myResources.getString("Empty")}, 2),
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{},
       new String[]{Main.myResources.getString("FishBreed"),
-          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"), Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, 2),
-  FIRE(Main.myResources.getString("Fire"), new String[]{}, new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, 2),
-  ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{}, new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("RPSThreshold")}, 3);
+          Main.myResources.getString("SharkStarve"), Main.myResources.getString("SharkBreed"),
+          Main.myResources.getString("Shark"), Main.myResources.getString("Empty")}, 2),
+  FIRE(Main.myResources.getString("Fire"), new String[]{},
+      new String[]{Main.myResources.getString("Catch"), Main.myResources.getString("Trees")}, 2),
+  ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{},
+      new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"),
+          Main.myResources.getString("RPSThreshold")}, 3);
 
   private String myName;
   private final List<String> myMandatoryFields;
@@ -39,8 +43,9 @@ public enum SimType {
   /**
    * Constructor for SimType, setting its name and fields
    *
-   * @param name   the type of Simulation
-   * @param mandatoryFields the different Strings denoting acceptable Integer mandatoryFields for that simulation
+   * @param name            the type of Simulation
+   * @param mandatoryFields the different Strings denoting acceptable Integer mandatoryFields for
+   *                        that simulation
    */
   private SimType(String name, String[] mandatoryFields, String[] optionalFields, Integer val) {
     myName = name;
@@ -59,7 +64,9 @@ public enum SimType {
   /**
    * Returns the SimType's optional field names
    */
-  public List<String> getOptionalFields() { return myOptionalFields; }
+  public List<String> getOptionalFields() {
+    return List.copyOf(myOptionalFields);
+  }
 
   /**
    * Returns the SimType's max cell value
@@ -88,5 +95,4 @@ public enum SimType {
   public String toString() {
     return myName;
   }
-
 }

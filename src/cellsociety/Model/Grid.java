@@ -2,12 +2,12 @@ package cellsociety.Model;
 
 import cellsociety.Main;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.ArrayList;
 
 /**
  * Class for an abstraction of grid types, defining some basic functions
@@ -17,11 +17,12 @@ import java.util.ArrayList;
 public abstract class Grid {
 
   private static final int TOROIDAL = 1;
+  private static final int PACMAN = 2;
   private static final int HEXAGONAL = 1;
   protected HashMap<Point, Cell> pointCellMap;
   protected int myWidth;
   protected int myHeight;
-  private ArrayList<Point> pointList;
+  private List<Point> pointList;
   private int myFrame;
   private static ResourceBundle RESOURCES = Main.myResources;
   private int gridShape;
@@ -71,22 +72,28 @@ public abstract class Grid {
   protected List<Point> getNeighborPoints(Point p) {
     int xPos = (int) p.getX();
     int yPos = (int) p.getY();
-    Point left = xPos > 0 || gridShape != TOROIDAL ? new Point(xPos - 1, yPos) : new Point(myWidth - 1, yPos);
-    Point up = yPos > 0 || gridShape != TOROIDAL ? new Point(xPos, yPos - 1) : new Point(xPos, myHeight - 1);
-    Point right = xPos < myWidth - 1 || gridShape != TOROIDAL ? new Point(xPos + 1, yPos) : new Point(0, yPos);
-    Point down = yPos < myHeight - 1 || gridShape != TOROIDAL ? new Point(xPos, yPos + 1) : new Point(xPos, 0);
+    Point left = xPos > 0 || gridShape != TOROIDAL ? new Point(xPos - 1, yPos)
+        : new Point(myWidth - 1, yPos);
+    Point up = yPos > 0 || gridShape != TOROIDAL ? new Point(xPos, yPos - 1)
+        : new Point(xPos, myHeight - 1);
+    Point right = xPos < myWidth - 1 || gridShape != TOROIDAL ? new Point(xPos + 1, yPos)
+        : new Point(0, yPos);
+    Point down = yPos < myHeight - 1 || gridShape != TOROIDAL ? new Point(xPos, yPos + 1)
+        : new Point(xPos, 0);
 
     return Arrays.asList(left, up, right, down);
   }
 
-
+  /**
+   * adds hexagonal adjacent cells in each cell's neighbor list
+   */
   protected void buildHexagonNeighbors() {
     for (Point p : pointCellMap.keySet()) {
       int xPos = (int) p.getX();
       int yPos = (int) p.getY();
 
-      for (int x = -1; x <= 1; x++) {
-        for (int y = -2; y <= 2; y++) {
+      for (int x = -2; x <= 2; x++) {
+        for (int y = -1; y <= 1; y++) {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
@@ -95,7 +102,7 @@ public abstract class Grid {
   }
 
   /**
-   * Checks all surrounding cells (diagonals included) of a specific cell and builds neighbors
+   * adds square adjacent cells in each cell's neighbor list
    */
   protected void buildSquareNeighbors() {
     for (Point p : pointCellMap.keySet()) {
@@ -110,33 +117,85 @@ public abstract class Grid {
     }
   }
 
-  private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
-    int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
-    int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
+  /**
+   * Creates set of points under original point for square cells
+   */
+  public void bottomSquareNeighborGenerator() {
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
 
+      for (int y = -1; y <= 1; y++) {
+        checkAndSetNeighbor(p, xPos, yPos, -1, y);
+      }
+    }
+  }
+
+  /**
+   * Creates set of points under original point for hex cells
+   */
+  public void bottomHexNeighborGenerator() {
+    for (Point p : pointCellMap.keySet()) {
+      int xPos = (int) p.getX();
+      int yPos = (int) p.getY();
+
+      for (int y = -1; y <= 1; y++) {
+        for (int x = -2; x <= -1; x++) {
+          checkAndSetNeighbor(p, xPos, yPos, x, y);
+        }
+      }
+    }
+  }
+
+  /**
+   * Creates a point out of the given offsets and checks to see if toroidal properties need apply to
+   * it.
+   *
+   * @param p    original point
+   * @param xPos x point
+   * @param yPos y point
+   * @param x    original x offset
+   * @param y    original y offset
+   */
+  private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
+    int xOffset = gridShape == TOROIDAL || gridShape == PACMAN ? getXOffset(xPos, x) : x;
+    int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
     Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
     if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
       pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
     }
   }
 
-
+  /**
+   * Changes offset for neighbor points so that toroidal neighbors can be implemented
+   *
+   * @param yPos    y coordinate of original cell
+   * @param yOffset initial y offset that may be changed
+   * @return new y offset
+   */
   private int getYOffset(int yPos, int yOffset) {
     int newOffset = yOffset;
-    if (yPos + yOffset < 0)  {
+    if (yPos + yOffset < 0) {
       newOffset = myHeight + yOffset;
-    } else if (yPos + yOffset > myHeight - 1){
+    } else if (yPos + yOffset > myHeight - 1) {
       newOffset = -myHeight + yOffset;
     }
     return newOffset;
   }
 
+  /**
+   * Changes offset for neighbor points so that toroidal neighbors can be implemented
+   *
+   * @param xPos    x coordinate of original cell
+   * @param xOffset initial x offset that may be changed
+   * @return new x offset
+   */
   private int getXOffset(int xPos, int xOffset) {
     int newOffset = xOffset;
-    if (xPos + xOffset < 0)  {
-      newOffset = myWidth + 1;
-    } else if (xPos + xOffset > myWidth-1){
-      newOffset = -xPos;
+    if (xPos + xOffset < 0) {
+      newOffset = myWidth + xOffset;
+    } else if (xPos + xOffset > myWidth - 1) {
+      newOffset = -myWidth + xOffset;
     }
     return newOffset;
   }
@@ -166,9 +225,10 @@ public abstract class Grid {
     return 0;
   }
 
-  //First calculates and stores new state of each cell
-  //Then updates each cell's state
-
+  /**
+   * First calculates the next state for every cell, then applies that new state to its respective
+   * cell
+   */
   public void nextFrame() {
     myFrame++;
     int[] states = new int[pointCellMap.values().size()];
@@ -207,10 +267,11 @@ public abstract class Grid {
 
   /**
    * Generates a list of points for a default square setup
+   *
    * @return list of points
    */
-  public ArrayList<Point> squarePointGenerator() {
-    ArrayList<Point> squarePoints = new ArrayList<Point>();
+  public List<Point> squarePointGenerator() {
+    List<Point> squarePoints = new ArrayList<>();
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         squarePoints.add(new Point(x, y));
@@ -221,11 +282,12 @@ public abstract class Grid {
 
   /**
    * Generates a list of points for a default hexagon setup
+   *
    * @return list of points
    */
-  protected ArrayList<Point> hexPointGenerator() {
-    ArrayList<Point> hexPoints = new ArrayList<Point>();
-    for (int j = 0; j < myHeight; j ++) {
+  protected List<Point> hexPointGenerator() {
+    List<Point> hexPoints = new ArrayList<>();
+    for (int j = 0; j < myHeight; j++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {
           hexPoints.add(new Point(j, k));
@@ -239,9 +301,18 @@ public abstract class Grid {
     return hexPoints;
   }
 
-  public ArrayList<Point> getPointList() {
+  /**
+   * used to iterate through for subclasses
+   *
+   * @return point list
+   */
+  public List<Point> getPointList() {
     return pointList;
   }
+
+  /**
+   * Used when superclass nextFrame is overrided.
+   */
   public void addFrame() {
     myFrame++;
   }

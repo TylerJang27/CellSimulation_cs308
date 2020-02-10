@@ -60,9 +60,9 @@ public class SegregationCell extends Cell {
   private int countSameNeighbors() {
     int count = 0;
     for (Cell neighbor : neighbors) {
-        if (neighbor.getState() == state) {
-            count++;
-        }
+      if (neighbor.getState() == state) {
+        count++;
+      }
     }
     return count;
   }

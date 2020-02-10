@@ -33,16 +33,15 @@ public class Simulation {
 
   //valid fields in the data file for all Simulation objects
   public static final List<String> OPTIONAL_DATA_FIELDS = List.of(
-          RESOURCES.getString("Rate"),
-          RESOURCES.getString("GridType"),
-          RESOURCES.getString("Shape"),
-          RESOURCES.getString("GridShape") //FIXME: IMPLEMENT (I.E. TOROIDAL)
+      RESOURCES.getString("Rate"),
+      RESOURCES.getString("GridType"),
+      RESOURCES.getString("Shape"),
+      RESOURCES.getString("GridShape")
   );
 
   private Map<String, Integer> myDataValues;
 
   private SimType myType;
-  private String gridType;
   private Map<Point, Integer> myGrid;
 
   /**
@@ -63,12 +62,12 @@ public class Simulation {
    */
   public Simulation(Map<String, String> dataValues) {
     this(dataValues.get(MANDATORY_DATA_FIELDS.get(0)));
-    gridType = dataValues.get(RESOURCES.getString("GridType"));
     this.setFields(dataValues);
   }
 
   /**
    * Setter for grid
+   *
    * @param grid map of grid points to their values
    */
   public void setGrid(Map<Point, Integer> grid) {
@@ -89,8 +88,10 @@ public class Simulation {
 
   /**
    * Removes the mandatory values from dataValues and throws error if missing
+   *
    * @param dataValues Map of String to String from constructor
-   * @throws XMLException if mandatory field is missing or if invalid data type when expecting Integer
+   * @throws XMLException if mandatory field is missing or if invalid data type when expecting
+   *                      Integer
    */
   private void extractMandatoryValues(Map<String, String> dataValues) {
     for (int k = 1; k < MANDATORY_DATA_FIELDS.size(); k++) {
@@ -99,7 +100,8 @@ public class Simulation {
         try {
           myDataValues.put(MANDATORY_DATA_FIELDS.get(k), Integer.parseInt(val));
         } catch (NumberFormatException e) {
-          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"), MANDATORY_DATA_FIELDS.get(k));
+          throw new XMLException(RESOURCES.getString("XML_DATA_TYPE_MESSAGE"),
+              MANDATORY_DATA_FIELDS.get(k));
         }
       } else {
         throw new XMLException(MISSING_MESSAGE, myType);
@@ -119,11 +121,12 @@ public class Simulation {
 
   /**
    * Removes the optional values from dataValues but throws no error if missing
+   *
    * @param dataValues Map of String to String from constructor
    * @throws XMLException if invalid data type when expecting Integer
    */
   private void extractOptionalValues(Map<String, String> dataValues) {
-    for (String field: OPTIONAL_DATA_FIELDS) {
+    for (String field : OPTIONAL_DATA_FIELDS) {
       String val = dataValues.get(field);
       if (val != null) {
         try {
@@ -133,7 +136,7 @@ public class Simulation {
         }
       }
     }
-    for (String field: myType.getOptionalFields()) {
+    for (String field : myType.getOptionalFields()) {
       String val = dataValues.get(field);
       if (field.length() > 0 && val != null) {
         try {

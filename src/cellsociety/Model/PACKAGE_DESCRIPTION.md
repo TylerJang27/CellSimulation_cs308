@@ -10,10 +10,12 @@ This package is divided into the following core classes:
     * **GameOfLifeGrid**: A grid for Conway's Game of Life, in which cells either die, live, or spawn based on the number of live neighboring cells.
     * **PercolationGrid**: A grid for the percolation simulation, in which "full" cells spread to neighboring open, unblocked cells.
     * **PredatorPreyGrid**: A grid for the predator-prey simulation, in which sharks die from starvation or consume fish and reproduce. Fish may also reproduce after a fixed amount of time.
-    * **Segregation**: A grid for the segregation simulation, in which cells of one state will relocate to a random empty state if not near enough similar neighbors. 
+    * **SegregationGrid**: A grid for the segregation simulation, in which cells of one state will relocate to a random empty state if not near enough similar neighbors.
+    * **RockPaperScissorsGrid**: A grid for the rock-paper-scissors simulation, in which transitive rules are applied to determine a winner. After repeated losses, a cell will update to take on the state of its victor. 
  * **Cell**: An abstraction of the different cell types used in the simulation, with basic rules defined for some of the common cell types.
     * **FireCell**: A cell for the fire simulation.
     * **GameOfLifeCell**: A cell for Conway's Game of Life.
     * **PercolationCell**: A cell for the percolation simulation.
     * **PredatorPreyCell**: A cell for the predator-prey simulation.
     * **SegregationCell**: A cell for the segregation simulation.
+    * **RockPaperScissorsCell**: A cell for the rock-paper-scissors simulation.

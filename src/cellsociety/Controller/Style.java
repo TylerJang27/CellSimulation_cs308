@@ -1,14 +1,15 @@
 package cellsociety.Controller;
 
 import cellsociety.Main;
-
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Class for storing the data needed to configure Simulation View Styling
- *
+ * <p>
  * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
  *
@@ -18,7 +19,6 @@ public class Style {
 
   private static ResourceBundle RESOURCES = Main.myResources;
 
-  //name for the type of data file necessary to represent a simulation configuration file
   public static final String DATA_TYPE = RESOURCES.getString("Style");
 
   private SimStyle myStyle;
@@ -52,13 +52,6 @@ public class Style {
   }
 
   /**
-   * Returns Map with all String and String values for fields
-   */
-  public Map<String, String> getValueMap() {
-    return myDataValues;
-  }
-
-  /**
    * Returns Integer value matched to field key
    */
   public String getValue(String field) {
@@ -76,19 +69,30 @@ public class Style {
     } else {
       fill = RESOURCES.getString("Color");
     }
-    List<String> fields = getType().getStyleFields();
-    fields.removeAll(getType().getGenerics());
-    for (String s: fields) {
-      Map<String, String> params = new HashMap<>();
-      String val = getValue(s);
-      if (val.contains("img") && fill.equals(RESOURCES.getString("Image"))) {
-        params.put(fill, val);
-      } else {
-        params.put(RESOURCES.getString("Color"), val);
+    for (String s : getType().getStyleFields()) {
+      if (!getType().getGenerics().contains(s)) {
+        buildParameters(maps, fill, s);
       }
-      params.put("id", s);
-      maps.add(params);
     }
     return maps;
+  }
+
+  /**
+   * Builds parameters for CellStateConfiguration
+   *
+   * @param maps List of maps to add to CellStateConfiguration parameters
+   * @param fill image or color
+   * @param s    field in Style fields
+   */
+  private void buildParameters(List<Map<String, String>> maps, String fill, String s) {
+    Map<String, String> params = new HashMap<>();
+    String val = getValue(s);
+    if (val.contains("img") && fill.equals(RESOURCES.getString("Image"))) {
+      params.put(fill, val);
+    } else {
+      params.put(RESOURCES.getString("Color"), val);
+    }
+    params.put("id", s);
+    maps.add(params);
   }
 }

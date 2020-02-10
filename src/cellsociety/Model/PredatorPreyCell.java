@@ -13,12 +13,11 @@ public class PredatorPreyCell extends Cell {
   public static final int EMPTY = 0;
   public static final int FISH = 1;
   public static final int SHARK = 2;
-  public static int timeToStarve;
+  public int timeToStarve;
 
-  //FIXME: WHY PROTECTED
-  protected Boolean didKill;
-  protected Boolean didMove;
-  protected int timeSinceEaten;
+  private Boolean didKill;
+  private Boolean didMove;
+  private int timeSinceEaten;
   private int stepsAlive;
 
   /**
@@ -77,15 +76,31 @@ public class PredatorPreyCell extends Cell {
     }
   }
 
-  public int getStepsAlive() {
+  protected int getStepsAlive() {
     return stepsAlive;
   }
 
-  public void setStepsAlive(int n) {
+  protected void setStepsAlive(int n) {
     stepsAlive = n;
   }
 
-  public ArrayList<Cell> getNeighbors() {
+  protected int getTimeSinceEaten() {
+    return timeSinceEaten;
+  }
+
+  protected boolean getDidKill() {
+    return didKill;
+  }
+
+  protected boolean getDidMove() {
+    return didMove;
+  }
+
+  protected void setDidMove(boolean b) {
+    didMove = b;
+  }
+
+  protected ArrayList<Cell> getNeighbors() {
     return neighbors;
   }
 }

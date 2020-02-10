@@ -1,9 +1,9 @@
 package cellsociety.View;
 
 import cellsociety.Main;
-import javafx.scene.Node;
 import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.scene.Node;
 
 /**
  * An abstract class representing a grid of CellViews. different implementations will render different looking Grids. All grids must be able to update a cell at a given row and column.
@@ -12,8 +12,6 @@ import java.util.ResourceBundle;
  * @author Mariusz Derezinski-Choo
  */
 public abstract class GridView {
-    private static final ResourceBundle RESOURCES = Main.myResources;
-    public static final String GRID_CSS_CLASS = RESOURCES.getString("grid-css-class");
 
     /**
      * update a cell at the specified index
