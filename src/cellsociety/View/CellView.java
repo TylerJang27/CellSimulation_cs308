@@ -35,11 +35,6 @@ public class CellView extends Pane {
   public CellView(List<CellStateConfiguration> configuration){
     super();
 
-    for(CellStateConfiguration config : configuration){
-      //FIXME: MORE THINGY HERE
-      System.out.println(configuration);
-    }
-
     cellStateList = new ArrayList<>();
 
     for(int i = 0; i < configuration.size(); i++){
@@ -48,9 +43,11 @@ public class CellView extends Pane {
       Shape cellTemplate = createShape(currentConfiguration.getShape(), currentConfiguration.getParameters());
 
       if(currentConfiguration.getStyle().equals(RESOURCES.getString("Color"))) {
-        cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
+          System.out.println("color" + i);
+          cellStateList.add(new ColoredCellState(currentConfiguration.getParameters(), cellTemplate));
       }else if(currentConfiguration.getStyle().equals(RESOURCES.getString("Image"))){
-        cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
+          System.out.println("image" + i + ":" + currentConfiguration.getParameters());
+          cellStateList.add(new ImageCellState(currentConfiguration.getParameters(), cellTemplate));
       }
       //FIXME: ADD ADDITIONAL CONFIGURATION STUFF?
     }
@@ -62,7 +59,6 @@ public class CellView extends Pane {
 
   private Shape createShape(String description, Map<String, String> params){
     if(description.equals("rectangle")){
-        System.out.println(params);
         double width, height;
         try {
             width = Double.parseDouble(params.get("width"));

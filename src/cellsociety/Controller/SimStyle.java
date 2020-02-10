@@ -24,7 +24,7 @@ public enum SimStyle {
   PERCOLATION(Main.myResources.getString("Percolation"), new String[]{Main.myResources.getString("Blocked"), Main.myResources.getString("Empty"), Main.myResources.getString("Water")}),
   SEGREGATION(Main.myResources.getString("Segregation"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("A"), Main.myResources.getString("B")}),
   PREDATOR_PREY(Main.myResources.getString("PredatorPrey"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("Fish"), Main.myResources.getString("Shark")}),
-  FIRE(Main.myResources.getString("Fire"), new String[]{Main.myResources.getString("Trees"), Main.myResources.getString("Burning")}),
+  FIRE(Main.myResources.getString("Fire"), new String[]{Main.myResources.getString("Empty"), Main.myResources.getString("Trees"), Main.myResources.getString("Burning")}),
   ROCK_PAPER_SCISSORS(Main.myResources.getString("RockPaperScissors"), new String[]{Main.myResources.getString("Rock"), Main.myResources.getString("Paper"), Main.myResources.getString("Scissors")});
 
   private String myName;

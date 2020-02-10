@@ -4,8 +4,8 @@
     <author>Team 15</author>
     <description>A basic test of Percolation with parametrized random grid value specification.</description>
     <rate>5</rate>
-    <width>30</width>
-    <height>30</height>
+    <width>15</width>
+    <height>10</height>
     <blocked>70</blocked>
     <filled>20</filled>
     <grid_type>3</grid_type>

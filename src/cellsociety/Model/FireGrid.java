@@ -19,7 +19,7 @@ public class FireGrid extends Grid {
   private static final int MAX_VAL = SimType.of(RESOURCES.getString("Fire")).getMaxVal();
   private static final int TREE_DEFAULT = 50;
   private static final int BURNING_DEFAULT = 15;
-  private static final int  HEXAGONAL = 1;
+  private static final int HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Fire grid and define fire chance percentage
