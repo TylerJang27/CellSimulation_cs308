@@ -110,4 +110,8 @@ public class CellView extends Pane {
     return newPolygon;
   }
 
+  public String getCellState(){
+      return myCurrentState.getId();
+  }
+
 }

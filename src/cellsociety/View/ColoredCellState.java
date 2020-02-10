@@ -13,6 +13,7 @@ public class ColoredCellState extends CellState {
 
     public ColoredCellState(Map<String, String> parameters, Shape template){
         super();
+        myID = parameters.get(Main.myResources.getString("Color"));
         myDisplay = template;
         try{
             myDisplay.setFill(Color.web(parameters.get(Main.myResources.getString("Color"))));

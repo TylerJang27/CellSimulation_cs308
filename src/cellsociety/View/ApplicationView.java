@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -28,6 +29,7 @@ public class ApplicationView {
   private ScrollPane myGridScroll;
   private ConsoleView myConsoleView;
   private EventHandler<CellClickedEvent> myCellClickedHandler;
+  private double gridViewportHeight;
 
   /**
    * Construct an ApplicationView with EventHandlers and Listeners binded to the play/pause/step
@@ -50,11 +52,17 @@ public class ApplicationView {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener, EventHandler<CellClickedEvent> cellClickedHandler) {
     myCellClickedHandler = cellClickedHandler;
-    myGrid = new RectangleGridView();
+
+    Pane emptyFillerPane = new Pane();
+    emptyFillerPane.getStyleClass().add("grid");
+    emptyFillerPane.setPrefSize(size,size);
+
+
     myGridScroll = new ScrollPane();
-    myGridScroll.setContent(myGrid.getNode());
-    myGridScroll.setPrefViewportHeight(700);
-    myGridScroll.setPrefViewportWidth(700);
+    myGridScroll.setPrefViewportHeight(size);
+    myGridScroll.setPrefViewportWidth(size);
+    myGridScroll.setContent(emptyFillerPane);
+
     myConsoleView = new ConsoleView();
     Node myDashboardView = new DashboardView(playButtonClickedHandler, pauseButtonClickedHandler,
         stepButtonClickedHandler, sliderListener, fileListener);
@@ -70,7 +78,7 @@ public class ApplicationView {
 
     primaryStage.setScene(myScene);
     primaryStage.show();
-    primaryStage.setResizable(false);
+    //primaryStage.setResizable(false);
 
   }
 

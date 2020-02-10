@@ -1,8 +1,6 @@
 package cellsociety.View;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import cellsociety.Controller.SimulationControl;
 import javafx.event.EventHandler;
@@ -54,9 +52,6 @@ public class RectangleGridView extends GridView {
       }
     }
 
-    myGrid.setPrefHeight(height * 3);
-    myGrid.setPrefWidth(width * 3);
-
   }
 
   /**
@@ -64,7 +59,7 @@ public class RectangleGridView extends GridView {
    */
   //FIXME: This really should not be null
   public RectangleGridView(){
-    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, false, null, new ArrayList<CellStateConfiguration>());
+    this(0,0,SimulationControl.SIZE, SimulationControl.SIZE, "0", null, new ArrayList<CellStateConfiguration>());
   }
 
   /**
@@ -85,6 +80,16 @@ public class RectangleGridView extends GridView {
   @Override
   public Node getNode() {
     return myGrid;
+  }
+
+  @Override
+  public Map<String, Integer> getCellCounts() {
+    Map<String, Integer> cellCounts = new HashMap<>();
+
+    for(CellView cell : myCells){
+
+    }
+    return cellCounts;
   }
 
   /**
