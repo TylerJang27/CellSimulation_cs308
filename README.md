@@ -87,7 +87,7 @@ An XML fitting the format for a Simulation type. For examples, see:
  * **English.properties**: A properties specifying language-dependent Strings for all XML-related and displayable contexts.
  * **ImageBundle**: A Java class containing a bundle of image files for use in the project. Only images specified here may be accessed from Styling.xml.
  * **Styling.xml**: An XML file containing style configuration for each simulation type, including outlines, sizing, and what the cells should be filled with (images or colors).
- 
+ * **style.css**: A css file that contains styling information for the various NOdes
 Features implemented:
 
 This project implements a basic user interface in which XML configuration files can be specified to control parameters of five different simulations:
@@ -121,6 +121,8 @@ Assumptions or Simplifications:
    * **PredatorPrey**: A fish who meets breeding threshold but cannot reproduce due to neighboring cells being occupied will reproduce any step after where an adjacent cell is free.
    * **PredatorPrey**: It is interpreted when the rules state "After eating or moving" that a shark can not do both.
    * **Segregation**: Randomly moving unsatisfied cells will eventually balance out.
+* the window is not resizeable
+* the positioning of the UI components can not be modified by the configuration files (with the exception of the Cells, of course)
 
 Interesting data files: 
     * The 3rd data file for each simulation type creates a 30x30 grid of cells with a random state for each cell. 
@@ -133,7 +135,10 @@ If the type is random, then all cells are randomly generated.
 If the type is parametrized random, then all cells are randomly generated based on fixed rules.
 
 A live line graph was generated to display state distributions over time.
-
+### GUI design choices
+* We opted to have all of the GUI in one window as we felt it was a more streamlined appearance and also made everything must easier to keep track of in the View as it was all in one Scene
+* A BorderPane is a clear choice for the Parent node as it's children's locations match with our original idea of having a console at the bottom, a dashboard on the left, and the grid in the middle
+* This also means that each component (console, dashboard, and grid) had clear separation
 ### Impressions
 Overall the project maintains good separation of Model, View, and Controller. The Model stores the details of the Grid without understanding any of the implementation behind viewing, loading, and running the simulations. That job is handled by the Controller. Meanwhile, View, dislays the Grid without worrying about how each state is calculated. This allows for each component to be developed separately by different developers. Model makes use of inheritance to define different types of Grids and Cells, which would allow for future rules to be easy added to the application. View makes use of EventHandlers and ChangeListeners to bind actions performed by the user on the GUI to logic in the Controller. This abstracts away from the Controller, and means the graphic elements can be rendered in whatever manner, as long as they are compatible with the listeners provided. Controller makes use of Exceptions, such as the custom-made ConfigParser, to handle bad input cased by illegal actions taken by the user. This information is logged to the ApplicationView console, and allows for error messages to be displayed to the user. This lets the user correct their behavior while simulatneously ensuring that bad input does not crash the program.
 
