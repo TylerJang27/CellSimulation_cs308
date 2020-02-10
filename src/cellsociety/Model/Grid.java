@@ -90,6 +90,7 @@ public abstract class Grid {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
+      System.out.println("HI" + pointCellMap.get(p).neighbors.size());
     }
   }
 

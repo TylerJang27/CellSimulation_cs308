@@ -143,7 +143,6 @@ public class SimulationControl {
    * @param dataFile the File from which to read configuration instructions
    */
   public void initializeModel(File dataFile) {
-    //FIXME: TRY TO REFACTOR AND REORDER SO THAT THE VIEW STUFF STAYS IN VIEW
     mySim = new ConfigParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -153,13 +152,22 @@ public class SimulationControl {
 
     Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
     Style style = styles.get(mySim.getType().toString());
-    String shapeString;
-    int shape = mySim.getValue(RESOURCES.getString("Shape"));
-    if (shape == GridParser.HEXAGON) {
-      shapeString = RESOURCES.getString("Hexagon");
-    } else {
-      shapeString = RESOURCES.getString("Rectangle");
-    }
+    String shapeString = getShapeString();
+    List<CellStateConfiguration> cellViewConfiguration = getCellStateConfigurations(style, shapeString);
+    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
+    myGrid = createGrid();
+
+    updateViewGrid();
+    pauseSimulation();
+  }
+
+  /**
+   * Extracts ID, and fill (color or image) information from style
+   * @param style Style containing visualization information
+   * @param shapeString the shape of the cells, Hexagon or Rectangle
+   * @return
+   */
+  private List<CellStateConfiguration> getCellStateConfigurations(Style style, String shapeString) {
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
     for (Map<String, String> params: style.getConfigParameters()) {
       String displayStyle = "color";
@@ -170,13 +178,21 @@ public class SimulationControl {
       }
       cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
     }
+    return cellViewConfiguration;
+  }
 
-    //Alternatively instead of a boolean, you can store a double specifying outlineWidth (0 for not outlined) and then I can adjust the constructor to reflect this. This would make it more flexible
-    myApplicationView.initializeGrid(numRows, numCols, SIZE, SIZE, style.getValue(RESOURCES.getString("Outline")), cellViewConfiguration);
-    myGrid = createGrid();
-
-    updateViewGrid();
-    pauseSimulation();
+  /**
+   * Extracts information from mySim to determine if shape is Hexagon or Rectangle
+   */
+  private String getShapeString() {
+    String shapeString;
+    int shape = mySim.getValue(RESOURCES.getString("Shape"));
+    if (shape == GridParser.HEXAGON) {
+      shapeString = RESOURCES.getString("Hexagon");
+    } else {
+      shapeString = RESOURCES.getString("Rectangle");
+    }
+    return shapeString;
   }
 
   /**
