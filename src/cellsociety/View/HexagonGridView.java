@@ -24,6 +24,7 @@ public class HexagonGridView extends GridView{
 
         VBox evenElements = new VBox(0);
 
+        //TODO: Fix repeated code
         for(int i = 0; i < numRows; i += 2) {
             HBox firstRow = new HBox();
             for (int j = 0; j < numColumns; j++) {
@@ -44,7 +45,7 @@ public class HexagonGridView extends GridView{
             Region leftSpacer = new Region();
             leftSpacer.setPrefWidth(1.5 * (mySideLength + myGridLineWidth));
             firstRow.getChildren().add(leftSpacer);
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 4; j+=2) {
                 firstRow.getChildren().add(new CellView(cellStateConfigs));
                 Region spacer = new Region();
                 spacer.setPrefWidth(mySideLength);
