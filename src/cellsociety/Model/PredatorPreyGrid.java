@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
 import java.util.Collections;
@@ -15,6 +16,8 @@ import java.util.ResourceBundle;
  */
 public class PredatorPreyGrid extends Grid {
 
+  private static ResourceBundle RESOURCES = Main.myResources;
+
   private static final int DEFAULT_FISH_BREED = 2;
   private static final int DEFAULT_SHARK_BREED = 7;
   private static final int DEFAULT_SHARK_STARVE = 4;
@@ -23,10 +26,9 @@ public class PredatorPreyGrid extends Grid {
   private static final int EMPTY = PredatorPreyCell.EMPTY;
   private static final int FISH = PredatorPreyCell.FISH;
   private static final int SHARK = PredatorPreyCell.SHARK;
-  private static final int MAX_VAL = SHARK;
+  private static final int MAX_VAL = SimType.of(RESOURCES.getString("PredatorPrey")).getMaxVal();;
   private static final int  HEXAGONAL = 1;
 
-  private ResourceBundle RESOURCES = Main.myResources;
   private int fishTurnsToBreed;
   private int sharkTurnsToBreed;
   private int turnsToStarve;
@@ -182,7 +184,7 @@ public class PredatorPreyGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }

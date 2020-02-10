@@ -161,7 +161,7 @@ public abstract class Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return 0;
   }
 

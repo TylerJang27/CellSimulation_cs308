@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class PercolationGrid extends Grid {
   private static final int BLOCKED_DEFAULT = 30;
   private static final int FILLED_DEFAULT = 20;
   private static ResourceBundle RESOURCES = Main.myResources;
-  private static int MAX_VAL = 2;
-  private static final int  HEXAGONAL = 1;
+  private static int MAX_VAL = SimType.of(RESOURCES.getString("Percolation")).getMaxVal();;
+  private static final int HEXAGONAL = 1;
 
   /**
    * Uses gridMap to construct Percolation and gridcell values to set cells at points.
@@ -69,7 +70,7 @@ public class PercolationGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }

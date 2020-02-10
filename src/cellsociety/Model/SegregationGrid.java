@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class SegregationGrid extends Grid {
   private static final int DEFAULT_EMPTY = 25;
   private static final int HEXAGONAL = 1;
 
-  private ResourceBundle RESOURCES = Main.myResources;
-  private static final int MAX_VAL = 2;
+  private static ResourceBundle RESOURCES = Main.myResources;
+  private static final int MAX_VAL = SimType.of(RESOURCES.getString("Segregation")).getMaxVal();
 
   /**
    * Uses gridMap to construct Segregation and gridcell values to set cells at points.
@@ -103,7 +104,7 @@ public class SegregationGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }

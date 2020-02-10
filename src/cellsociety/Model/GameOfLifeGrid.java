@@ -1,6 +1,7 @@
 package cellsociety.Model;
 
 import cellsociety.Controller.GridParser;
+import cellsociety.Controller.SimType;
 import cellsociety.Main;
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.ResourceBundle;
 public class GameOfLifeGrid extends Grid {
 
   private static ResourceBundle RESOURCES = Main.myResources;
-  private static int MAX_VAL = 1;
+  private static int MAX_VAL = SimType.of(RESOURCES.getString("GameOfLife")).getMaxVal();;
   private static final int COVERAGE_DEFAULT = 50;
   private static final int HEXAGONAL = 1;
 
@@ -65,7 +66,7 @@ public class GameOfLifeGrid extends Grid {
   /**
    * Returns the maximum state allowed for a particular simulation
    */
-  public static int getMaxState() {
+  public int getMaxState() {
     return MAX_VAL;
   }
 }
