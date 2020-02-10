@@ -48,18 +48,16 @@ public class PredatorPreyGrid extends Grid {
         .getOrDefault(RESOURCES.getString("SharkBreed"), DEFAULT_SHARK_BREED);
     turnsToStarve = cellValues
         .getOrDefault(RESOURCES.getString("SharkStarve"), DEFAULT_SHARK_STARVE);
-    for (int y = EMPTY; y < myHeight; y++) {
-      for (int x = EMPTY; x < myWidth; x++) {
-        Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
-          pointCellMap.put(p,
-              new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
-                      turnsToStarve));
-        } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
-          parametrizedRandomGenerator(cellValues, p);
-        } else {
-          pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0), turnsToStarve));
-        }
+
+    for (Point p: getPointList()) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p,
+            new PredatorPreyCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
+                    turnsToStarve));
+      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, p);
+      } else {
+        pointCellMap.put(p, new PredatorPreyCell(gridMap.getOrDefault(p, 0), turnsToStarve));
       }
     }
     if (getCellShape() == HEXAGONAL) {

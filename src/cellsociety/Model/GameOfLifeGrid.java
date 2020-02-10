@@ -30,13 +30,7 @@ public class GameOfLifeGrid extends Grid {
    */
   public GameOfLifeGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    ArrayList<Point> pointList;
-    if (getCellShape() == HEXAGONAL) {
-      pointList = hexPointGenerator();
-    } else {
-      pointList = squarePointGenerator();
-    }
-    for (Point p: pointList) {
+    for (Point p: getPointList()) {
       if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
         pointCellMap.put(p, new GameOfLifeCell((int) (Math.random() * (1 + MAX_VAL))));
       } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
@@ -50,16 +44,6 @@ public class GameOfLifeGrid extends Grid {
     } else {
       buildSquareNeighbors();
     }
-  }
-
-  private ArrayList<Point> squarePointGenerator() {
-    ArrayList<Point> squarePoints = new ArrayList<Point>();
-    for (int y = 0; y < myHeight; y++) {
-      for (int x = 0; x < myWidth; x++) {
-        squarePoints.add(new Point(x, y));
-      }
-    }
-    return squarePoints;
   }
 
   /**

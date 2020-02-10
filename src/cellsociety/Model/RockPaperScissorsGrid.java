@@ -28,17 +28,17 @@ public class RockPaperScissorsGrid extends Grid{
   public RockPaperScissorsGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
     int threshold = cellValues.getOrDefault(RESOURCES.getString("RPSThreshold"), DEFAULT_STREAK);
-    for (int y = 0; y < myHeight; y++) {
-      for (int x = 0; x < myWidth; x++) {
-        Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
-          pointCellMap.put(p,
-                  new RockPaperScissorsCell(gridMap.getOrDefault(p, (int) (Math.random() * MAX_VAL) + 1), threshold));
-        } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
-          parametrizedRandomGenerator(cellValues, threshold, p);
-        } else {
-          pointCellMap.put(p, new RockPaperScissorsCell(gridMap.getOrDefault(p, DEFAULT_VALUE), threshold));
-        }
+    for (Point p: getPointList()) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p,
+            new RockPaperScissorsCell(
+                gridMap.getOrDefault(p, (int) (Math.random() * MAX_VAL) + 1), threshold));
+      } else if (cellValues.get(RESOURCES.getString("GridType"))
+          .compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, threshold, p);
+      } else {
+        pointCellMap.put(p,
+            new RockPaperScissorsCell(gridMap.getOrDefault(p, DEFAULT_VALUE), threshold));
       }
     }
     if (getCellShape() == HEXAGONAL) {
@@ -66,12 +66,5 @@ public class RockPaperScissorsGrid extends Grid{
     } else {
       pointCellMap.put(p, new RockPaperScissorsCell(RockPaperScissorsCell.SCISSORS, threshold));
     }
-  }
-
-  /**
-   * Returns the maximum state allowed for a particular simulation
-   */
-  public static int getMaxState() {
-    return MAX_VAL;
   }
 }

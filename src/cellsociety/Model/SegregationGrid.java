@@ -33,27 +33,24 @@ public class SegregationGrid extends Grid {
    */
   public SegregationGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    for (int r = 0; r < myHeight; r++) {
-      for (int c = 0; c < myWidth; c++) {
-        Point p = new Point(c, r);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
-          pointCellMap.put(p,
-                  new SegregationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
-                          (double) cellValues
-                                  .getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0));
-        } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
-          parametrizedRandomGenerator(cellValues, p);
-        } else {
-          pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0),
-              (double) cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)
-                  / 100));
-        }
+    for (Point p: getPointList()) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p,
+                new SegregationCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL))),
+                        (double) cellValues
+                                .getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD) / 100.0));
+      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, p);
+      } else {
+        pointCellMap.put(p, new SegregationCell(gridMap.getOrDefault(p, 0),
+            (double) cellValues.getOrDefault(RESOURCES.getString("Similar"), DEFAULT_THRESHOLD)
+                / 100));
       }
     }
     if (getCellShape() == HEXAGONAL) {
       buildHexagonNeighbors();
     } else {
-    buildSquareNeighbors();
+      buildSquareNeighbors();
     }
   }
 
@@ -84,7 +81,7 @@ public class SegregationGrid extends Grid {
    */
   @Override
   public void nextFrame() {
-    myFrame++;
+    addFrame();
     ArrayList<Point> unsatisfiedPoints = new ArrayList<>();
     for (Point p : pointCellMap.keySet()) {
       Cell c = pointCellMap.get(p);
