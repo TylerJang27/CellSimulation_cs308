@@ -41,7 +41,12 @@ public class DashboardView extends Pane {
   private static final String PAUSE = RESOURCES.getString("pause");
   private static final String PLAY = RESOURCES.getString("play");
   private static final String CHOOSE_CONFIG_FILE = RESOURCES.getString("ChooseConfigFile");
-
+  private static final String STYLE_CLASS = RESOURCES.getString("dashboard-css-class");
+  private static final String GRAPH_TITLE = RESOURCES.getString("cell-graph-title");
+  private static final String FRAME = RESOURCES.getString("frame");
+  private static final String POPULATION = RESOURCES.getString("population");
+  private static final double CHART_MAX_WIDTH = 400;
+  private static final double MIN_SIM_RATE = 1;
 
   private Slider mySpeedSlider;
   private ObjectProperty<File> myFileProperty;
@@ -58,6 +63,7 @@ public class DashboardView extends Pane {
    *                                  clicked
    * @param stepButtonClickedHandler  the EventHandler that is triggered when the step button is
    *                                  clicked
+   * @param saveButtonClickedHandler  the EventHandler that is triggered when the save button is clicked
    * @param sliderListener            the ChangeListener that is triggered when the slider is
    *                                  toggled
    * @param fileListener              the ChangeListener that is tiggered when a new file is
@@ -68,21 +74,19 @@ public class DashboardView extends Pane {
       EventHandler<MouseEvent> stepButtonClickedHandler,
       EventHandler<MouseEvent> saveButtonClickedHandler,
       ChangeListener<? super Number> sliderListener, ChangeListener<? super File> fileListener) {
+
     super();
-    setId("dashboard");
+    getStyleClass().add(STYLE_CLASS);
     myCellPlots = new HashMap<>();
+    setUpFileProperty(fileListener);
 
     VBox myDashBoard = new VBox(SPACING);
     myDashBoard.prefHeightProperty().bind(this.heightProperty());
     myDashBoard.setPadding(PADDING);
 
-    setUpFileProperty(fileListener);
-    Button fileChooserButton = getFileChooserButton();
-    Pane fileChooserButtonPane = new Pane();
-    fileChooserButtonPane.getChildren().add(fileChooserButton);
-    fileChooserButton.prefWidthProperty().bind(fileChooserButtonPane.widthProperty());
+    Pane fileChooserButtonPane = getFileChooserPane();
 
-    mySpeedSlider = new Slider(1, SimulationControl.RATE_MAX, SimulationControl.DEFAULT_RATE);
+    mySpeedSlider = new Slider(MIN_SIM_RATE, SimulationControl.RATE_MAX, SimulationControl.DEFAULT_RATE);
     mySpeedSlider.valueProperty().addListener(sliderListener);
 
     Pane playButtonsPane = getPlayButtonsPane(playButtonClickedHandler, pauseButtonClickedHandler,
@@ -91,30 +95,21 @@ public class DashboardView extends Pane {
     Region spacerRegion = new Region();
     VBox.setVgrow(spacerRegion, Priority.ALWAYS);
 
-    //defining the axes
-    final NumberAxis xAxis = new NumberAxis();
-    final NumberAxis yAxis = new NumberAxis();
-    xAxis.setForceZeroInRange(false);
-    xAxis.setLabel("Frame");
-    yAxis.setLabel("Population");
-    //creating the chart
-    myLineChart =
-            new LineChart<Number,Number>(xAxis,yAxis);
-
-    myLineChart.setTitle("Cell Distribution over Time");
-    //defining a series
-
-    myLineChart.setMaxWidth(400);
-
-
+    createGraph();
 
     myDashBoard.getChildren()
         .addAll(fileChooserButtonPane, mySpeedSlider, myLineChart, spacerRegion, playButtonsPane);
-    getChildren().add(myDashBoard);
 
+    getChildren().add(myDashBoard);
     setHeight(myDashBoard.getMinHeight());
   }
 
+  /**
+   * Plot a time point onto the graph for the given id, specifying the type of cell, and a given time and population
+   * @param id the id that specifies what the cell state is
+   * @param time the time (independent variable) of the time point
+   * @param population the population (dependent variable) of the given id at the specified time
+   */
   public void plotTimePoint(String id, double time, double population){
     if(myCellPlots.get(id) == null){
       XYChart.Series series = new XYChart.Series();
@@ -170,7 +165,24 @@ public class DashboardView extends Pane {
     if (selectedFile != null) {
       myFileProperty.setValue(selectedFile);
     }
-
   }
 
+  private void createGraph() {
+    NumberAxis xAxis = new NumberAxis();
+    NumberAxis yAxis = new NumberAxis();
+    xAxis.setForceZeroInRange(false);
+    xAxis.setLabel(FRAME);
+    yAxis.setLabel(POPULATION);
+    myLineChart = new LineChart<>(xAxis,yAxis);
+    myLineChart.setTitle(GRAPH_TITLE);
+    myLineChart.setMaxWidth(CHART_MAX_WIDTH);
+  }
+
+  private Pane getFileChooserPane() {
+    Pane fileChooserButtonPane = new Pane();
+    Button fileChooserButton = getFileChooserButton();
+    fileChooserButtonPane.getChildren().add(fileChooserButton);
+    fileChooserButton.prefWidthProperty().bind(fileChooserButtonPane.widthProperty());
+    return fileChooserButtonPane;
+  }
 }
