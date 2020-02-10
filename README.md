@@ -50,7 +50,7 @@ Main class: Main.java
 
 Data files needed: 
 
-   An XML fitting the format for a Simulation type. For examples, see:
+An XML fitting the format for a Simulation type. For examples, see:
  * **Fire1.xml**: a basic Fire simulation with all values specified
  * **Fire2.xml**: a basic Fire simulation with some values specified
  * **Fire3.xml**: a basic Fire simulation with random values
@@ -58,7 +58,8 @@ Data files needed:
  * **GameOfLife1.xml**: a basic Game of Life simulation with all values specified
  * **GameOfLife2.xml**: a basic Game of Life simulation with some values specified
  * **GameOfLife3.xml**: a basic Game of Life simulation with random values
- * **GameOfLife4.xml**: a basic Game of Life simulation with parametrized random values
+ * **GameOfLife4.xml**: a basic Game of Life simulation with parametrized random values for a hexagonal grid
+ * **GameOfLife5.xml**: a basic Game of Life simulation with all values specified for a hexagonal grid
  * **Percolation1.xml**: a basic Percolation simulation with all values specified
  * **Percolation2.xml**: a basic Percolation simulation with some values specified
  * **Percolation3.xml**: a basic Percolation simulation with random values
@@ -75,11 +76,17 @@ Data files needed:
  * **Segregation2.xml**: a basic Segregation simulation with some values specified
  * **Segregation3.xml**: a basic Segregation simulation with random values
  * **Segregation4.xml**: a basic Segregation simulation with parametrized random values
-In creating the XML configuration files, it is also important to know what not to include. The following XML files exhibit problems that may arise:
+
+ In creating the XML configuration files, it is also important to know what not to include. The following XML files exhibit problems that may arise:
  * **BadFire.xml**: The grid_type attribute is outside the normal bounds of 0-3. It defaults to 3. The rate is also much larger than the allowed 1-10, so it defaults to 5. Lastly, an extraneous field called "dummy" is included, but ignored in the configuration process.
  * **BadGameOfLife.xml**: The grid is incomplete and also includes extraneous values. These are ignored, and any missing cells default to a value of 0.
  * **BadPredatorPrey.xml**: The title attribute contains a misspelling, but is understood to be PredatorPrey. Additional extraneous fields are also ignored.
  * **TerriblePercolation.xml**: The file contains irredeemable errors with double values across several attributes. This prompts the user to fix the error or choose a new configuration file.
+ 
+ Additional required resource files (in the Resources Root) include:
+ * **English.properties**: A properties specifying language-dependent Strings for all XML-related and displayable contexts.
+ * **ImageBundle**: A Java class containing a bundle of image files for use in the project. Only images specified here may be accessed from Styling.xml.
+ * **Styling.xml**: An XML file containing style configuration for each simulation type, including outlines, sizing, and what the cells should be filled with (images or colors).
  
 Features implemented:
 
@@ -98,10 +105,11 @@ In addition to specifying a configuration file, the user interface allows for th
 This front end is made possible by a back end implementation of Grid, in which Cells update based on fixed rules regarding their neighbors.
 
 Additional features include:
- * **XMLWriting**: The user may save the current configuration and grid states to an XML file that can be loaded later.
+ * **XMLWriting**: The user may save the current configuration and grid states to an XML file that can be loaded later in data/.
  * **Hexagonal Cells**: The user may configure simulations with hexagonal cells.
  * **Cell Images**: The user may opt for cells to be filled with images instead of colors.
- * **Scrolling**: The user may scroll to reach 
+ * **Scrolling**: The user may scroll to reach cells outside the main viewing area.
+ * **Live Graph**: The user is presented with a live graph showing the distributions of different states over the lifetime of the simulation.
 ### Notes/Assumptions
 
 Assumptions or Simplifications:
@@ -114,7 +122,8 @@ Assumptions or Simplifications:
    * **PredatorPrey**: It is interpreted when the rules state "After eating or moving" that a shark can not do both.
    * **Segregation**: Randomly moving unsatisfied cells will eventually balance out.
 
-Interesting data files: The 3rd data file for each simulation type creates a 30x30 grid of cells with a random state for each cell. 
+Interesting data files: 
+    * The 3rd data file for each simulation type creates a 30x30 grid of cells with a random state for each cell. 
 So it's interesting to see patterns that occur when run multiple times.
 
 Extra credit: The XML reader can take in different reading types. 
@@ -123,6 +132,7 @@ If the type is some, then some cells are specified and others are set to 0.
 If the type is random, then all cells are randomly generated.
 If the type is parametrized random, then all cells are randomly generated based on fixed rules.
 
+A live line graph was generated to display state distributions over time.
 
 ### Impressions
 Overall the project maintains good separation of Model, View, and Controller. The Model stores the details of the Grid without understanding any of the implementation behind viewing, loading, and running the simulations. That job is handled by the Controller. Meanwhile, View, dislays the Grid without worrying about how each state is calculated. This allows for each component to be developed separately by different developers. Model makes use of inheritance to define different types of Grids and Cells, which would allow for future rules to be easy added to the application. View makes use of EventHandlers and ChangeListeners to bind actions performed by the user on the GUI to logic in the Controller. This abstracts away from the Controller, and means the graphic elements can be rendered in whatever manner, as long as they are compatible with the listeners provided. Controller makes use of Exceptions, such as the custom-made ConfigParser, to handle bad input cased by illegal actions taken by the user. This information is logged to the ApplicationView console, and allows for error messages to be displayed to the user. This lets the user correct their behavior while simulatneously ensuring that bad input does not crash the program.
