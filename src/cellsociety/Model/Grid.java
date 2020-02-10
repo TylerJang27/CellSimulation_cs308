@@ -201,8 +201,8 @@ public abstract class Grid {
    * Generates a list of points for a default hexagon setup
    * @return list of points
    */
-  protected List<Point> hexPointGenerator() {
-    List<Point> hexPoints = new ArrayList<Point>();
+  protected ArrayList<Point> hexPointGenerator() {
+    ArrayList<Point> hexPoints = new ArrayList<Point>();
     for (int j = 0; j < myHeight; j ++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {

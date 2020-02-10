@@ -3,6 +3,7 @@ package cellsociety.Model;
 import cellsociety.Controller.GridParser;
 import cellsociety.Main;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -19,7 +20,8 @@ public class GameOfLifeGrid extends Grid {
   private static final int HEXAGONAL = 1;
 
   /**
-   * Uses gridMap to construct GameOfLife and gridcell values to set cells at points.
+   * Uses gridMap to construct GameOfLife and gridcell values to set cells at points based on
+   * shape of cells.
    *
    * @param gridMap:    Map with KVP of a coordinate point to an int, which represents the state to
    *                    construct cell with.
@@ -28,17 +30,19 @@ public class GameOfLifeGrid extends Grid {
    */
   public GameOfLifeGrid(Map<Point, Integer> gridMap, Map<String, Integer> cellValues) {
     super(cellValues);
-    for (int y = 0; y < myHeight; y++) {
-      for (int x = 0; x < myWidth; x++) {
-        Point p = new Point(x, y);
-        if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
-          pointCellMap.put(p,
-              new GameOfLifeCell(gridMap.getOrDefault(p, (int) (Math.random() * (1 + MAX_VAL)))));
-        } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
-          parametrizedRandomGenerator(cellValues, p);
-        } else {
-          pointCellMap.put(p, new GameOfLifeCell(gridMap.getOrDefault(p, 0)));
-        }
+    ArrayList<Point> pointList;
+    if (getCellShape() == HEXAGONAL) {
+      pointList = hexPointGenerator();
+    } else {
+      pointList = squarePointGenerator();
+    }
+    for (Point p: pointList) {
+      if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
+        pointCellMap.put(p, new GameOfLifeCell((int) (Math.random() * (1 + MAX_VAL))));
+      } else if (cellValues.get(RESOURCES.getString("GridType")).compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
+        parametrizedRandomGenerator(cellValues, p);
+      } else {
+        pointCellMap.put(p, new GameOfLifeCell(gridMap.getOrDefault(p, 0)));
       }
     }
     if (getCellShape() == HEXAGONAL) {
@@ -46,6 +50,16 @@ public class GameOfLifeGrid extends Grid {
     } else {
       buildSquareNeighbors();
     }
+  }
+
+  private ArrayList<Point> squarePointGenerator() {
+    ArrayList<Point> squarePoints = new ArrayList<Point>();
+    for (int y = 0; y < myHeight; y++) {
+      for (int x = 0; x < myWidth; x++) {
+        squarePoints.add(new Point(x, y));
+      }
+    }
+    return squarePoints;
   }
 
   /**
