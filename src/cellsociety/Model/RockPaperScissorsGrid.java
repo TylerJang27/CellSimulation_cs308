@@ -3,7 +3,6 @@ package cellsociety.Model;
 import cellsociety.Controller.GridParser;
 import cellsociety.Controller.SimType;
 import cellsociety.Main;
-import jdk.jfr.Threshold;
 
 import java.awt.Point;
 import java.util.*;
@@ -33,7 +32,7 @@ public class RockPaperScissorsGrid extends Grid{
       if (cellValues.get(RESOURCES.getString("GridType")).equals(GridParser.RANDOM)) {
         pointCellMap.put(p,
             new RockPaperScissorsCell(
-                gridMap.getOrDefault(p, (int) (Math.random() * MAX_VAL) + 1), threshold));
+                gridMap.getOrDefault(p, (int) (Math.random() * MAX_VAL)), threshold));
       } else if (cellValues.get(RESOURCES.getString("GridType"))
           .compareTo(GridParser.PARAMETRIZED_RANDOM) >= 0) {
         parametrizedRandomGenerator(cellValues, threshold, p);

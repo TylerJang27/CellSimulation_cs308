@@ -15,9 +15,9 @@ import java.util.ResourceBundle;
  * @author Thomas Quintanilla
  */
 public class PredatorPreyGrid extends Grid {
-
   private static ResourceBundle RESOURCES = Main.myResources;
 
+  private static final int MOVEMENT_CAPABLE_NEIGHBORS = 4;
   private static final int DEFAULT_FISH_BREED = 2;
   private static final int DEFAULT_SHARK_BREED = 7;
   private static final int DEFAULT_SHARK_STARVE = 4;
@@ -124,7 +124,7 @@ public class PredatorPreyGrid extends Grid {
   private PredatorPreyCell handleMovement(PredatorPreyCell currentCell, int state) {
     int activeNeighbors = currentCell.countAliveNeighbors();
     if (state != EMPTY && !currentCell.didMove) {
-      if (!currentCell.didKill && activeNeighbors < 4) {
+      if (!currentCell.didKill && activeNeighbors < MOVEMENT_CAPABLE_NEIGHBORS) {
         currentCell = moveCell(currentCell);
       }
       currentCell.setStepsAlive(currentCell.getStepsAlive() + 1);

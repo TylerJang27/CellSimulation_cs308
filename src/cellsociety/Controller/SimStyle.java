@@ -52,7 +52,7 @@ public enum SimStyle {
    * Returns the SimStyle's style field names
    */
   public List<String> getStyleFields() {
-    return myStyleFields;
+    return List.copyOf(myStyleFields);
   }
 
   /**

@@ -34,6 +34,7 @@ public class WriteXMLFile {
 
     /**
      * Constructor for WriteXMLFile, passing simulation information and the current Grid
+     *
      * @param sim Simulation holding all configuration information
      * @param grid Grid sub-class with all current grid states
      * @param rate Current rate
@@ -46,12 +47,11 @@ public class WriteXMLFile {
 
     /**
      * Write current configuration into an XML file that can be reloaded at a later time
+     *
      * @return file name to which data was saved
      * @throws XMLException for cases where file generators cannot be created
      */
     public String writeSimulationXML() {
-        String fileAddress = generateFileName();
-
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         try {
@@ -61,6 +61,18 @@ public class WriteXMLFile {
         }
 
         Document doc = docBuilder.newDocument();
+        String fileAddress = generateFileName();
+        writeContent(fileAddress, doc);
+
+        return fileAddress;
+    }
+
+    /**
+     * Writes the content of the XML file, from the root Element to the grid
+     * @param fileAddress address to which the file will be saved
+     * @param doc Document to which information will be appended
+     */
+    private void writeContent(String fileAddress, Document doc) {
         Element rootElement = createRoot(doc);
         doc.appendChild(rootElement);
 
@@ -84,12 +96,11 @@ public class WriteXMLFile {
         } catch (TransformerException e) {
             throw new XMLException(RESOURCES.getString("XML_WRITE_CREATE"));
         }
-
-        return fileAddress;
     }
 
     /**
      * Generates the root element, holding the Simulation characteristic
+     *
      * @param doc Document with which to build XML hierarchy
      * @return the rootElement of the doc
      */
@@ -106,6 +117,7 @@ public class WriteXMLFile {
 
     /**
      * Generates the file name to which the file shall be stored
+     *
      * @return String representing the path to the file
      */
     private String generateFileName() {
@@ -116,6 +128,7 @@ public class WriteXMLFile {
 
     /**
      * Extracts current grid information from mySim to save to doc
+     *
      * @param doc Document with which to build XML hierarchy
      * @param rootElement Root element, consisting of the Simulation type, to nest information under
      */
@@ -139,6 +152,7 @@ public class WriteXMLFile {
 
     /**
      * Extracts fields and configuration information from mySim to add them to doc
+     *
      * @param doc Document with which to build XML hierarchy
      * @param rootElement Root element, consisting of the Simulation type, to nest information under
      */

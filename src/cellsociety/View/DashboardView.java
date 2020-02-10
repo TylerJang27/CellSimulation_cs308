@@ -40,6 +40,7 @@ public class DashboardView extends Pane {
   private static final String STEP = RESOURCES.getString("step");
   private static final String PAUSE = RESOURCES.getString("pause");
   private static final String PLAY = RESOURCES.getString("play");
+  private static final String SAVE = RESOURCES.getString("save");
   private static final String CHOOSE_CONFIG_FILE = RESOURCES.getString("ChooseConfigFile");
 
 
@@ -136,7 +137,7 @@ public class DashboardView extends Pane {
     Button playButton = getConsoleButton(PLAY, playButtonClickedHandler);
     Button pauseButton = getConsoleButton(PAUSE, pauseButtonClickedHandler);
     Button stepButton = getConsoleButton(STEP, stepButtonClickedHandler);
-    Button saveButton = getConsoleButton("Save", saveButtonClickedHandler);
+    Button saveButton = getConsoleButton(SAVE, saveButtonClickedHandler);
 
     playButtons.getChildren().addAll(playButton, pauseButton, stepButton, saveButton);
 
