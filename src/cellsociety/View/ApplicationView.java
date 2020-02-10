@@ -115,15 +115,13 @@ public class ApplicationView {
    *
    * @param numRows    the number of rows in the grid
    * @param numColumns the number of columns in the grid
-   * @param width      the width of the grid in pixels
-   * @param length     the length of the grid in pixels
    */
-  public void initializeGrid(int numRows, int numColumns, double width, double length, String outline, List<CellStateConfiguration> cellStateConfigs) {
+  public void initializeGrid(int numRows, int numColumns, String outline, List<CellStateConfiguration> cellStateConfigs) {
     CellStateConfiguration config = cellStateConfigs.get(0);
     if(config.getShape().equals(RECTANGLE)){
       myGrid = new RectangleGridView(numRows, numColumns, outline, myCellClickedHandler, cellStateConfigs);
     }else if(config.getShape().equals(HEXAGON)){
-      myGrid = new HexagonGridView(numRows, numColumns, width, length, outline, myCellClickedHandler, cellStateConfigs);
+      myGrid = new HexagonGridView(numRows, numColumns, outline, myCellClickedHandler, cellStateConfigs);
     }
     myGridScroll.setContent(myGrid.getNode());
     root.setCenter((myGridScroll));
