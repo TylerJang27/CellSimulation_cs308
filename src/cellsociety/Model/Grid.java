@@ -106,20 +106,26 @@ public abstract class Grid {
           checkAndSetNeighbor(p, xPos, yPos, x, y);
         }
       }
+      System.out.println(pointCellMap.get(p).neighbors);
     }
   }
 
   private void checkAndSetNeighbor(Point p, int xPos, int yPos, int x, int y) {
     int xOffset = gridShape == TOROIDAL ? getXOffset(xPos, x) : x;
     int yOffset = gridShape == TOROIDAL ? getYOffset(yPos, y) : y;
-
+    System.out.println("x: " + getXOffset(xPos, x) + " y: " + getYOffset(yPos, y) + "\n");
     Point potentialNeighbor = new Point(xPos + xOffset, yPos + yOffset);
     if (!potentialNeighbor.equals(p) && pointCellMap.containsKey(potentialNeighbor)) {
       pointCellMap.get(p).setNeighbor(pointCellMap.get(potentialNeighbor));
     }
   }
 
-
+  /**
+   * Changes offset for neighbor points so that toroidal neighbors can be implemented
+   * @param yPos y coordinate of original cell
+   * @param yOffset initial y offset that may be changed
+   * @return new y offset
+   */
   private int getYOffset(int yPos, int yOffset) {
     int newOffset = yOffset;
     if (yPos + yOffset < 0)  {
@@ -130,12 +136,18 @@ public abstract class Grid {
     return newOffset;
   }
 
+  /**
+   * Changes offset for neighbor points so that toroidal neighbors can be implemented
+   * @param xPos x coordinate of original cell
+   * @param xOffset initial x offset that may be changed
+   * @return new x offset
+   */
   private int getXOffset(int xPos, int xOffset) {
     int newOffset = xOffset;
     if (xPos + xOffset < 0)  {
-      newOffset = myWidth + 1;
+      newOffset = myWidth + xOffset;
     } else if (xPos + xOffset > myWidth-1){
-      newOffset = -xPos;
+      newOffset = -myWidth + xOffset;
     }
     return newOffset;
   }
@@ -209,7 +221,7 @@ public abstract class Grid {
    * @return list of points
    */
   public ArrayList<Point> squarePointGenerator() {
-    ArrayList<Point> squarePoints = new ArrayList<Point>();
+    ArrayList<Point> squarePoints = new ArrayList<>();
     for (int y = 0; y < myHeight; y++) {
       for (int x = 0; x < myWidth; x++) {
         squarePoints.add(new Point(x, y));
@@ -223,7 +235,7 @@ public abstract class Grid {
    * @return list of points
    */
   protected ArrayList<Point> hexPointGenerator() {
-    ArrayList<Point> hexPoints = new ArrayList<Point>();
+    ArrayList<Point> hexPoints = new ArrayList<>();
     for (int j = 0; j < myHeight; j ++) {
       if (j % 2 == 0) {
         for (int k = 0; k < myWidth; k += 2) {
