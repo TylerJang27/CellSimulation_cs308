@@ -156,9 +156,7 @@ public class SimulationControl {
     Map<String, Style> styles = new StyleParser(RESOURCES.getString("Type")).getStyle(styleFile);
     Style style = styles.get(mySim.getType().toString());
     String shapeString;
-    String displayStyle = style.getValue(RESOURCES.getString("Display"));
     int shape = mySim.getValue(RESOURCES.getString("Shape"));
-    System.out.println(shape);
     if (shape == GridParser.HEXAGON) {
       shapeString = RESOURCES.getString("Hexagon");
     } else {
@@ -166,6 +164,10 @@ public class SimulationControl {
     }
     List<CellStateConfiguration> cellViewConfiguration = new ArrayList<>();
     for (Map<String, String> params: style.getConfigParameters()) {
+      String displayStyle = "color";
+      for (String s: params.keySet()) {
+        displayStyle = s;
+      }
       cellViewConfiguration.add(new CellStateConfiguration(shapeString, displayStyle, params));
     }
 

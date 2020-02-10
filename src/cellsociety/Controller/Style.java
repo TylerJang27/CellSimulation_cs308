@@ -79,8 +79,8 @@ public class Style {
     for (String s: getType().getStyleFields()) {
       Map<String, String> params = new HashMap<>();
       String val = getValue(s);
-      if ((val.contains("/") || val.contains("\\")) && fill.equals(RESOURCES.getString("Image"))) {
-        params.put(fill, getValue(s));
+      if (val.contains("img") && fill.equals(RESOURCES.getString("Image"))) {
+        params.put(fill, val);
       } else {
         params.put(RESOURCES.getString("Color"), getValue(s));
       }

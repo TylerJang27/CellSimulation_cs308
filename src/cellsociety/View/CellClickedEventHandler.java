@@ -6,6 +6,6 @@ public class CellClickedEventHandler implements EventHandler<CellClickedEvent> {
 
     @Override
     public void handle(CellClickedEvent event) {
-        System.out.println(event.getCell());
+        //System.out.println(event.getCell());
     }
 }
