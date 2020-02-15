@@ -52,7 +52,7 @@ public class Main extends Application {
    * Steps the simulation for each frame
    */
   private void step(SimulationControl sim) {
-    sim.next(false);
+    sim.next();
   }
 
   /**

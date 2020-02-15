@@ -88,7 +88,7 @@ public class SimulationControl {
    *
    * @param singleStep true if only one step is supposed to occur
    */
-  public void next(boolean singleStep) {
+  private void next(boolean singleStep) {
     try {
       int stepper = frameStepNext();
       if ((!paused && stepper == 0) || singleStep) {
@@ -99,6 +99,13 @@ public class SimulationControl {
     } catch (NullPointerException e) {
       myApplicationView.logError(RESOURCES.getString("BadStep"));
     }
+  }
+
+  /**
+   * Steps the simulation by updating the Grid and updating ApplicationView. The default case for calling from outside this class.
+   */
+  public void next() {
+    next(false);
   }
 
   /**
@@ -140,7 +147,6 @@ public class SimulationControl {
       changeSimulationSpeed(observable.getValue());
     };
     EventHandler<CellClickedEvent> cellClickedHandler = event -> {
-      System.out.println("clicked");
       int state = myGrid.cycleState(event.getRow(), event.getColumn());
       myApplicationView.updateCell(event.getRow(), event.getColumn(), state);
     };
