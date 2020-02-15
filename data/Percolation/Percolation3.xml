@@ -6,5 +6,6 @@
     <rate>5</rate>
     <width>30</width>
     <height>30</height>
+    <grid_shape>2</grid_shape>
     <grid_type>2</grid_type>
 </data>
