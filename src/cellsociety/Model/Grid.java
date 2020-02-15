@@ -69,7 +69,7 @@ public abstract class Grid {
    * @param p Point where cell neighbors are checked in grid
    * @return list of neighbor point cells for NSEW
    */
-  protected List<Point> getNeighborPoints(Point p) {
+  private List<Point> getNeighborPoints(Point p) {
     int xPos = (int) p.getX();
     int yPos = (int) p.getY();
     Point left = xPos > 0 || gridShape != TOROIDAL ? new Point(xPos - 1, yPos)

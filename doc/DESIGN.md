@@ -29,7 +29,17 @@ More specific feature customization can be found below in "Easy to Add Features.
 
 ### Core Classes
 
-**Model**:
+**Model**: 
+* When a simulation Grid object is constructed, the constructor is fed two maps - one containing the points of any predefined cells and one that defines the parameters to construct the grid.
+These parameters include the width and height of the grid, the shape of each cell, the shape of the grid (toroidal, cylindrical, or square), and any parameters specific to the simulation.
+* The grid then constructs the cells corresponding to the simulation. 
+The cell states are set either randomly or based on the map provided.
+Afterwards, the grid constructs and assigns the list of neighbors to each cell.
+* The grid is updated whenever nextFrame() is called, which cycles through every cell and collects each one's next state before applying the new state to their respective cells.
+Each simulation has a set of rules to update each cell by, which is defined in each cell's nextState().
+* The grid also returns useful information that's used by the controller, such as a specific cell's state and the max amount of states for each simulation.
+
+
 
 **View**:
 
@@ -49,17 +59,26 @@ This design implementation makes the following assumptions:
  - Different simulations all share the same default cell color scheme (red = 1, blue = 2, black = 0/empty).
  - The Application window cannot be resized.
  - The XML Parsing assumed that XML files would not contain doubles, so only Integer parsing was used, throwing an exception if this failed.
- - 
- - 
+ - Neighbor assignment are specific to each simulation and are unable to be modified (other than by the shape of the cell).
+ - Assumptions for simulation rules:
+    * **Fire**: each burning neighbor of a not burning tree cell has a set % chance to spread the fire to the cell. 
+    The rule description was vague on whether this probability is only checked once no matter how many neighbors are burning or if its checked per neighbor.
+    * **PredatorPrey**: A fish who meets breeding threshold but cannot reproduce due to neighboring cells being occupied will reproduce any step after where an adjacent cell is free.
+    * **PredatorPrey**: It is interpreted when the rules state "After eating or moving" that a shark can not do both.
+    * **Segregation**: Randomly moving unsatisfied cells will eventually balance out.
+    * **Percolation**: Water can only move downward, so only the bottom neighbors interact with the target cell.
 
 ## New Features HowTo
 
 ### Easy to Add Features
 
 **Model**:
+* To create a new type of simulation, the Grid and Cell superclasses contain inherited methods that handle basic grid construction, neighbor assignment, and cell updates.
+So all that would need to be done is setting the rules for the simulation in the cell's nextState().
+* Certain neighbor arrangements are also easy to construct, since the checkAndSetNeighbor() handles any potential issues with grid edges.
 
 **View**:
-
+ 
 **Controller**:
  - To add new simulation types, simply add a value to the enumerated types in SimType.java and SimStyle.java, specifying the necessary fields, max value, and style information. Then, create an XML file with the desired configuration parameters.
  This XML file must have the root element data type = "simulation", and it must have title and the other required mandatory fields specified in SimType.java. In addition, add an element and children to Styling.xml specifying the desired global style
@@ -69,6 +88,10 @@ This design implementation makes the following assumptions:
 ### Other Features not yet Done
 
 **Model**:
+* A way to construct the neighbors of a cell for a triangular cells.
+* A Pac-Man simulation where a cell would chase food cells across the grid and ghosts that move randomly that are able to kill the Pac-Man.
+Food will respawn throughout the grid and the idea is to see how long Pac-Man can survive.
+* More types of neighbor construction for cells (i.e. corner neighbors, row neighbors, etc.).
 
 **View**:
 
