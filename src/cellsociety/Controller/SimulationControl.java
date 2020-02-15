@@ -24,7 +24,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- * Core class of the Controller part of the MVC Model Reads in data from the XML file and
+ * Core class of the Controller part of the MVC Model. Reads in data from XML files for the selected simulation as well as
+ * styling information. To use this class, have Main.java create an instance of SimulationControl, passing the stage, and call next() for each frame.
  *
  * @author Tyler Jang
  */
@@ -47,7 +48,8 @@ public class SimulationControl {
   private static final ResourceBundle RESOURCES = Main.myResources;
 
   /**
-   * Constructor for creating a SimulationControl instance
+   * Constructor for creating a SimulationControl instance. Defines the styleFile to be used, pauses the Simulation and resets the frame count, and initializes the View.
+   * Prompts the user to choose a configuration file.
    *
    * @param primaryStage the stage for the animation
    */
@@ -82,7 +84,7 @@ public class SimulationControl {
   }
 
   /**
-   * Steps the simulation by updating the Grid and updating ApplicationView
+   * Steps the simulation by updating the Grid and updating ApplicationView. This should be called with singleStep set to false from outside this class.
    *
    * @param singleStep true if only one step is supposed to occur
    */
@@ -112,7 +114,7 @@ public class SimulationControl {
   }
 
   /**
-   * Increments frameStep and resets it based on the desired framerate
+   * Increments frameStep and resets it based on the desired framerate.
    *
    * @return frameStep
    */
@@ -125,7 +127,7 @@ public class SimulationControl {
   }
 
   /**
-   * Creates a new ApplicationView to start the display
+   * Creates a new ApplicationView to start the display.
    *
    * @param primaryStage the stage for the animation
    */
@@ -148,11 +150,11 @@ public class SimulationControl {
   }
 
   /**
-   * Sets the initial settings for SimulationControl
+   * Sets the initial settings for SimulationControl.
    *
    * @param dataFile the File from which to read configuration instructions
    */
-  public void initializeModel(File dataFile) {
+  private void initializeModel(File dataFile) {
     mySim = new ConfigParser(RESOURCES.getString("Type")).getSimulation(dataFile);
 
     rate = mySim.getValueMap().getOrDefault(RESOURCES.getString("Rate"), DEFAULT_RATE);
@@ -172,7 +174,7 @@ public class SimulationControl {
   }
 
   /**
-   * Extracts ID, and fill (color or image) information from style
+   * Extracts ID, and fill (color or image) information from style.
    *
    * @param style       Style containing visualization information
    * @param shapeString the shape of the cells, Hexagon or Rectangle
@@ -193,7 +195,9 @@ public class SimulationControl {
   }
 
   /**
-   * Extracts information from mySim to determine if shape is Hexagon or Rectangle
+   * Extracts information from mySim to determine if shape is Hexagon or Rectangle.
+   *
+   * @return a String representing the shape of cells
    */
   private String getShapeString() {
     String shapeString;
@@ -207,7 +211,7 @@ public class SimulationControl {
   }
 
   /**
-   * Creates grid based off of the type of Simulation stored in mySim
+   * Creates grid based off of the type of Simulation stored in mySim.
    *
    * @return a subclass of Grid
    */
@@ -230,7 +234,7 @@ public class SimulationControl {
   }
 
   /**
-   * Writes file to data/ and notes this in the console
+   * Writes file to data/ and notes this in the console.
    */
   private void saveFile() {
     WriteXMLFile writer = new WriteXMLFile(mySim, myGrid, rate);
@@ -239,7 +243,7 @@ public class SimulationControl {
   }
 
   /**
-   * Returns a handler for selecting the file to reset configuration
+   * Returns a handler for selecting the file to reset configuration.
    */
   private ChangeListener<File> getFileListener() {
     return new ChangeListener<File>() {
@@ -257,7 +261,7 @@ public class SimulationControl {
   }
 
   /**
-   * Sets the new simulation rate
+   * Sets the new simulation rate.
    *
    * @param newValue the new simulation rate, usually on a scale of 1-10
    */
@@ -266,7 +270,7 @@ public class SimulationControl {
   }
 
   /**
-   * Returns a handler for changing the new simulation rate
+   * Returns a handler for changing the new simulation rate.
    */
   private ChangeListener<? super Number> getSliderListener() {
     return new ChangeListener<Number>() {

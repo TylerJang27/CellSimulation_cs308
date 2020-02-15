@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 
 
 /**
- * Class for parsing XML files to determine simulation configuration.
+ * Class for parsing XML files to determine simulation configuration. Extends the abstract class XMLParser. Requires reading information about grids using GridParser.
  * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
@@ -17,17 +17,21 @@ import org.w3c.dom.Element;
 public class ConfigParser extends XMLParser {
 
   /**
-   * Create parser for XML files of given type.
+   * Creates an XML Parser instance given a type to read from. This type represents a root node of the XML file with
+   * the format data *type* = simulation.
+   *
+   * @param type root node attribute from which to determine if the XML is valid for this use case.
    */
   public ConfigParser(String type) {
     super(type);
   }
 
   /**
-   * Get data contained in this XML file as an object
+   * Get data contained in this XML file as an object. Tests to ensure that the file is valid.
    *
    * @param dataFile file from which to read configuration
-   * @return Returns a Simulation with all of its configuration information stored
+   * @return    a Simulation with all of its configuration information stored
+   * @throws XMLException if the file is not considered valid due to its root element or file ending
    */
   public Simulation getSimulation(File dataFile) {
     if (!isXML(dataFile)) {
@@ -50,7 +54,7 @@ public class ConfigParser extends XMLParser {
   }
 
   /**
-   * Generates a Map of Strings of configuration settings
+   * Generates a Map of Strings of configuration settings, including optional and mandatory information.
    *
    * @param root document root
    * @return a Map of Strings of configuration settings
@@ -75,7 +79,7 @@ public class ConfigParser extends XMLParser {
   }
 
   /**
-   * Adds value in field to simulationSettings if its value exists, throws no exception
+   * Adds value in field to simulationSettings if its value exists, throws no exception.
    *
    * @param root               document root
    * @param simulationSettings Map of fields and data for Simulation

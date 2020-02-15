@@ -46,9 +46,9 @@ public enum SimStyle {
   );
 
   /**
-   * Constructor for SimType, setting its name and fields
+   * Constructor for SimType, setting its name and fields.
    *
-   * @param name        the type of Simulation
+   * @param name        the name for that type of Simulation
    * @param styleFields the different Strings denoting acceptable styles for that simulation
    */
   private SimStyle(String name, String[] styleFields) {
@@ -58,14 +58,19 @@ public enum SimStyle {
   }
 
   /**
-   * Returns the SimStyle's style field names
+   * Returns the SimStyle's style field names.
+   *
+   * @return a copy of the List of style fields
    */
   public List<String> getStyleFields() {
     return List.copyOf(myStyleFields);
   }
 
   /**
-   * Returns the appropriate SimType based off of its String name
+   * Returns the appropriate SimStyle based off of its String name.
+   *
+   * @param code String representing the name of that SimStyle instance
+   * @return    the SimStyle instance for that code
    */
   public static SimStyle of(String code) {
     for (SimStyle r : SimStyle.values()) {
@@ -78,14 +83,18 @@ public enum SimStyle {
   }
 
   /**
-   * Returns strings representing all of the generic fields
+   * Returns strings representing all of the generic fields.
+   *
+   * @return the Generic fields for a given instance of SimStyle
    */
   public List<String> getGenerics() {
     return GENERIC_FIELDS;
   }
 
   /**
-   * Returns the name of the type
+   * Returns the name of the type.
+   *
+   * @return    the String name of the SimStyle instance
    */
   @Override
   public String toString() {

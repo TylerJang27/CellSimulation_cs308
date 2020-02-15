@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Class for storing the data needed to configure Simulation View Styling
+ * Class for storing the data needed to configure Simulation View Styling. Styles are configured globally for each SimStyle.
  * <p>
  * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
@@ -45,21 +45,28 @@ public class Style {
   }
 
   /**
-   * Returns simulation type based off of enum SimStyle
+   * Returns simulation type based off of enum SimStyle.
+   *
+   * @return    the SimStyle type for this Style
    */
   public SimStyle getType() {
     return myStyle;
   }
 
   /**
-   * Returns Integer value matched to field key
+   * Returns Integer value matched to field key.
+   *
+   * @param field the field from which to retrieve String data for a KVP
+   * @return    the String for the requested field, or default "" if field is not in the Map
    */
   public String getValue(String field) {
     return myDataValues.getOrDefault(field, "");
   }
 
   /**
-   * Builds a List of Maps of style parameters used for CellStateConfiguration
+   * Builds a List of Maps of style parameters used for CellStateConfiguration, with one for each cell state.
+   *
+   * @return    a List of Maps for information about each state
    */
   public List<Map<String, String>> getConfigParameters() {
     List<Map<String, String>> maps = new ArrayList<>();
@@ -78,9 +85,9 @@ public class Style {
   }
 
   /**
-   * Builds parameters for CellStateConfiguration
+   * Builds parameters for CellStateConfiguration.
    *
-   * @param maps List of maps to add to CellStateConfiguration parameters
+   * @param maps a List of maps to add to CellStateConfiguration parameters
    * @param fill image or color
    * @param s    field in Style fields
    */

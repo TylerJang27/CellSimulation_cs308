@@ -13,7 +13,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Abstract class for parsing XML files.
+ * Abstract class for parsing XML files, with each sub-class implementation returning an instance of a Data class object.
+ * Throws XMLExceptions in the event of a problem reading the XML file. These Exceptions should be caught, with their messages directed to the user.
+ * This class and its sub-classes require that Main have a ResourceBundle named myResources from which messages can be drawn.
+ * To use this class, create a sub-class and implement methods such as getSimulation(), getGrid(), or getStyle() using the given methods in this abstract class.
  * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
@@ -31,9 +34,10 @@ public abstract class XMLParser {
   protected static final String ERROR_FIELD_MESSAGE = RESOURCES.getString("XML_ERROR_FIELD");
 
   /**
-   * Default constructor for XMLParser
+   * Creates an XML Parser instance given a type to read from. This type represents a root node of the XML file with
+   * the format data *type* = ____.
    *
-   * @param type root node field
+   * @param type root node attribute from which to determine if the XML is valid for this use case.
    */
   public XMLParser(String type) {
     DOCUMENT_BUILDER = getDocumentBuilder();
@@ -41,10 +45,10 @@ public abstract class XMLParser {
   }
 
   /**
-   * Get root element of an XML file
+   * Gets the root element of an XML file. This will reset the reading process, such that the XML hierarchy can be built.
    *
    * @param xmlFile the File from which to read
-   * @return the Root Element
+   * @return      the Root Element
    */
   protected Element getRootElement(File xmlFile) {
     try {
@@ -57,41 +61,46 @@ public abstract class XMLParser {
   }
 
   /**
-   * Checks whether or not a file is an XML file based on its name
+   * Checks whether or not a file is an XML file based on its name. If the file contains ".xml", as defined in this class's
+   * constants, the file will be considered valid for the time being.
+   *
+   * @param dataFile the File to be analyzed
+   * @return      a boolean representing whether the file seems to be an XML file
    */
   protected boolean isXML(File dataFile) {
     return -1 != dataFile.getName().indexOf(XML_END);
   }
 
   /**
-   * Checks if file is valid
+   * Checks if file is valid based on its root element. If this attribute does not match type, this file will be considered invalid.
    *
-   * @param root the Root Element
-   * @param type Simulation, the type of XML file
-   * @return a boolean if file is valid
+   * @param root the root Element
+   * @param type the type of XML file (e.g. Simulation)
+   * @return    a boolean if file is valid based on its root element
    */
   protected boolean isValidFile(Element root, String type) {
     return getAttribute(root, TYPE_ATTRIBUTE).equals(type);
   }
 
   /**
-   * Gets attribute of document based off of name
+   * Gets attribute of document based off of name, using the hierarchy of the XML file.
    *
    * @param e             the Element from which to retrieve the attribute
    * @param attributeName the attribute's label to retrieve
-   * @return the retrieved Attribute
+   * @return              the retrieved Attribute
    */
   protected String getAttribute(Element e, String attributeName) {
     return e.getAttribute(attributeName);
   }
 
   /**
-   * Retrieves the value in the XML file for a given tagName
+   * Retrieves the text value in the XML file for a given tagName. Mandatory can be defined to determine whether or not an exception is thrown if a tag is not found.
    *
    * @param e       the Element from which to retrieve the attribute
    * @param tagName the tag to search for in the XML file
-   * @return the text for that tag
-   * @throws XMLException if field is mandatory and missing
+   * @param mandatory a boolean representing whether or not an exception will be thrown if the tag is not found
+   * @return        the text for that tag
+   * @throws XMLException if the field is considered mandatory and missing
    */
   protected String getTextValue(Element e, String tagName, boolean mandatory) {
     NodeList nodeList = e.getElementsByTagName(tagName);
@@ -104,7 +113,7 @@ public abstract class XMLParser {
   }
 
   /**
-   * Required boilerplate code needed to make a documentBuilder
+   * Required boilerplate code needed to make a documentBuilder.
    *
    * @return a DocumentBuilder for the entire class
    */
@@ -115,5 +124,4 @@ public abstract class XMLParser {
       throw new XMLException(e);
     }
   }
-
 }

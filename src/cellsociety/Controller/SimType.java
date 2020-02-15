@@ -7,10 +7,10 @@ import java.util.List;
 
 /**
  * An enumerated type for the Simulation Type, specifying all of the Simulation Types and the
- * necessary fields for each type
+ * necessary fields for each type.
  * <p>
- * To add a new SimulationType, simply add a new core SimType with its name and required fields
- * Ensure XML Files are formatted correctly
+ * To add a new SimulationType, simply add a new core SimType with its name and required fields and add a corresponding style to SimStyle.
+ * Ensure that XML Files are formatted correctly. Currently accounts for 6 SimTypes.
  * <p>
  * Portions taken from ESRBRating.java from spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/enumerated/ESRBRating.java
@@ -46,6 +46,9 @@ public enum SimType {
    * @param name            the type of Simulation
    * @param mandatoryFields the different Strings denoting acceptable Integer mandatoryFields for
    *                        that simulation
+   * @param optionalFields  the different Strings denoting acceptable Integer optionalFields for
+   *                        that simulation
+   * @param val             an Integer representing the maximum value for that SimType
    */
   private SimType(String name, String[] mandatoryFields, String[] optionalFields, Integer val) {
     myName = name;
@@ -55,28 +58,37 @@ public enum SimType {
   }
 
   /**
-   * Returns the SimType's mandatory field names
+   * Returns the SimType's mandatory field names.
+   *
+   * @return    a List of the mandatory fields for the instance of a SimType.
    */
   public List<String> getMandatoryFields() {
     return myMandatoryFields;
   }
 
   /**
-   * Returns the SimType's optional field names
+   * Returns the SimType's optional field names.
+   *
+   * @return    a List of the optional fields for the instance of a SimType.
    */
   public List<String> getOptionalFields() {
     return List.copyOf(myOptionalFields);
   }
 
   /**
-   * Returns the SimType's max cell value
+   * Returns the SimType's max cell value.
+   *
+   * @return    an Integer representing that simType's max value.
    */
   public Integer getMaxVal() {
     return maxVal;
   }
 
   /**
-   * Returns the appropriate SimType based off of its String name
+   * Returns the appropriate SimType based off of its String name.
+   *
+   * @param code String representing the name of that SimType instance
+   * @return    the SimType instance for that code
    */
   public static SimType of(String code) {
     for (SimType r : SimType.values()) {
@@ -89,7 +101,9 @@ public enum SimType {
   }
 
   /**
-   * Returns the name of the type
+   * Returns the name of the type.
+   *
+   * @return    the String name of the SimType instance.
    */
   @Override
   public String toString() {

@@ -23,7 +23,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Class for creating XML files based off of simulation configuration.
+ * Class for creating XML files based off of simulation configuration. Takes in configuration information from the Controller
+ * to generate an XML file matching the simulation's current settings that can be reloaded.
  * <p>
  * Class based mainly on WriteXMLFile.java by mkyong https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
  *
@@ -41,9 +42,9 @@ public class WriteXMLFile {
   /**
    * Constructor for WriteXMLFile, passing simulation information and the current Grid
    *
-   * @param sim  Simulation holding all configuration information
-   * @param grid Grid sub-class with all current grid states
-   * @param rate Current rate
+   * @param sim  the Simulation holding all configuration information
+   * @param grid the Grid sub-class with all current grid states
+   * @param rate the current rate
    */
   public WriteXMLFile(Simulation sim, Grid grid, int rate) {
     mySim = sim;
@@ -52,7 +53,8 @@ public class WriteXMLFile {
   }
 
   /**
-   * Write current configuration into an XML file that can be reloaded at a later time
+   * Write current configuration into an XML file that can be reloaded at a later time. Returns the file address for this written file
+   * or throws an XMLException if this file cannot be generated.
    *
    * @return file name to which data was saved
    * @throws XMLException for cases where file generators cannot be created
@@ -74,10 +76,11 @@ public class WriteXMLFile {
   }
 
   /**
-   * Writes the content of the XML file, from the root Element to the grid
+   * Writes the content of the XML file, from the root Element to the grid.
    *
    * @param fileAddress address to which the file will be saved
    * @param doc         Document to which information will be appended
+   * @throws XMLException if the proper input stream transform cannot be created or applied
    */
   private void writeContent(String fileAddress, Document doc) {
     Element rootElement = createRoot(doc);
@@ -106,7 +109,7 @@ public class WriteXMLFile {
   }
 
   /**
-   * Generates the root element, holding the Simulation characteristic
+   * Generates the root element, holding the Simulation characteristic.
    *
    * @param doc Document with which to build XML hierarchy
    * @return the rootElement of the doc
@@ -123,7 +126,7 @@ public class WriteXMLFile {
   }
 
   /**
-   * Generates the file name to which the file shall be stored
+   * Generates the file name to which the file shall be stored using the current date and time.
    *
    * @return String representing the path to the file
    */
@@ -135,7 +138,7 @@ public class WriteXMLFile {
   }
 
   /**
-   * Extracts current grid information from mySim to save to doc
+   * Extracts current grid information from mySim to save to doc.
    *
    * @param doc         Document with which to build XML hierarchy
    * @param rootElement Root element, consisting of the Simulation type, to nest information under
@@ -154,12 +157,11 @@ public class WriteXMLFile {
       row.appendChild(doc.createTextNode(rowString.toString().trim()));
       gridElement.appendChild(row);
     }
-
     rootElement.appendChild(gridElement);
   }
 
   /**
-   * Extracts fields and configuration information from mySim to add them to doc
+   * Extracts fields and configuration information from mySim to add them to doc.
    *
    * @param doc         Document with which to build XML hierarchy
    * @param rootElement Root element, consisting of the Simulation type, to nest information under

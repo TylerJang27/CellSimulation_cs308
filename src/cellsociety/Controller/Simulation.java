@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 /**
  * Class for storing the data needed to configure a Simulation Class stores accessible data in
- * myType, myColors, myDataValues, and myGrid
+ * myType, myColors, myDataValues, and myGrid.
  * <p>
  * Structure based loosely on setup of Game.java in spike_simulation by Robert C. Duvall
  * https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/Game.java
@@ -20,18 +20,15 @@ public class Simulation {
 
   private static ResourceBundle RESOURCES = Main.myResources;
 
-  //name for the type of data file necessary to represent a simulation configuration file
   public static final String DATA_TYPE = RESOURCES.getString("Simulation");
   private static final String MISSING_MESSAGE = RESOURCES.getString("MISSING_MESSAGE");
 
-  //mandatory fields in the data file for all Simulation objects
   public static final List<String> MANDATORY_DATA_FIELDS = List.of(
       RESOURCES.getString("Title"),
       RESOURCES.getString("Width"),
       RESOURCES.getString("Height")
   );
 
-  //valid fields in the data file for all Simulation objects
   public static final List<String> OPTIONAL_DATA_FIELDS = List.of(
       RESOURCES.getString("Rate"),
       RESOURCES.getString("GridType"),
@@ -40,7 +37,6 @@ public class Simulation {
   );
 
   private Map<String, Integer> myDataValues;
-
   private SimType myType;
   private Map<Point, Integer> myGrid;
 
@@ -58,7 +54,7 @@ public class Simulation {
   /**
    * Constructor taking in a data structure of Strings.
    *
-   * @param dataValues map of field names to their values
+   * @param dataValues a Map of field names to their values
    */
   public Simulation(Map<String, String> dataValues) {
     this(dataValues.get(MANDATORY_DATA_FIELDS.get(0)));
@@ -66,7 +62,7 @@ public class Simulation {
   }
 
   /**
-   * Setter for grid
+   * Setter for grid.
    *
    * @param grid map of grid points to their values
    */
@@ -76,10 +72,9 @@ public class Simulation {
 
   /**
    * Function to set myDataValues to map from a field key to a value Sets value to null if
-   * dataValues does not contain the value Note: Implementation of model will need to specify
-   * defaults
+   * dataValues does not contain the value. The implementation of the Model should specify defaults for these fields.
    *
-   * @param dataValues map of field names to their values
+   * @param dataValues a Map of field names to their values
    */
   private void setFields(Map<String, String> dataValues) {
     extractMandatoryValues(dataValues);
@@ -89,7 +84,7 @@ public class Simulation {
   /**
    * Removes the mandatory values from dataValues and throws error if missing
    *
-   * @param dataValues Map of String to String from constructor
+   * @param dataValues a Map of String to String from constructor
    * @throws XMLException if mandatory field is missing or if invalid data type when expecting
    *                      Integer
    */
@@ -120,7 +115,7 @@ public class Simulation {
   }
 
   /**
-   * Removes the optional values from dataValues but throws no error if missing
+   * Extracts the optional values from dataValues but throws no error if missing
    *
    * @param dataValues Map of String to String from constructor
    * @throws XMLException if invalid data type when expecting Integer
@@ -149,28 +144,37 @@ public class Simulation {
   }
 
   /**
-   * Returns simulation type based off of enum SimType
+   * Returns simulation type based off of enum SimType.
+   *
+   * @return    the SimType for this Simulation instance
    */
   public SimType getType() {
     return myType;
   }
 
   /**
-   * Returns Map with all String and Integer values for fields
+   * Returns Map with all String and Integer values for fields.
+   *
+   * @return    a Map of Strings to Integer values
    */
   public Map<String, Integer> getValueMap() {
     return myDataValues;
   }
 
   /**
-   * Returns Integer value matched to field key
+   * Returns Integer value matched to field key.
+   *
+   * @param field for a key in getValueMap
+   * @return the Integer for that field, or a default -1
    */
   public Integer getValue(String field) {
     return myDataValues.getOrDefault(field, -1);
   }
 
   /**
-   * Returns Grid, with initialized values (others all default to 0)
+   * Returns Grid, with initialized values (others all default to 0).
+   *
+   * @return    a Map of Points to Integer values
    */
   public Map<Point, Integer> getGrid() {
     return myGrid;

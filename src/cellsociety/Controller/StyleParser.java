@@ -12,7 +12,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Class for parsing XML files to determine simulation styling.
+ * Class for parsing XML files to determine simulation styling. Extends the abstract class XMLParser.
  * <p>
  * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
  * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
@@ -22,17 +22,21 @@ import org.xml.sax.SAXException;
 public class StyleParser extends XMLParser {
 
   /**
-   * Create parser for XML files of given type.
+   * Creates an XML Parser instance given a type to read from. This type represents a root node of the XML file with
+   * the format data *type* = style.
+   *
+   * @param type root node attribute from which to determine if the XML is valid for this use case
    */
   public StyleParser(String type) {
     super(type);
   }
 
   /**
-   * Get data contained in this XML file as a map
+   * Get data contained in this XML file as a Map of Strings to Styles for each SimStyle.
    *
    * @param dataFile file from which to read configuration
    * @return Returns a Map of Strings for SimStyle to Styles holding styling information
+   * @throws XMLException if the file is not of the right format or cannot be found.
    */
   public Map<String, Style> getStyle(File dataFile) {
     if (!isXML(dataFile)) {
@@ -54,19 +58,18 @@ public class StyleParser extends XMLParser {
     }
 
     Map<String, Style> styleMap = new HashMap<>();
-    for (Style s : readStyles(root)) {
+    for (Style s : readStyles()) {
       styleMap.put(s.getType().toString(), s);
     }
     return styleMap;
   }
 
   /**
-   * Generates a List of Styles of styling settings
+   * Generates a List of Styles of styling settings to be later mapped to their SimStyle.
    *
-   * @param root document root
    * @return Returns a List of Styles holding styling information
    */
-  private List<Style> readStyles(Element root) {
+  private List<Style> readStyles() {
     List<Style> styles = new ArrayList<>();
     for (SimStyle s : SimStyle.values()) {
       NodeList nodeList = myDoc.getElementsByTagName(s.toString());
@@ -78,11 +81,11 @@ public class StyleParser extends XMLParser {
   }
 
   /**
-   * Extracts information about one style and adds it to styleFields
+   * Extracts information about one style and adds it to styleFields.
    *
    * @param s           the Simulation type for this style
    * @param nodeList    a List of Nodes referring to the children of the Element
-   * @param styleFields Map to which the style information should be added
+   * @param styleFields a Map to which the style information should be added
    */
   private void extractOneStyle(SimStyle s, NodeList nodeList, Map<String, String> styleFields) {
     for (int k = 0; k < nodeList.getLength(); k++) {

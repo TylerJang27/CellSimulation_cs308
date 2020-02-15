@@ -10,7 +10,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * Class for parsing XML files to retrieve information about initial grid configuration
+ * Class for parsing XML files to retrieve information about initial grid configuration. Extends the abstract class XMLParser. Usually used internally within ConfigParser.
+ * <p>
+ * Class based mainly on ConfigParser.java from spike_simulation by Rhondu Smithwick and Robert C.
+ * Duvall https://coursework.cs.duke.edu/compsci308_2020spring/spike_simulation/blob/master/src/xml/XMLParser.java
  *
  * @author Tyler Jang
  */
@@ -64,7 +67,7 @@ public class GridParser extends XMLParser {
   }
 
   /**
-   * Returns a grid based off of the type of grid stored in the XML file
+   * Returns a grid based off of the type of grid stored in the XML file.
    *
    * @param gridType the type of grid (all, some, random or parametrized random)
    * @return a Map representing points and values in the grid
@@ -80,8 +83,8 @@ public class GridParser extends XMLParser {
   }
 
   /**
-   * Returns a grid of the type where all points are specified in the XML file NOTE: Assumes all
-   * points have been specified
+   * Returns a grid of the type where all points are specified in the XML file. NOTE: Assumes all
+   * points have been specified (some error handling is implemented to allow for default cases of unspecified points).
    *
    * @return a Map representing points and values in the grid
    */
@@ -97,7 +100,7 @@ public class GridParser extends XMLParser {
   }
 
   /**
-   * Returns a grid of the type where all points are specified for square cells
+   * Returns a grid of the type where all points are specified for square cells.
    *
    * @param grid      Map of Points and Integer to which new KVPs should be added
    * @param wholeGrid an array of Strings representing rows in the grid
@@ -121,7 +124,7 @@ public class GridParser extends XMLParser {
   }
 
   /**
-   * Returns a grid of the type where all points are specified for hexagon cells
+   * Returns a grid of the type where all points are specified for hexagon cells.
    *
    * @param grid      Map of Points and Integer to which new KVPs should be added
    * @param wholeGrid an array of Strings representing rows in the grid
@@ -154,8 +157,8 @@ public class GridParser extends XMLParser {
   }
 
   /**
-   * Returns a grid of the type where all points are specified in the XML file NOTE: Assumes all
-   * points have been correctly specified as x y val
+   * Returns a grid of the type where all points are specified in the XML file. NOTE: Assumes all
+   * points have been correctly specified as x y val.
    *
    * @return a Map representing points and values in the grid
    * @throws XMLException non-Integer value stored in grid
