@@ -19,7 +19,9 @@ Mariusz worked on rendering the various elements of the GUI for the View, and co
 ### What Features are Easy to Add
 Our design was implemented with scalability in mind. We wanted new Simulations to be easy to add, with the sole requirements being changing of defaults, rules, and styling. This allows for varieties of XMLs to be read for new simulations.
 
-In addition, we wanted the UI to be easily configurable, so GridPanes were used to promote scalability on the front-end.
+In addition, we wanted the UI to be easily configurable, so GridPanes were used to promote scalability on the front-end. New cell apearances can also be easily added using the CellState hieararchy described in subsequenct sections
+
+We also wanted to allow for easily styling different elements, which was accomplished by putting all styling information in a css file that can easily be modified or be made to be completely different by changing the local-specified file name.
 
 In addition, new language settings can be added by providing a different ResourceBundle in Main, rather than using English.properties.
 
@@ -39,10 +41,21 @@ Afterwards, the grid constructs and assigns the list of neighbors to each cell.
 Each simulation has a set of rules to update each cell by, which is defined in each cell's nextState().
 * The grid also returns useful information that's used by the controller, such as a specific cell's state and the max amount of states for each simulation.
 
-
-
 **View**:
-
+The View is responsible for rendering the results generated from the model onto a GUI. The core public classes are ApplicationView and CellStateConfiguration. 
+ - The ApplicationView is initialized upon the launching of the program by the Controller. It provides functionality for displaying the Grid, dashboard, and Console. when creating a new grid to be displayed, the Controller must create instances of CellStateConfiguration to pass to the ApplicationView. 
+ - CellStateConfigurations define the properties of the CellState, such as the shape, type of styling, and relevant parameters. These configuration objects are used by the GridView to generate CellViews, which hold several CellStates that can be toggled in response to changing the state.
+ - Auxilliary classes that aid in the internal implementation of this external API include:
+    - **CellClickedEvent**: a class that wraps a MouseEvent and adds instance variables that track the row and column of the cell that was clicked, which allows for the controller to change the state of the cell that was clicked
+    - **CellState**: an abstract class that defines behaviour for a CellState, namely that it has a unique String identifier that describes its state in plain language terms
+    - **ColoredCellState**: A class to implement a CellState that is filled in with a solid color.
+    - **HexagonGridView**: a class to implement GridView with an array of Hexagon-shaped Cells
+    - **ImageCellState**: A display of CellStates that are filled in with an image
+    - **RectangleGridView**: A simple Grid that consistes of rectangular Shaped CellView
+    - **GridView**: The display of all cells' states, divided up into multiple CellViews that can be updated to different states
+    - **CellView**: The display of each cell, with potential shapes of Rectangle and Hexagon, and potential styling of image or color
+    - **DashboardView**: The display of the editable user interface, allowing the user to choose configuration files, set the speed, and step, run, or pause the simulation.
+    - **ConsoleView**: The display of information and any errors that the user may encounter.
 **Controller**:
  - Main.java should launch an Application, and in doing so create an instance of SimulationControl.java, passing in the Application stage. On each frame update, it should call SimulationControl.next().
  - SimulationControl.java will create an initialize instances of ApplicationView.java and Grid.java, based on configuration and styling information parsed by ConfigParser.java and StyleParser.java. It also provides a handler to ApplicationView.java with which XML files can be written using WriteXMLFile.java.
@@ -78,7 +91,8 @@ So all that would need to be done is setting the rules for the simulation in the
 * Certain neighbor arrangements are also easy to construct, since the checkAndSetNeighbor() handles any potential issues with grid edges.
 
 **View**:
- 
+ - To add new Grid types, simple create a new subclass of GridView that implements the three abstract methods of updateCell, getNode, and getCellCounts. Then, in the initializeGrid method of ApplicationView, add an extra if statement to check for this type of grid and then call the constructor for the new subclass
+ - To add new appearances for Cell states, create a new subclass of CellState. it must take in the parameters for the specific type of state, and then be able to render a Node that reflects the design. In the addCellState method of CellView, add another if statement to check for this type of Cell appearance, and call the constructor to the subclass.
 **Controller**:
  - To add new simulation types, simply add a value to the enumerated types in SimType.java and SimStyle.java, specifying the necessary fields, max value, and style information. Then, create an XML file with the desired configuration parameters.
  This XML file must have the root element data type = "simulation", and it must have title and the other required mandatory fields specified in SimType.java. In addition, add an element and children to Styling.xml specifying the desired global style
@@ -94,7 +108,10 @@ Food will respawn throughout the grid and the idea is to see how long Pac-Man ca
 * More types of neighbor construction for cells (i.e. corner neighbors, row neighbors, etc.).
 
 **View**:
-
+ - A way to have multiple simulations displayed at once
+ - An implementation of GridView that allows for triangle shaped cells
+ - A way for the View to display parameters the the user can change, which subsequently cause the model to be altered before it is run. These parameters could be simulation-specific, so they would have to be read out of the XML and passed to the ApplicationView as a paremeter
+ - The graph does not clear if you start a new simulation, so this issue would need to be addressed so that the graph does not become an absolute mess when you run a new simulation.
 **Controller**:
  - To add new cell shapes, such as triangles, add a new method getAllSquares() in GridParser.java and modify getAllGrid() accordingly. Ensure that this parsing method adheres to agreed-upon coordinate conventions for the model and view implementation.
  Additionally, modify SimulationControl.getShapeString() to accommodate the change.
